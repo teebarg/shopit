@@ -12,3 +12,6 @@ label3:
 # Add label3 to any change to .txt files within the entire repository. Quotation marks are required for the leading asterisk
 label4:
 - '**/*.js'
+
+repo:
+- '*'
