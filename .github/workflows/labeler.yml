@@ -30,17 +30,22 @@
 
 
 name: "Pull Request Labeler"
+# on:
+#   pull_request:
+#     types:
+#       - opened
+#       - synchronize
+
 on:
   pull_request:
-    types:
-      - opened
-      - synchronize
+    types: [ labeled ]
 
 jobs:
   triage:
     permissions:
       contents: read
       pull-requests: write
+    if: ${{ github.event.label.name == 'bug' }}
     runs-on: ubuntu-latest
     steps:
     - uses: actions/labeler@v4
