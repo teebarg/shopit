@@ -54,6 +54,8 @@ on:
 jobs:
   build:
     if: ${{ github.event.label.name == 'bug' }}
+    runs-on: ubuntu-latest
+    
     triage:
       permissions:
         contents: read
