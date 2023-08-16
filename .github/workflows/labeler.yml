@@ -1,0 +1,36 @@
+name: Pull Request Labeler
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  label:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check for JS file changes
+        id: check_js_files
+        run: |
+          js_files=$(git diff --name-only HEAD..$GITHUB_SHA | grep -E '\.js$')
+          if [ -n "$js_files" ]; then
+            echo "::set-output name=js_files_changed::true"
+          else
+            echo "::set-output name=js_files_changed::false"
+          fi
+
+      - name: Apply "deploy frontend" label
+        if: steps.check_js_files.outputs.js_files_changed == 'true'
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const octokit = github.getOctokit(github.token);
+            await octokit.issues.addLabels({
+              owner: github.context.repo.owner,
+              repo: github.context.repo.repo,
+              issue_number: github.context.payload.pull_request.number,
+              labels: ['deploy frontend']
+            });
