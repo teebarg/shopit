@@ -57,7 +57,8 @@ jobs:
     - name: Check if label is debug
       run: |
         label="${{ github.event.label.name }}"
-        if [ "$label" != "bug" ]; then 
-          exit 0
+        if [ "$label" != "bug" ]; then
+          echo "Label is not bug, exiting"
+          exit 78
         fi
     - uses: actions/labeler@v4
