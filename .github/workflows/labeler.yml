@@ -54,13 +54,11 @@ jobs:
       pull-requests: write
     runs-on: ubuntu-latest
     steps:
-    - name: Check if label is debug
-      run: |
-        label="${{ github.event.label.name }}"
-        if [ "$label" != "bug" ]; then
-          echo "Label is not bug, exiting"
-          exit 0
-        fi
-    - uses: actions/labeler@v4
-      if: success()
+    - name: Check if label is 'bug'
+      run: echo "Not a bug label"
+      if: ${{ github.event.label.name != 'bug' }}
+      
+    - name: Apply labels using labeler
+      uses: actions/labeler@v4
+      if: ${{ github.event.label.name == 'bug' }}
 
