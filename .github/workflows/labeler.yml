@@ -47,18 +47,45 @@ on:
 #       - uses: actions/labeler@v4
 
 
+# jobs:
+#   triage:
+#     permissions:
+#       contents: read
+#       pull-requests: write
+#     runs-on: ubuntu-latest
+#     steps:
+#     - name: Check if label is debug
+#       run: |
+#         label="${{ github.event.label.name }}"
+#         if [ "$label" != "bug" ]; then
+#           echo "Label is not bug, exiting"
+#           exit 78
+#         fi
+#     - uses: actions/labeler@v4
+
+
 jobs:
+  check_label:
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.set_output.outputs.should_run }}
+    steps:
+    - name: Set output
+      id: set_output
+      run: |
+        label="${{ github.event.label.name }}"
+        if [ "$label" == "bug" ]; then 
+          echo "::set-output name=should_run::true"
+        else
+          echo "::set-output name=should_run::false"
+        fi
+
   triage:
+    needs: check_label
+    if: needs.check_label.outputs.should_run == 'true'
     permissions:
       contents: read
       pull-requests: write
     runs-on: ubuntu-latest
     steps:
-    - name: Check if label is debug
-      run: |
-        label="${{ github.event.label.name }}"
-        if [ "$label" != "bug" ]; then
-          echo "Label is not bug, exiting"
-          exit 78
-        fi
     - uses: actions/labeler@v4
