@@ -13,9 +13,13 @@ label3:
 label4:
 - '**/*.js'
 
-# Apply 'deploy frontend' label to any JS file change within the 'frontend/' directory or any subdirectories
-deploy frontend:
+# Apply 'Vue' label to any JS file change within the 'frontend/' directory or any subdirectories
+Vue:
 - frontend/**/*.js
+
+# Apply 'Python Api' label to any python file change within the 'services/api' directory or any subdirectories
+Python API:
+- services/api/**/*.py
 
 repo:
 - '*'
