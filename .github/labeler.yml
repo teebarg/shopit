@@ -13,5 +13,9 @@ label3:
 label4:
 - '**/*.js'
 
+# Apply 'deploy frontend' label to any JS file change within the 'frontend/' directory or any subdirectories
+deploy frontend:
+- frontend/**/*.js
+
 repo:
 - '*'
