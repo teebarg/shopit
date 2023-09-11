@@ -13,20 +13,11 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '16'
-      
-    - name: Install dependencies
-      run: npm install glob
       
     - name: Add comment to PR with labels
       uses: actions/github-script@v5
       with:
         script: |
-          const glob = require('glob');
           const issueNumber = context.payload.pull_request.number;
           const prFiles = await github.rest.pulls.listFiles({
             owner: context.repo.owner,
@@ -40,7 +31,7 @@ jobs:
           };
 
           const labelsToAdd = Object.keys(labelMappings).filter(label =>
-            prFiles.data.some(prFile => glob.sync(labelMappings[label], { cwd: github.workspace }).includes(prFile.filename)),
+            prFiles.data.some(prFile => prFile.filename.includes(labelMappings[label].replace('**/', ''))),
           );
 
           const message = `Thanks for your pull request! Based on the files changed, this PR would be labeled with the following labels: ${labelsToAdd.join(', ')}`;
