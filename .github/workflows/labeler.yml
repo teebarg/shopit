@@ -31,6 +31,9 @@ jobs:
       uses: actions/labeler@v4
       if: ${{ github.event.label.name == 'bug' }}
 
+    - name: Print Custom Update
+      run: echo "This is a custom update!"
+
     - name: Add comment to PR with labels
       uses: actions/github-script@v5
       with:
