@@ -1,20 +1,8 @@
-name: "Pull Request Labeler"
+name: "Pull Request Commenter"
 
 on:
   pull_request:
-    types: [ labeled ]
-
-
-# jobs:
-#     triage:
-#       if: ${{ github.event.label.name == 'bug' }}
-#       permissions:
-#         contents: read
-#         pull-requests: write
-#       runs-on: ubuntu-latest
-#       steps:
-#       - uses: actions/labeler@v4
-
+    types: [opened, reopened, synchronize]
 
 jobs:
   triage:
@@ -23,33 +11,34 @@ jobs:
       pull-requests: write
     runs-on: ubuntu-latest
     steps:
-    - name: Check if label is 'bug'
-      run: echo "Not a bug label"
-      if: ${{ github.event.label.name != 'bug' }}
+    - name: Checkout code
+      uses: actions/checkout@v2
       
-    - name: Apply labels using labeler
-      uses: actions/labeler@v4
-      if: ${{ github.event.label.name == 'bug' }}
-
-    - name: Print Custom Update
-      run: echo "This is a custom update!"
-
     - name: Add comment to PR with labels
       uses: actions/github-script@v5
       with:
         script: |
+          const glob = require('glob');
           const issueNumber = context.payload.pull_request.number;
-          const { data: pullRequest } = await github.rest.pulls.get({
+          const prFiles = await github.rest.pulls.listFiles({
             owner: context.repo.owner,
             repo: context.repo.repo,
             pull_number: issueNumber,
           });
-          const labels = pullRequest.labels.map(label => label.name);
-          const message = `Thanks for your pull request! We have automatically labeled your PR with the following labels: ${labels.join(', ')}`;
+
+          const labelMappings = {
+            'Vue': 'frontend/**/*.js',
+            'Python API': 'services/api/**/*.py',
+          };
+
+          const labelsToAdd = Object.keys(labelMappings).filter(label =>
+            prFiles.data.some(prFile => glob.sync(labelMappings[label], { cwd: github.workspace }).includes(prFile.filename)),
+          );
+
+          const message = `Thanks for your pull request! Based on the files changed, this PR would be labeled with the following labels: ${labelsToAdd.join(', ')}`;
           github.rest.issues.createComment({
             owner: context.repo.owner,
             repo: context.repo.repo,
             issue_number: issueNumber,
             body: message,
           });
-
