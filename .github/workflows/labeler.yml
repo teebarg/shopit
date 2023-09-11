@@ -14,27 +14,24 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
       
+    - name: Apply labels using labeler
+      uses: actions/labeler@v3
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        configuration-path: .github/labeler.yml
+      
     - name: Add comment to PR with labels
       uses: actions/github-script@v5
       with:
         script: |
           const issueNumber = context.payload.pull_request.number;
-          const prFiles = await github.rest.pulls.listFiles({
+          const pr = await github.rest.pulls.get({
             owner: context.repo.owner,
             repo: context.repo.repo,
             pull_number: issueNumber,
           });
-
-          const labelMappings = {
-            'Vue': 'frontend/**/*.js',
-            'Python API': 'services/api/**/*.py',
-          };
-
-          const labelsToAdd = Object.keys(labelMappings).filter(label =>
-            prFiles.data.some(prFile => prFile.filename.includes(labelMappings[label].replace('**/', ''))),
-          );
-
-          const message = `Thanks for your pull request! Based on the files changed, this PR would be labeled with the following labels: ${labelsToAdd.join(', ')}`;
+          const labels = pr.data.labels.map(label => label.name);
+          const message = `Thanks for your pull request! Based on the files changed, this PR has been labeled with the following labels: ${labels.join(', ')}`;
           github.rest.issues.createComment({
             owner: context.repo.owner,
             repo: context.repo.repo,
