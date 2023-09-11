@@ -1,34 +1,3 @@
-# name: Pull Request Labeler
-
-# on:
-#   pull_request:
-#     types:
-#       - opened
-#       - synchronize
-
-# jobs:
-#   label:
-#     runs-on: ubuntu-latest
-    
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v2
-        
-#       - name: Set up Node.js
-#         uses: actions/setup-node@v2
-#         with:
-#           node-version: 14
-        
-#       - name: Install dependencies
-#         run: npm install
-        
-#       - name: Run labeler action
-#         uses: actions/labeler@v4
-#         with:
-#           repo-token: ${{ secrets.GITHUB_TOKEN }}
-#           configuration-path: .github/labeler.yml
-
-
 name: "Pull Request Labeler"
 
 on:
@@ -61,4 +30,23 @@ jobs:
     - name: Apply labels using labeler
       uses: actions/labeler@v4
       if: ${{ github.event.label.name == 'bug' }}
+
+    - name: Add comment to PR with labels
+      uses: actions/github-script@v5
+      with:
+        script: |
+          const issueNumber = context.payload.pull_request.number;
+          const { data: pullRequest } = await github.rest.pulls.get({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            pull_number: issueNumber,
+          });
+          const labels = pullRequest.labels.map(label => label.name);
+          const message = `Thanks for your pull request! We have automatically labeled your PR with the following labels: ${labels.join(', ')}`;
+          github.rest.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: issueNumber,
+            body: message,
+          });
 
