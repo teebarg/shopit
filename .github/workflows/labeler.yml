@@ -1,8 +1,20 @@
-name: "Pull Request Commenter"
+name: "Pull Request Labeler"
 
 on:
   pull_request:
-    types: [opened, reopened, synchronize]
+    types: [ labeled ]
+
+
+# jobs:
+#     triage:
+#       if: ${{ github.event.label.name == 'bug' }}
+#       permissions:
+#         contents: read
+#         pull-requests: write
+#       runs-on: ubuntu-latest
+#       steps:
+#       - uses: actions/labeler@v4
+
 
 jobs:
   triage:
@@ -11,30 +23,30 @@ jobs:
       pull-requests: write
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+    - name: Check if label is 'bug'
+      run: echo "Not a bug label"
+      if: ${{ github.event.label.name != 'bug' }}
       
     - name: Apply labels using labeler
-      uses: actions/labeler@v3
-      with:
-        repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        configuration-path: .github/labeler.yml
-      
-    - name: Add comment to PR with labels
-      uses: actions/github-script@v5
-      with:
-        script: |
-          const issueNumber = context.payload.pull_request.number;
-          const pr = await github.rest.pulls.get({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            pull_number: issueNumber,
-          });
-          const labels = pr.data.labels.map(label => label.name);
-          const message = `Thanks for your pull request! Based on the files changed, this PR has been labeled with the following labels: ${labels.join(', ')}`;
-          github.rest.issues.createComment({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            issue_number: issueNumber,
-            body: message,
-          });
+      uses: actions/labeler@v4
+      if: ${{ github.event.label.name == 'bug' }}
+
+    # - name: Add comment to PR with labels
+    #   uses: actions/github-script@v5
+    #   with:
+    #     script: |
+    #       const issueNumber = context.payload.pull_request.number;
+    #       const { data: pullRequest } = await github.rest.pulls.get({
+    #         owner: context.repo.owner,
+    #         repo: context.repo.repo,
+    #         pull_number: issueNumber,
+    #       });
+    #       const labels = pullRequest.labels.map(label => label.name);
+    #       const message = `Thanks for your pull request! We have automatically labeled your PR with the following labels: ${labels.join(', ')}`;
+    #       github.rest.issues.createComment({
+    #         owner: context.repo.owner,
+    #         repo: context.repo.repo,
+    #         issue_number: issueNumber,
+    #         body: message,
+    #       });
+

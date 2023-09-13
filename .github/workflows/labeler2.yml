@@ -1,0 +1,40 @@
+name: "Pull Request Commenter"
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  triage:
+    permissions:
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Apply labels using labeler
+      uses: actions/labeler@v3
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        configuration-path: .github/labeler.yml
+      
+    - name: Add comment to PR with labels
+      uses: actions/github-script@v5
+      with:
+        script: |
+          const issueNumber = context.payload.pull_request.number;
+          const pr = await github.rest.pulls.get({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            pull_number: issueNumber,
+          });
+          const labels = pr.data.labels.map(label => label.name);
+          const message = `Thanks for your pull request! Based on the files changed, this PR has been labeled with the following labels: ${labels.join(', ')}`;
+          github.rest.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: issueNumber,
+            body: message,
+          });
