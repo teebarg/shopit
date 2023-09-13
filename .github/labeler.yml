@@ -9,6 +9,7 @@ Python API:
 # Apply 'Python Similarity Service' label to any python file change within the 'services/similarity' directory or any subdirectories
 Python Similarity Service:
 - services/similarity/**/*.py
+- services/similarity/requirements.txt
 
 # Apply 'Go Search Service' label to any go file change within the 'services/go/search' directory or any subdirectories
 Go Search Service:
