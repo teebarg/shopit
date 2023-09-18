@@ -14,3 +14,6 @@ run:
 stop:
 	docker stop $(APP_NAME)-container
 	docker rm $(APP_NAME)-container
+
+serve:
+	uvicorn main:app --host 0.0.0.0 --port 8888  --reload
