@@ -1,0 +1,28 @@
+{
+    "family": "task-test-data-utils",
+    "executionRoleArn": "arn:aws:iam::472472117825:role/ecsTestTaskExecutionRole",
+    "taskRoleArn": "arn:aws:iam::472472117825:role/ecsTestTaskRole",
+    "networkMode": "awsvpc",
+    "containerDefinitions": [
+        {
+            "name": "task-data-utils",
+            "image": "472472117825.dkr.ecr.us-east-2.amazonaws.com/task-data-utils:latest",
+            "environment": [
+                { "name": "DRY_RUN", "value": "True" }
+            ],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-region": "us-east-2",
+                    "awslogs-group": "/fargate/task/test-data-utils",
+                    "awslogs-stream-prefix": "fargate"
+                }
+            }
+        }
+    ],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "256",
+    "memory": "512"
+}
