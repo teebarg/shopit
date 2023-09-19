@@ -8,15 +8,15 @@ Python API:
 
 # Apply 'Python Similarity Service' label to any python file change within the 'services/similarity' directory or any subdirectories
 Python Similarity Service:
-- services/similarity/*
+- services/similarity/**
 
 # Apply 'Go Search Service' label to any go file change within the 'services/go/search' directory or any subdirectories
 Go Search Service:
-- services/go/search/*
+- services/go/search/**
 
 # Apply 'Go Polling Service' label to any go file change within the 'services/go/polling' directory or any subdirectories
 Go Polling Service:
-- services/go/polling/*
+- services/go/polling/**
 
 # Apply 'SLS Auth API' label to any python file change within the 'services/sls/auth' directory or any subdirectories
 SLS Auth API:
