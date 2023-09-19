@@ -1,6 +1,6 @@
 # Apply 'Vue' label to any JS file change within the 'frontend/' directory or any subdirectories
 Vue:
-- frontend/**/*
+- frontend/**
 
 # Apply 'Python Api' label to any python file change within the 'services/api' directory or any subdirectories
 Python API:
