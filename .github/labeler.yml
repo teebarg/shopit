@@ -1,80 +1,79 @@
 # Apply 'Vue' label to any JS file change within the 'frontend/' directory or any subdirectories
 Vue:
-- frontend/**/*.js
+- frontend/*
 
 # Apply 'Python Api' label to any python file change within the 'services/api' directory or any subdirectories
 Python API:
-- services/api/**/*.py
+- services/api/*
 
 # Apply 'Python Similarity Service' label to any python file change within the 'services/similarity' directory or any subdirectories
 Python Similarity Service:
-- services/similarity/**/*.py
-- services/similarity/requirements.txt
+- services/similarity/*
 
 # Apply 'Go Search Service' label to any go file change within the 'services/go/search' directory or any subdirectories
 Go Search Service:
-- services/go/search/**/*.go
+- services/go/search/*
 
 # Apply 'Go Polling Service' label to any go file change within the 'services/go/polling' directory or any subdirectories
 Go Polling Service:
-- services/go/polling/**/*.go
+- services/go/polling/*
 
 # Apply 'SLS Auth API' label to any python file change within the 'services/sls/auth' directory or any subdirectories
 SLS Auth API:
-- services/sls/auth/**/*.py
+- services/sls/auth/*
 
 # Apply 'SLS Search API' label to any python file change within the 'services/sls/search' directory or any subdirectories
 SLS Search API:
-- services/sls/search/**/*.py
+- services/sls/search/*
 
 # Apply 'SLS Email Event Trigger' label to any python file change within the 'schema/bolsters-dydb/triggers/mail_events' directory or any subdirectories
 SLS Email Event Trigger:
-- schema/bolsters-dydb/triggers/mail_events/**/*.py
+- schema/bolsters-dydb/triggers/mail_events/*
 
 # Apply 'SLS Search Index Trigger' label to any python file change within the 'schema/bolsters-dydb/triggers/searchindex' directory or any subdirectories
 SLS Search Index Trigger:
-- schema/bolsters-dydb/triggers/searchindex/**/*.py
+- schema/bolsters-dydb/triggers/searchindex/*
 
 # Apply 'SLS Single User Trigger' label to any python file change within the 'schema/bolsters-dydb/triggers/singleuser' directory or any subdirectories
 SLS Single User Trigger:
-- schema/bolsters-dydb/triggers/singleuser/**/*.py
+- schema/bolsters-dydb/triggers/singleuser/*
 
 # Apply 'SLS Notifications Trigger' label to any python file change within the 'schema/bolsters-dydb/triggers/notifications' directory or any subdirectories
 SLS Notifications Trigger:
-- schema/bolsters-dydb/triggers/notifications/**/*.py
+- schema/bolsters-dydb/triggers/notifications/*
 
 # Apply 'SLS Cognito Pretoken' label to any python file change within the 'schema/bolsters-dydb/triggers/pre_token_generator' directory or any subdirectories
 SLS Cognito Pretoken:
-- schema/bolsters-dydb/triggers/pre_token_generator/**/*.py
+- schema/bolsters-dydb/triggers/pre_token_generator/*
 
 # Apply 'Task Data ETL' label to any python file change within the 'tasks/data-etl' directory or any subdirectories
 Task Data ETL:
-- tasks/data-etl/**/*.py
+- tasks/data-etl/*
 
 # Apply 'Task Data Utils' label to any python file change within the 'tasks/data-utils' directory or any subdirectories
 Task Data Utils:
-- tasks/data-utils/**/*.py
+- tasks/data-utils/*
 
 # Apply 'Task Integration Tests' label to any python file change within the 'tasks/integration-tests' directory or any subdirectories
 Task Integration Tests:
-- tasks/integration-tests/**/*.py
+- tasks/integration-tests/*
 
 # Apply 'Task Member Score' label to any python file change within the 'tasks/member-score' directory or any subdirectories
 Task Member Score:
-- tasks/member-score/**/*.py
+- tasks/member-score/*
 
 # Apply 'Task Member Rec' label to any python file change within the 'tasks/member-rec' directory or any subdirectories
 Task Member Rec:
-- tasks/member-rec/**/*.py
+- tasks/member-rec/*
 
 # Apply 'Task Notifications' label to any python file change within the 'tasks/notifications' directory or any subdirectories
 Task Notifications:
-- tasks/notifications/**/*.py
+- tasks/notifications/*
 
 # Apply 'Task Reminders' label to any python file change within the 'tasks/reminders' directory or any subdirectories
 Task Reminders:
-- tasks/reminders/**/*.py
+- tasks/reminders/*
 
 # Apply 'Task Recommendation' label to any python file change within the 'tasks/recommendations' directory or any subdirectories
 Task Recommendation:
-- tasks/recommendations/**/*.py
+- tasks/recommendations/*
