@@ -7,6 +7,7 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from firebase_admin import auth, credentials, firestore
 
+import schemas
 from core.config import settings
 
 reusable_oauth2 = OAuth2PasswordBearer(tokenUrl="/auth/login/access-token")
@@ -42,7 +43,7 @@ def get_auth() -> Generator:
         print("auth closed")
 
 
-def get_current_user(token: str = Depends(reusable_oauth2)) -> Any:
+def get_current_user(token: str = Depends(reusable_oauth2)) -> schemas.User:
     try:
         return auth.verify_id_token(token)
     except requests.exceptions.HTTPError:
@@ -58,8 +59,8 @@ def get_current_user(token: str = Depends(reusable_oauth2)) -> Any:
 
 
 def get_current_active_user(
-    current_user: Any = Depends(get_current_user),
-) -> Any:
+    current_user: schemas.User = Depends(get_current_user),
+) -> schemas.User:
     return current_user
 
 
