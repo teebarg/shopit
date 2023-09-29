@@ -1,66 +1,71 @@
-# api/collections.py
+from fastapi import APIRouter, Depends, HTTPException, status
 
-import firebase_admin
-from firebase_admin import credentials, firestore
-from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
-from db.firebase import initialize_firestore
-
-# Initialize Firestore client
-db = initialize_firestore()
+import deps
+import schemas
 
 # Create a router for product collections
 router = APIRouter()
 
-# Pydantic model for the product collection
-class Collection(BaseModel):
-    name: str
-    products: list[str]
 
-@router.get("/", response_model=list[Collection])
-async def get_collections():
+@router.get("/", response_model=list[schemas.Collection])
+async def get_collections(db=Depends(deps.get_db)):
     """
     Get all product collections.
     """
     collections_ref = db.collection("collections")
     collections_snapshot = collections_ref.get()
-    return [Collection(**collection.to_dict()) for collection in collections_snapshot]
+
+    return [
+        schemas.Collection(**collection.to_dict(), id=collection.id)
+        for collection in collections_snapshot
+    ]
 
 
-@router.get("/{collection_id}", response_model=Collection)
-async def get_collection(collection_id: str):
+@router.get("/{collection_id}", response_model=schemas.Collection)
+async def get_collection(collection_id: str, db=Depends(deps.get_db)):
     """
     Get a specific product collection by ID.
     """
     collection_ref = db.collection("collections").document(collection_id)
     collection = collection_ref.get()
     if collection.exists:
-        return Collection(**collection.to_dict())
+        return schemas.Collection(**collection.to_dict(), id=collection_ref.id)
     else:
-        raise HTTPException(status_code=404, detail="Product collection not found.")
+        raise HTTPException(status_code=404, detail="collection not found.")
 
 
-@router.put("/{collection_id}", response_model=Collection)
-async def update_collection(collection_id: str, collection: Collection):
-    """
-    Update a specific product collection by ID.
-    """
-    collection_ref = db.collection("collections").document(collection_id)
-    collection_ref.set(collection.dict())
-    return collection
-
-
-@router.post("/", response_model=Collection, status_code=201)
-async def create_product_collection(collection: Collection):
+@router.post("/", response_model=schemas.Collection, status_code=201)
+async def create_collection(
+    collection: schemas.CollectionCreate, db=Depends(deps.get_db)
+):
     """
     Create a new product collection.
     """
     collection_data = collection.dict()
-    
-    # Create the product collection document in the "product_collections" collection
+
+    # check if the collection already exists based on some unique identifier, e.g., "name"
     collections_ref = db.collection("collections")
+    existing_collection = collections_ref.where(
+        "name", "==", collection_data["name"]
+    ).get()
+    if len(existing_collection) > 0:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Collection already exists",
+        )
+
+    # Create the product collection document in the "product_collections" collection
     collection_ref = collections_ref.document()
-    collection_data['products'] = []  # Initialize products as an empty list
     collection_ref.set(collection_data)
-    
-    return collection
+    data = collection_ref.get()
+    return schemas.Collection(**data.to_dict(), id=collection_ref.id)
+
+
+# @router.put("/{collection_id}", response_model=Collection)
+# async def update_collection(collection_id: str, collection: Collection):
+#     """
+#     Update a specific product collection by ID.
+#     """
+#     collection_ref = db.collection("collections").document(collection_id)
+#     collection_ref.set(collection.dict())
+#     return collection
