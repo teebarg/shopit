@@ -19,7 +19,7 @@ app.include_router(
 )  # Include the user router
 
 
-# Root path |||perrerseeop
+# Root path |||perrerseeoppo
 @app.get("/")
 async def root():
     return {"message": "Hello World"}

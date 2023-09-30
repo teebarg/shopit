@@ -15,6 +15,7 @@ repos:
         args: [--line-length=79]
         files: ^backend/
         entry: bash -c 'cd backend && echo hello && echo $@ && echo "${@/backend\//./}" && exit 1' --
+        always_run: true
 
   - repo: https://github.com/pre-commit/mirrors-isort
     rev: v5.9.3
