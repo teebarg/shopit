@@ -25,7 +25,7 @@ async def login_for_access_token(
         user = auth.sign_in_with_email_and_password(email, password)
         return JSONResponse(
             status_code=200,
-            content={"message": "success", "token": user["idToken"]},
+            content={"message": "success", "token": user["idToken"], "name": user["displayName"], "email": user["email"], "id": user["localId"]},
         )
     except Exception as e:
         if "INVALID_LOGIN_CREDENTIALS" in str(e):

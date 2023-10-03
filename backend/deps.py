@@ -18,7 +18,7 @@ def get_db() -> Generator:
         if (
             not firebase_admin._apps
         ):  # Check if the app is not already initialized
-            cred = credentials.Certificate(settings.FIREBASE_CRED_PATH)
+            cred = credentials.Certificate(settings.FIREBASE_CRED)
             firebase_admin.initialize_app(cred)
 
         # Get a reference to the db service
@@ -32,7 +32,7 @@ def get_auth() -> Generator:
         if (
             not firebase_admin._apps
         ):  # Check if the app is not already initialized
-            cred = credentials.Certificate(settings.FIREBASE_CRED_PATH)
+            cred = credentials.Certificate(settings.FIREBASE_CRED)
             firebase_admin.initialize_app(cred)
 
         firebase = pyrebase.initialize_app(settings.FIREBASE_CONFIG)

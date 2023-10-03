@@ -1,0 +1,42 @@
+services:
+  api:
+    build:
+      context: ../backend
+    command:
+      - uvicorn
+      - main:app
+      - --host
+      - 0.0.0.0
+      - --port
+      - "4002"
+      - --reload
+    env_file:
+      - ${ENV_FILE:-local.env}
+    ports:
+      - 4002:4002
+    volumes:
+      - ../backend:/app/backend/:ro
+
+
+  traefik:
+    image: traefik:2.10.3
+    command:
+      - traefik
+      - --entryPoints.dev.address=:4000
+      - --providers.file.filename=/config.yml
+    ports:
+      - 4000:4000
+    volumes:
+      # - ./${TRAEFIK_CONFIG}:/config.yml:ro
+      - ./lb-local.yml:/config.yml:ro
+
+
+  frontend:
+    build:
+      context: ../frontend
+    env_file:
+      - ${ENV_FILE:-local.env}
+    ports:
+      - 4001:4001
+    volumes:
+      - ../frontend/:/app/

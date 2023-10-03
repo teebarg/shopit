@@ -10,13 +10,13 @@ from core.config import settings
 app = FastAPI(title=settings.PROJECT_NAME)
 
 # Mount the routers under their respective paths
-app.include_router(products_router, prefix="/products", tags=["products"])
+app.include_router(products_router, prefix="/api/products", tags=["products"])
 app.include_router(
-    collections_router, prefix="/collections", tags=["collections"]
+    collections_router, prefix="/api/collections", tags=["collections"]
 )
-app.include_router(cart_router, prefix="/cart", tags=["cart"])
+app.include_router(cart_router, prefix="/api/cart", tags=["cart"])
 app.include_router(
-    users_router, prefix="/users", tags=["users"]
+    users_router, prefix="/api/users", tags=["users"]
 )  # Include the user router
 app.include_router(
     auth_router, prefix="/auth", tags=["auth"]
@@ -26,4 +26,4 @@ app.include_router(
 # Root path
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "Hello World!!!"}
