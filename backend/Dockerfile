@@ -1,5 +1,5 @@
 # Use the official Python image as the base image
-FROM python:3.11
+FROM python:3.11-slim-buster as builder
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -28,7 +28,7 @@ RUN pip install uvicorn
 COPY . .
 
 # Expose port 6000 (the port your FastAPI app is listening on)
-EXPOSE 6000
+EXPOSE 4002
 
 # Use the full path to uvicorn when starting the application
-CMD ["python", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "6000"]
+CMD ["python", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "4002"]

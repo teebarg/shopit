@@ -1,0 +1,29 @@
+tls:
+    certificates:
+        - certFile: /opt/tls/localhost.pem
+            keyFile: /opt/tls/localhost-key.pem
+
+http:
+    routers:
+        frontend:
+            rule: PathPrefix(`/`)
+            service: frontend
+        frontend-next:
+            rule: PathPrefix(`/api/auth`)
+            service: frontend
+        backend-auth:
+            rule: PathPrefix(`/auth`)
+            service: backend
+        backend:
+            rule: PathPrefix(`/api`)
+            service: backend
+
+    services:
+        frontend:
+            loadBalancer:
+                servers:
+                    - url: http://frontend:4001
+        backend:
+            loadBalancer:
+                servers:
+                    - url: http://backend:4002
