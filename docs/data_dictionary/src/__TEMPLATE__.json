@@ -1,0 +1,25 @@
+{
+    "__METADATA__": {
+        "__HEADER__": "<Custom Section Header>",
+        "__DESCRIPTION__": "<Custom Description about this record>",
+        "__ACCESS_PATTERNS__": [
+            {
+                "Access Pattern": "<Custom Access Pattern>",
+                "Query": "<Custom Access Pattern Query>"
+            }
+        ],
+        "__PARKING_LOT__": [
+            {
+                "Item": "<Custom Parking Lot Item 1>",
+                "Author": "<Author's Name>"
+            },
+            {
+                "Item": "<Custom Parking Lot Item 2>",
+                "Author": "<Author's Name>"
+            }
+        ],
+        "__REDSHIFT_TABLE__": "<Add redshift table where applicable>"
+    },
+    "__DOCUMENTATION__": {},
+    "__RECORD__": {}
+}
