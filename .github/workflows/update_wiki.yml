@@ -24,7 +24,7 @@ jobs:
                   pip install -r docs/data_dictionary/requirements.txt
 
             - name: Update Wiki
-              run: python docs/data_dictionary/docs.py --refresh=$(r) --filename=$(f)
+              run: python docs/data_dictionary/docs.py --refresh=$(r) --filename=docs/data_dictionary/wiki.md
               env:
                   r: ${{ github.event.after }}
                   f: docs/data_dictionary/wiki.md # Replace with the actual output file path
