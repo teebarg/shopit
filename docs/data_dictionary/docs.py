@@ -138,13 +138,13 @@ def get_flattened_dict_keys(
     flatten(d)
     return delimited_str, delimited_dict
 
-
+print('Updating wiki file...11111')
 # Print current working directory
 print(os.getcwd())
-
+print('Updating wiki file...222222')
 # List files in current directory
 print(os.listdir())
-
+print('Updating wiki file...33333')
 wiki_filepath = "./wiki.md"
 
 
