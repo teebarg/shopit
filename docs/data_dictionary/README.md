@@ -51,4 +51,4 @@ NOTE: <b>`wiki.md` is a read-only generated file that should not be manually edi
     - `make wiki f="account_client.json"`
         - create/update the wiki for a specific file
 
-- Automatically deprecate a field and leave it in the dictionary as a stricken field by adding a "~~" suffix to the field's key within the `__RECORD__` dictionary.
+- Automatically deprecate a field and leave it in the dictionary as a stricken field by adding a "~~" suffix to the field's key within the `__RECORD__` dictionary||.
