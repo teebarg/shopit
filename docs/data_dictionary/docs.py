@@ -147,6 +147,9 @@ print(os.listdir())
 
 wiki_filepath = "./wiki.md"
 
+
+print('Updating wiki file...')
+
 # set Wiki file to write mode
 os.chmod(path=wiki_filepath, mode=S_IWUSR|S_IWGRP|S_IWOTH)
 
