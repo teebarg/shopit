@@ -139,6 +139,12 @@ def get_flattened_dict_keys(
     return delimited_str, delimited_dict
 
 
+# Print current working directory
+print(os.getcwd())
+
+# List files in current directory
+print(os.listdir())
+
 wiki_filepath = "./wiki.md"
 
 # set Wiki file to write mode
