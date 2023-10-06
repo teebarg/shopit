@@ -148,6 +148,13 @@ print('Updating wiki file...33333')
 # wiki_filepath = "./wiki.md"
 wiki_filepath = 'docs/data_dictionary/wiki.md'
 
+if 'GITHUB_ACTIONS' in os.environ:
+    print("Running in GitHub Actions")
+    wiki_filepath = 'docs/data_dictionary/wiki.md'
+else:
+    print("Running locally")
+    wiki_filepath = "./wiki.md"
+
 
 print('Updating wiki file...')
 
