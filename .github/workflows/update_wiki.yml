@@ -20,7 +20,7 @@ jobs:
           - name: Set up Python
             uses: actions/setup-python@v2
             with:
-                python-version: 3.x # Replace with your desired Python version
+                python-version: 3.11
 
           - name: Install dependencies
             run: |
@@ -29,6 +29,4 @@ jobs:
 
           - name: Update Wiki
             # run: python docs/data_dictionary/docs.py --refresh=$(r) --filename=docs/data_dictionary/wiki.md
-            run: python ./docs.py --refresh=$(r) --filename=./wiki.md
-            env:
-                r: ${{ github.event.after }}
+            run: python ./docs.py --refresh=False --filename=./wiki.md
