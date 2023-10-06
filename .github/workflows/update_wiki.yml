@@ -27,6 +27,9 @@ jobs:
                 python -m pip install --upgrade pip
                 pip install -r ./requirements.txt
 
+          - name: Set up Make
+            run: sudo apt-get install build-essential
+
           - name: Update Wiki
-            # run: python docs/data_dictionary/docs.py --refresh=$(r) --filename=docs/data_dictionary/wiki.md
-            run: python ./docs.py --refresh=False --filename=./wiki.md
+            # run: python ./docs.py --refresh=False --filename=./wiki.md
+            run: make wiki
