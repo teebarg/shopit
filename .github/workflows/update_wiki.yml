@@ -25,7 +25,7 @@ jobs:
           - name: Install dependencies
             run: |
                 python -m pip install --upgrade pip
-                pip install -r docs/data_dictionary/requirements.txt
+                pip install -r ./requirements.txt
 
           - name: Update Wiki
             # run: python docs/data_dictionary/docs.py --refresh=$(r) --filename=docs/data_dictionary/wiki.md
