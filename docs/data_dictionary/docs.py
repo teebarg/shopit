@@ -33,6 +33,8 @@ REFRESH_DOCUMENTATION = args.refresh.lower() == 'true'
 
 # determines if we should update documentation for a specific file instead of all files
 SOURCE_FILE = f"{args.filename.replace('.json', '')}.json" if args.filename else ""
+print(args.filename)
+print("🚀 ~ file: docs.py:36 ~ SOURCE_FILE:", SOURCE_FILE)
 
 # required markdown table columns
 BASE_TBL_COLS = {
@@ -147,6 +149,7 @@ print(os.listdir())
 print('Updating wiki file...33333')
 # wiki_filepath = "./wiki.md"
 wiki_filepath = 'docs/data_dictionary/wiki.md'
+base_filepath = 'docs/data_dictionary'
 
 if 'GITHUB_ACTIONS' in os.environ:
     print("Running in GitHub Actions")
@@ -160,6 +163,10 @@ print('Updating wiki file...')
 
 # set Wiki file to write mode
 os.chmod(path=wiki_filepath, mode=S_IWUSR|S_IWGRP|S_IWOTH)
+
+print(sorted(glob.glob(f"./src/{SOURCE_FILE or '**/*.json'}", recursive=True)))
+print(sorted(glob.glob(f"{base_filepath}/src/{SOURCE_FILE or '**/*.json'}", recursive=True)))
+# print(sorted(glob.glob(f"./src/{SOURCE_FILE or '**/*.json'}", recursive=True)))
 
 # create Table of Contents
 with open(file=wiki_filepath, mode="w") as wiki_file:
@@ -270,5 +277,6 @@ ${dictionary}
                 redshift_table=metadata.get("__REDSHIFT_TABLE__"),
                 dictionary=dictionary_markdown))
 
+print('Finish Updating wiki file...')
 # set Wiki file back to read only mode
 os.chmod(path=wiki_filepath, mode=S_IREAD|S_IRGRP|S_IROTH)
