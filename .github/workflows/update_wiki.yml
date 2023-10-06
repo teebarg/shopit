@@ -18,6 +18,9 @@ jobs:
             with:
                 python-version: 3.x # Replace with your desired Python version
 
+          - name: Change working directory
+            run: cd docs/data_dictionary
+
           - name: Install dependencies
             run: |
                 python -m pip install --upgrade pip
