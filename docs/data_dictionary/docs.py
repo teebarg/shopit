@@ -147,16 +147,16 @@ print('Updating wiki file...222222')
 # List files in current directory
 print(os.listdir())
 print('Updating wiki file...333333')
-# wiki_filepath = "./wiki.md"
-wiki_filepath = 'docs/data_dictionary/wiki.md'
-base_filepath = 'docs/data_dictionary'
+wiki_filepath = "./wiki.md"
+# wiki_filepath = 'docs/data_dictionary/wiki.md'
+# base_filepath = 'docs/data_dictionary'
 
-if 'GITHUB_ACTIONS' in os.environ:
-    print("Running in GitHub Actions")
-    wiki_filepath = 'docs/data_dictionary/wiki.md'
-else:
-    print("Running locally")
-    wiki_filepath = "./wiki.md"
+# if 'GITHUB_ACTIONS' in os.environ:
+#     print("Running in GitHub Actions")
+#     wiki_filepath = 'docs/data_dictionary/wiki.md'
+# else:
+#     print("Running locally")
+#     wiki_filepath = "./wiki.md"
 
 
 print('Now Updating wiki file...')
@@ -165,7 +165,7 @@ print('Now Updating wiki file...')
 os.chmod(path=wiki_filepath, mode=S_IWUSR|S_IWGRP|S_IWOTH)
 
 print(sorted(glob.glob(f"./src/{SOURCE_FILE or '**/*.json'}", recursive=True)))
-print(sorted(glob.glob(f"{base_filepath}/src/{SOURCE_FILE or '**/*.json'}", recursive=True)))
+# print(sorted(glob.glob(f"{base_filepath}/src/{SOURCE_FILE or '**/*.json'}", recursive=True)))
 # print(sorted(glob.glob(f"./src/{SOURCE_FILE or '**/*.json'}", recursive=True)))
 
 # create Table of Contents
