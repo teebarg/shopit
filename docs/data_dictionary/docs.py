@@ -33,8 +33,6 @@ REFRESH_DOCUMENTATION = args.refresh.lower() == 'true'
 
 # determines if we should update documentation for a specific file instead of all files
 SOURCE_FILE = f"{args.filename.replace('.json', '')}.json" if args.filename else ""
-print(args.filename)
-print("🚀 ~ file: docs.py:36 ~ SOURCE_FILE:", SOURCE_FILE)
 
 # required markdown table columns
 BASE_TBL_COLS = {
@@ -140,24 +138,12 @@ def get_flattened_dict_keys(
     flatten(d)
     return delimited_str, delimited_dict
 
-print('Updating wiki file...1111111')
-# Print current working directory
-print(os.getcwd())
-print('Updating wiki file...22222222')
-# List files in current directory
-print(os.listdir())
-print('Updating wiki file...333333')
+
+print(sorted(glob.glob(f"./src/{SOURCE_FILE or '**/*.json'}", recursive=True)))
 wiki_filepath = "./wiki.md"
-
-
-print('Now Updating wiki file...')
 
 # set Wiki file to write mode
 os.chmod(path=wiki_filepath, mode=S_IWUSR|S_IWGRP|S_IWOTH)
-
-print(sorted(glob.glob(f"./src/{SOURCE_FILE or '**/*.json'}", recursive=True)))
-# print(sorted(glob.glob(f"{base_filepath}/src/{SOURCE_FILE or '**/*.json'}", recursive=True)))
-# print(sorted(glob.glob(f"./src/{SOURCE_FILE or '**/*.json'}", recursive=True)))
 
 # create Table of Contents
 with open(file=wiki_filepath, mode="w") as wiki_file:
@@ -257,7 +243,7 @@ ${dictionary}
                 filename = f"./markdown/{os.path.basename(source_file_path).replace('.json','')}.md"
                 with open(filename, "w") as md_file:
                     md_file.write(dictionary_markdown)
-
+        print("wrinting to wiki file")
         # add individual resource dictionary to wiki file
         wiki_file.write(
             t.safe_substitute(
@@ -267,7 +253,8 @@ ${dictionary}
                 access_patterns=access_pattern_markdown,
                 redshift_table=metadata.get("__REDSHIFT_TABLE__"),
                 dictionary=dictionary_markdown))
+        print("done writing to wiki file")
 
-print('Finish Updating wiki file...')
+print("done updating wiki file")
 # set Wiki file back to read only mode
 os.chmod(path=wiki_filepath, mode=S_IREAD|S_IRGRP|S_IROTH)
