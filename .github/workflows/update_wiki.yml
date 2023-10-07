@@ -17,6 +17,12 @@ jobs:
           - name: Check out repository
             uses: actions/checkout@v2
 
+          - name: Debug Information
+            run: |
+              echo "GH_TOKEN: $GH_TOKEN"
+              echo "github.head_ref: ${{ github.head_ref }}"
+              echo "github_secret: ${{ secrets.GH_TOKEN }}"
+
           - name: Set up Python
             uses: actions/setup-python@v2
             with:
