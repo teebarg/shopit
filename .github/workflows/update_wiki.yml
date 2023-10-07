@@ -39,3 +39,5 @@ jobs:
               git config --local user.name "GitHub Action"
               git commit -m "Update documentation" -a
               git push
+            env:
+              GH_TOKEN: ${{ secrets.GH_TOKEN }}
