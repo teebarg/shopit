@@ -1,0 +1,39 @@
+name: Commit to branch
+
+on: push
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        defaults:
+            run:
+                working-directory: docs/data_dictionary
+
+        steps:
+            - name: Check out repository
+              uses: actions/checkout@v4
+              with:
+                  ref: ${{ github.head_ref }}
+
+            - name: Debug Information
+              run: |
+                  echo "GH_TOKEN: $GH_TOKEN"
+                  echo "github.head_ref: ${{ github.head_ref }}"
+                  echo "github_secret: ${{ secrets.GH_TOKEN }}"
+                  echo "github_secret2: ${{ secrets.GITHUB_TOKEN }}"
+
+            - name: Set up Python
+              uses: actions/setup-python@v2
+              with:
+                  python-version: 3.11
+
+            - name: Create changes
+              run: |
+                  echo "Commit Message 1" >> commitmessage.txt
+                  git status
+
+            - name: Commit changes
+              uses: stefanzweifel/git-auto-commit-action@v5
+              with:
+                  commit_message: Test commit
