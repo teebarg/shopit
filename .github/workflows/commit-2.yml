@@ -1,0 +1,36 @@
+name: Commit to branch
+
+on: push
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        # permissions:
+        #     # Give the default GITHUB_TOKEN write permission to commit and push the changed files back to the repository.
+        #     contents: write
+
+        defaults:
+            run:
+                working-directory: docs/data_dictionary
+
+        steps:
+            - name: Check out repository
+              uses: actions/checkout@v4
+              with:
+                persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
+                fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
+
+            - name: Set up Python
+              uses: actions/setup-python@v2
+              with:
+                  python-version: 3.11
+
+            - name: Create changes
+              run: |
+                  echo "Commit Message 1" >> commitmessage2.txt
+                  git status
+
+            - name: Commit & Push changes
+              uses: actions-js/push@master
+              with:
+                github_token: ${{ secrets.GITHUB_TOKEN }}
