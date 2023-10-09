@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from 'next/link'
+import Link from "next/link";
 import SignUpForm from "@/components/auth/SignUpForm";
 
 export default function Login() {
