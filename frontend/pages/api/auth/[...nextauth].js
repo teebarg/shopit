@@ -22,11 +22,15 @@ export const authOptions = {
                             id: user.id,
                             name: user.name,
                             email: user.email,
+                            firstname: user.firstname,
+                            lastname: user.lastname,
+                            phone: user.phone,
                         };
                     }
                     return null;
                 } catch (error) {
-                    return { error: error.message, message: "Please contact administrator" };
+                    console.log( error)
+                    return null;
                 }
             },
         }),
@@ -41,11 +45,17 @@ export const authOptions = {
                 token.id = user.id;
                 token.name = user.name;
                 token.email = user.email;
+                token.firstname = user.firstname;
+                token.lastname = user.lastname;
+                token.phone = user.phone;
             }
             return token;
         },
         async session({ session, token }) {
             session.user.id = token.sub;
+            session.user.firstname = token.firstname;
+            session.user.lastname = token.lastname;
+            session.user.phone = token.phone;
             return session;
         },
     },

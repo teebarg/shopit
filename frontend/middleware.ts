@@ -8,12 +8,12 @@ export async function middleware(req: NextRequest) {
     const res = NextResponse.next();
 
     const token = await getToken({ req });
-    if (pathname.startsWith("/login") && token) {
+    if (["/login", "/signup"].includes(pathname) && token) {
         const url = new URL(`/`, req.url);
         return NextResponse.redirect(url);
     }
 
-    if (!pathname.startsWith("/login") && !token) {
+    if (!["/login", "/signup"].includes(pathname) && !token) {
         const url = new URL(`/login`, req.url);
         url.searchParams.set("callbackUrl", pathname);
         return NextResponse.redirect(url);
@@ -23,5 +23,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/", "/login", "/dashboard/:path*"],
+    matcher: ["/", "/login", "/dashboard/:path*", "/signup"],
 };

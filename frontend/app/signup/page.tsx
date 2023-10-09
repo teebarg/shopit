@@ -1,12 +1,12 @@
 import Image from "next/image";
 import Link from 'next/link'
-import LoginForm from "@/components/auth/LoginForm";
+import SignUpForm from "@/components/auth/SignUpForm";
 
 export default function Login() {
     return (
         <div className="flex min-h-screen">
-            <div className="flex flex-1 flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
-                <div className="mx-auto w-full max-w-sm lg:w-96">
+            <div className="flex flex-1 flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24 w-1/2">
+                <div className="">
                     <div>
                         <Image
                             width={0}
@@ -15,17 +15,17 @@ export default function Login() {
                             src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                             alt="Company"
                         />
-                        <h2 className="mt-6 text-xl font-semibold tracking-tight text-gray-900">Sign in to your account!</h2>
+                        <h2 className="mt-6 text-xl font-semibold tracking-tight text-gray-900">Signup for your free trial</h2>
                         <p className="mt-2 text-sm leading-6 text-gray-500">
-                            Not a member?
-                            <Link href="/signup" className="ml-2 font-semibold text-indigo-600 hover:text-indigo-500">
-                                Start a 14 day free trial
+                            Already a member?
+                            <Link href="/login" className="font-semibold text-indigo-600 hover:text-indigo-500 ml-2">
+                                Login here
                             </Link>
                         </p>
                     </div>
 
                     <div className="mt-8">
-                        <LoginForm />
+                        <SignUpForm />
                     </div>
                 </div>
             </div>

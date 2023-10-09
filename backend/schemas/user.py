@@ -43,11 +43,19 @@ class UserCredentials(BaseModel):
 class SignUp(BaseModel):
     email: str
     password: str
+    confirmPassword: str
+    firstname: str
+    lastname: str
+    phone: str
 
     class Config:
         json_schema_extra = {
             "example": {
                 "email": "testuser@gmail.com",
                 "password": "testpassword",
+                "confirmPassword": "testpassword",
+                "firstname": "firstname",
+                "lastname": "lastname",
+                "phone": "phone",
             }
         }
