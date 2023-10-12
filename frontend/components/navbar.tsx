@@ -29,7 +29,7 @@ export default function Navbar() {
                             </div>
                         </label>
                         <div>
-                            <p>{session?.user?.name}</p>
+                            <p>{session?.user?.firstname}</p>
                             <p className="text-xs">{session?.user?.email}</p>
                         </div>
                     </div>
