@@ -8,15 +8,15 @@ import HomeComponent from "./HomeComponent";
 
 export default async function Home() {
     // @ts-expect-error
-    const session: { user: { firstname: string } } = await getServerSession(authOptions);
-    const firstname: string = session?.user?.firstname || "";
+    const session = await getServerSession(authOptions);
+    const name: string = session?.user?.name || "";
 
     return (
         <main className="flex min-h-screen flex-col px-4">
             <div className="-mx-4">
                 <Navbar />
             </div>
-            <h2 className="text-2xl font-semibold">{getGreetingMessage(firstname)}</h2>
+            <h2 className="text-2xl font-semibold">{getGreetingMessage(name)}</h2>
             <div className="">
                 <div className="xl:pr-80">
                     <Suspense fallback={<Loading />}>

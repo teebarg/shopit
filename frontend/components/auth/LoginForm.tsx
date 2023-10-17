@@ -69,6 +69,18 @@ export default function LoginForm() {
                     {loading && <span className="loading loading-spinner"></span>}
                     {loading ? "Loading" : "Submit"}
                 </button>
+                <div className="divider">OR</div>
+                <button className="btn btn-accent w-full" onClick={() => signIn("google")}>
+                    <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10-4.48-10-10-10zm5 7h-4v3h2c1.1 0 2-.9 2-2s-.9-2-2-2a2 2 0 0 0-2 2.45v2.09h3z"
+                        />
+                    </svg>
+                    Sign in with Google
+                </button>
             </div>
             {error && (
                 <Alert type="alert" delay={5000} onClose={() => setError(false)}>

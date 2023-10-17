@@ -36,10 +36,9 @@ export default function SignUpForm() {
         const body = JSON.stringify(data);
         try {
             // Sign Up
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMAIN}/auth/signup`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_AUTH_API_DOMAIN}/signup`, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
                     accept: "application/json",
                 },
                 body,
