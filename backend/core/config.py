@@ -1,13 +1,9 @@
-import secrets
-
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8
-    SECRET_KEY: str = secrets.token_urlsafe(32)
-    ALGORITHM: str = "HS256"
-    PROJECT_NAME: str = "FastAPI Ecommerce"
+    ACCESS_TOKEN_EXPIRE_SECONDS: int = 3000  # 50 minutes
+    PROJECT_NAME: str = "FastAPI Starter Template"
     FIREBASE_CONFIG: dict = {}
     FIREBASE_CRED: dict = {}
 

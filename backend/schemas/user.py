@@ -10,52 +10,12 @@ class UserBase(BaseModel):
     uid: str
 
 
-# Properties to receive via API on creation
-class UserCreate(UserBase):
-    email: EmailStr
-    password: str
-
-
-# Properties to receive via API on update
-class UserUpdate(UserBase):
-    password: Optional[str] = None
-
-
-class UserInDBBase(UserBase):
-    id: Optional[int] = None
-
-
 # Additional properties to return via API
 class User(UserBase):
     pass
 
 
 # Additional properties stored in DB
-class UserInDB(UserInDBBase):
-    hashed_password: str
-
-
-class UserCredentials(BaseModel):
-    email: str
-    password: str
-
-
-class SignUp(BaseModel):
-    email: str
-    password: str
-    confirmPassword: str
+class UserInDB(UserBase):
     firstname: str
     lastname: str
-    phone: str
-
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "email": "testuser@gmail.com",
-                "password": "testpassword",
-                "confirmPassword": "testpassword",
-                "firstname": "firstname",
-                "lastname": "lastname",
-                "phone": "phone",
-            }
-        }

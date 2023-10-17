@@ -4,12 +4,13 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export async function middleware(req: NextRequest) {
-    const { pathname } = req.nextUrl;
+    const { pathname, searchParams } = req.nextUrl;
     const res = NextResponse.next();
+    const callbackUrl = searchParams.get("callbackUrl") || "/";
 
     const token = await getToken({ req });
     if (["/login", "/signup"].includes(pathname) && token) {
-        const url = new URL(`/`, req.url);
+        const url = new URL(callbackUrl, req.url);
         return NextResponse.redirect(url);
     }
 
@@ -23,5 +24,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/", "/login", "/dashboard/:path*", "/signup"],
+    matcher: ["/", "/login", "/dashboard/:path*", "/signup", "/profile"],
 };

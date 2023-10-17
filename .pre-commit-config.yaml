@@ -15,7 +15,7 @@ repos:
     rev: 23.7.0
     hooks:
     -   id: black
-        args: [--line-length=79]
+        args: [--line-length=100]
         files: ^backend/
 
   - repo: https://github.com/pre-commit/mirrors-isort

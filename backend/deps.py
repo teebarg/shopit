@@ -1,4 +1,4 @@
-from typing import Any, Generator
+from typing import Generator
 
 import firebase_admin
 import pyrebase
@@ -15,9 +15,7 @@ reusable_oauth2 = OAuth2PasswordBearer(tokenUrl="/auth/login/access-token")
 
 def get_db() -> Generator:
     try:
-        if (
-            not firebase_admin._apps
-        ):  # Check if the app is not already initialized
+        if not firebase_admin._apps:  # Check if the app is not already initialized
             cred = credentials.Certificate(settings.FIREBASE_CRED)
             firebase_admin.initialize_app(cred)
 
@@ -29,9 +27,7 @@ def get_db() -> Generator:
 
 def get_auth() -> Generator:
     try:
-        if (
-            not firebase_admin._apps
-        ):  # Check if the app is not already initialized
+        if not firebase_admin._apps:  # Check if the app is not already initialized
             cred = credentials.Certificate(settings.FIREBASE_CRED)
             firebase_admin.initialize_app(cred)
 
@@ -43,18 +39,21 @@ def get_auth() -> Generator:
         print("auth closed")
 
 
-def get_current_user(token: str = Depends(reusable_oauth2)) -> schemas.User:
+def get_current_user(token: str = Depends(reusable_oauth2), db=Depends(get_db)) -> schemas.UserInDB:
     try:
-        return auth.verify_id_token(token)
+        user = auth.verify_id_token(token)
+        doc_ref = db.collection("users").document(user["uid"])
+        doc = doc_ref.get()
+        return doc.to_dict()
     except requests.exceptions.HTTPError:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Could not validate credentials",
         )
-    except Exception:
+    except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="An error occurred while trying to validate credentials",
+            detail=f"An error occurred while trying to validate credentials, {e}",
         )
 
 
