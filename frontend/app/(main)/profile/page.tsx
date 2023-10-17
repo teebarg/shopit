@@ -23,7 +23,7 @@ export default async function Profile() {
             <p className="text-sm leading-6 text-gray-600">Use a permanent address where you can receive mail.</p>
             <div className="flex mt-6">
                 <div className="h-32 w-32 rounded-lg relative overflow-hidden">
-                    <Image src={image || "/avatar.png"} alt="profile" fill/>
+                    <Image src={image || "/avatar.png"} alt="profile" fill />
                 </div>
                 <div className="flex-1 ml-6 space-y-4">
                     <div>

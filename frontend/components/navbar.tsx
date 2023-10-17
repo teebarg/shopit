@@ -3,7 +3,7 @@
 import React from "react";
 import { useSession, signOut } from "next-auth/react";
 import Image from "next/image";
-import Link from 'next/link'
+import Link from "next/link";
 
 export default function Navbar() {
     const { data: session } = useSession();
@@ -11,7 +11,9 @@ export default function Navbar() {
     return (
         <div className="navbar bg-neutral text-neutral-content px-8">
             <div className="flex-1">
-                <Link href={"/"} className="btn btn-ghost normal-case text-xl">Nextjs Fastapi</Link>
+                <Link href={"/"} className="btn btn-ghost normal-case text-xl">
+                    Nextjs Fastapi
+                </Link>
             </div>
             <div className="flex-none">
                 <div className="dropdown dropdown-end">
@@ -28,7 +30,7 @@ export default function Navbar() {
                     </div>
                     <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-neutral rounded-box w-52">
                         <li>
-                            <Link href={'/profile'} className="justify-between">
+                            <Link href={"/profile"} className="justify-between">
                                 Profile
                                 <span className="badge">New</span>
                             </Link>
@@ -37,7 +39,7 @@ export default function Navbar() {
                             <a>Settings</a>
                         </li>
                         <li>
-                            <a onClick={() => (signOut())}>Logout</a>
+                            <a onClick={() => signOut()}>Logout</a>
                         </li>
                     </ul>
                 </div>
