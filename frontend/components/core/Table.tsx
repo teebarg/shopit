@@ -3,10 +3,9 @@ import React, { ReactNode } from "react";
 type TableProps = {
     header: string[];
     rows: (string | ReactNode)[][];
-    children?: ReactNode;
 };
 
-export default function Table({ header = [], rows = [], children }: TableProps) {
+export default function Table({ header = [], rows = [] }: TableProps) {
     if (header.length === 0 || rows?.length === 0) {
         return null;
     }
@@ -33,9 +32,7 @@ export default function Table({ header = [], rows = [], children }: TableProps) 
                                     <input type="checkbox" className="checkbox" />
                                 </label>
                             </th>
-                            {row?.map((item: string | ReactNode, index: number) => (
-                                <td key={index}>{item}</td>
-                            ))}
+                            {row?.map((item: string | ReactNode, index: number) => <td key={index}>{item}</td>)}
                         </tr>
                     ))}
                 </tbody>

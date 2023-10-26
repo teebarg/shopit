@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useState } from "react";
+import React, { Fragment, useState } from "react";
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, CreditCardIcon, HomeIcon, MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";

@@ -5,7 +5,6 @@ import Trending from "@/components/marketplace/Trending";
 import LatestLoading from "@/components/marketplace/LatestLoading";
 
 export default async function Marketplace() {
-
     return (
         <div className="bg-white">
             <HomeNav />

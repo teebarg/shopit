@@ -1,4 +1,5 @@
 import Table from "@/components/core/Table";
+import Image from "next/image";
 
 export const metadata = {
     title: "Admin | Starter Template",
@@ -77,12 +78,12 @@ function classNames(...classes: string[]) {
 
 export default async function Details() {
     const header = ["Name", "Title", "Status", "Duration", "Deployed at"];
-    const rows = activityItems.map((item: ActivityItem) => {
+    const rows = activityItems.map((item: ActivityItem, index: number) => {
         return [
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-3" key={index + "a"}>
                 <div className="avatar">
-                    <div className="mask mask-squircle w-12 h-12">
-                        <img src={item.user.imageUrl} alt={item.user.name} />
+                    <div className="mask mask-squircle w-12 h-12 relative">
+                        <Image src={item.user.imageUrl} alt={item.user.name} fill />
                     </div>
                 </div>
                 <div>
@@ -90,13 +91,13 @@ export default async function Details() {
                     <div className="text-sm opacity-50">Developer</div>
                 </div>
             </div>,
-            <div className="flex gap-x-3">
+            <div className="flex gap-x-3" key={index + "b"}>
                 <div className="font-mono text-sm leading-6 text-gray-400">{item.commit}</div>
                 <span className="inline-flex items-center rounded-md bg-gray-400/10 px-2 py-1 text-xs font-medium text-gray-400 ring-1 ring-inset ring-gray-400/20">
                     {item.branch}
                 </span>
             </div>,
-            <div className="flex items-center justify-end gap-x-2 sm:justify-start">
+            <div className="flex items-center justify-end gap-x-2 sm:justify-start" key={index + "c"}>
                 <time className="text-gray-400 sm:hidden" dateTime={item.dateTime}>
                     {item.date}
                 </time>
@@ -106,7 +107,9 @@ export default async function Details() {
                 <div className="hidden sm:block">{item.status}</div>
             </div>,
             item.duration,
-            <time dateTime={item.dateTime}>{item.date}</time>,
+            <time dateTime={item.dateTime} key={index + "d"}>
+                {item.date}
+            </time>,
         ];
     });
 

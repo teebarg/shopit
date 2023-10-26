@@ -1,10 +1,10 @@
 "use client";
 
 import { Fragment } from "react";
-import {  Menu, Transition } from "@headlessui/react";
+import { Menu, Transition } from "@headlessui/react";
 import { ArrowDownCircleIcon, ArrowPathIcon, ArrowUpCircleIcon, EllipsisHorizontalIcon } from "@heroicons/react/20/solid";
 import cn from "classnames";
-
+import Image from "next/image";
 
 const stats = [
     { name: "Revenue", value: "$405,091.00", change: "+4.75%", changeType: "positive" },
@@ -95,12 +95,11 @@ const clients = [
     },
 ];
 
-export default async function Admin() {
+export default function Admin() {
     return (
         <>
             <main>
                 <div className="relative isolate overflow-hidden">
-
                     {/* Stats */}
                     <div className="border-b border-b-gray-900/10 lg:border-t lg:border-t-gray-900/5">
                         <dl className="mx-auto grid max-w-7xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:px-2 xl:px-0">
@@ -241,11 +240,9 @@ export default async function Admin() {
                                 {clients.map((client) => (
                                     <li key={client.id} className="overflow-hidden rounded-xl border border-gray-200">
                                         <div className="flex items-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
-                                            <img
-                                                src={client.imageUrl}
-                                                alt={client.name}
-                                                className="h-12 w-12 flex-none rounded-lg bg-white object-cover ring-1 ring-gray-900/10"
-                                            />
+                                            <div className="relative h-12 w-12 flex-none rounded-lg bg-white object-cover ring-1 ring-gray-900/10 overflow-hidden">
+                                                <Image src={client.imageUrl} alt={client.name} fill />
+                                            </div>
                                             <div className="text-sm font-medium leading-6 text-gray-900">{client.name}</div>
                                             <Menu as="div" className="relative ml-auto">
                                                 <Menu.Button className="-m-2.5 block p-2.5 text-gray-400 hover:text-gray-500">
