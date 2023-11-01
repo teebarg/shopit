@@ -6,6 +6,8 @@ export const metadata = {
     description: "Shopit admin starter template built with Tailwind CSS and Next.js.",
 };
 
+type Status = "Completed" | "Error";
+
 type ActivityItem = {
     user: {
         name: string;
@@ -13,7 +15,7 @@ type ActivityItem = {
     };
     commit: string;
     branch: string;
-    status: "Completed" | "Error";
+    status: Status;
     duration: string;
     date: string;
     dateTime: string;

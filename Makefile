@@ -37,3 +37,7 @@ stop:
 # This target can be used in a separate terminal to update any containers after a change in config without restarting (environment variables, requirements.txt, etc)
 update:
 	docker compose -p local -f docker/docker-compose.yml --env-file docker/local.env up --build -d
+
+stage:
+    docker tag shopit:latest beafdocker/fast-template:latest
+    docker push beafdocker/fast-template:latest
