@@ -6,6 +6,38 @@ import { ArrowDownCircleIcon, ArrowPathIcon, ArrowUpCircleIcon, EllipsisHorizont
 import cn from "classnames";
 import Image from "next/image";
 
+type Status = "Paid" | "Withdraw" | "Overdue";
+
+type Days = {
+    date: string;
+    dateTime: string;
+    transactions: Transactions[];
+};
+
+type Transactions = {
+    id: number;
+    invoiceNumber: string;
+    href: string;
+    amount: string;
+    tax?: string;
+    status: Status;
+    client: string;
+    description: string;
+    icon: any;
+};
+
+type Client = {
+    id: number;
+    name: string;
+    imageUrl: string;
+    lastInvoice: {
+        date: string;
+        dateTime: string;
+        amount: string;
+        status: Status;
+    };
+};
+
 const stats = [
     { name: "Revenue", value: "$405,091.00", change: "+4.75%", changeType: "positive" },
     { name: "Overdue invoices", value: "$12,787.00", change: "+54.02%", changeType: "negative" },
@@ -17,7 +49,7 @@ const statuses = {
     Withdraw: "text-gray-600 bg-gray-50 ring-gray-500/10",
     Overdue: "text-red-700 bg-red-50 ring-red-600/10",
 };
-const days = [
+const days: Days[] = [
     {
         date: "Today",
         dateTime: "2023-03-22",
@@ -74,7 +106,7 @@ const days = [
         ],
     },
 ];
-const clients = [
+const clients: Client[] = [
     {
         id: 1,
         name: "Tuple",
@@ -164,7 +196,7 @@ export default function Admin() {
                                                             <div className="absolute inset-y-0 left-0 -z-10 w-screen border-b border-gray-200 bg-gray-50" />
                                                         </th>
                                                     </tr>
-                                                    {day.transactions.map((transaction) => (
+                                                    {day.transactions.map((transaction: Transactions) => (
                                                         <tr key={transaction.id}>
                                                             <td className="relative py-5 pr-6">
                                                                 <div className="flex gap-x-6">
@@ -237,7 +269,7 @@ export default function Admin() {
                                 </a>
                             </div>
                             <ul role="list" className="mt-6 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8">
-                                {clients.map((client) => (
+                                {clients.map((client: Client) => (
                                     <li key={client.id} className="overflow-hidden rounded-xl border border-gray-200">
                                         <div className="flex items-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
                                             <div className="relative h-12 w-12 flex-none rounded-lg bg-white object-cover ring-1 ring-gray-900/10 overflow-hidden">
