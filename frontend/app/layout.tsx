@@ -16,8 +16,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     // @ts-expect-error
     const session = await getServerSession(authOptions);
     return (
-        <html lang="en">
-            <body className={outfit.className}>
+        <html lang="en" className="h-full">
+            <body className={outfit.className + "h-full"}>
                 <SessionProvider session={session}>{children}</SessionProvider>
             </body>
         </html>
