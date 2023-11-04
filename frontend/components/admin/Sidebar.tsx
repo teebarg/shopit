@@ -19,7 +19,7 @@ const navigation = [
 
 const userNavigation: { name: string; href: string }[] = [
     { name: "Your profile", href: "/profile" },
-    { name: "Settings", href: "/settings" },
+    { name: "Settings", href: "/admin/settings" },
 ];
 
 export default function SideBar({ children }: { children: React.ReactNode }) {

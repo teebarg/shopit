@@ -39,5 +39,5 @@ update:
 	docker compose -p local -f docker/docker-compose.yml --env-file docker/local.env up --build -d
 
 stage:
-    docker tag shopit:latest beafdocker/fast-template:latest
-    docker push beafdocker/fast-template:latest
+	docker tag shopit:latest beafdocker/fast-template:latest
+	docker push beafdocker/fast-template:latest

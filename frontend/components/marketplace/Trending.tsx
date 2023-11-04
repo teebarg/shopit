@@ -9,40 +9,40 @@ const raw = [
         href: "#",
         imageSrc: "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
         imageAlt: "Front of men's Basic Tee in black.",
-        price: "$35",
+        price: "₦3,500",
         color: "Black",
     },
     {
         id: 2,
-        name: "Basic Tee",
+        name: "White Tee",
         href: "#",
-        imageSrc: "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
+        imageSrc: "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-02.jpg",
         imageAlt: "Front of men's Basic Tee in black.",
-        price: "$35",
+        price: "₦4,200",
         color: "Black",
     },
     {
         id: 3,
         name: "Basic Tee",
         href: "#",
-        imageSrc: "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
+        imageSrc: "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-03.jpg",
         imageAlt: "Front of men's Basic Tee in black.",
-        price: "$35",
+        price: "₦3,500",
         color: "Black",
     },
     {
         id: 4,
-        name: "Basic Tee",
+        name: "Artwork Tee",
         href: "#",
-        imageSrc: "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-        imageAlt: "Front of men's Basic Tee in black.",
-        price: "$35",
-        color: "Black",
+        imageSrc: "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-04.jpg",
+        imageAlt: "Front of men's Artwork Tee in black.",
+        price: "₦5,000",
+        color: "Grey",
     },
 ];
 
 async function getProducts() {
-    await sleep(3000);
+    await sleep(2000);
     return raw;
 }
 
