@@ -45,7 +45,8 @@ type Rules = {
         value: RegExp;
         message: string;
     };
-    validate?: (value: string) => boolean | string;
+    // eslint-disable-next-line no-unused-vars
+    validate?: (value: {}) => boolean | string;
 };
 
 export function TextField({ name, label, type = "text", className, register, rules, error, ...props }: FieldProps) {
