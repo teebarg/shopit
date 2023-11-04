@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import SignUpForm from "@/components/auth/SignUpForm";
+import Logo from "@/public/logo.png";
 
 export default function Login() {
     return (
@@ -8,13 +9,7 @@ export default function Login() {
             <div className="flex flex-1 flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24 w-1/2">
                 <div className="">
                     <div>
-                        <Image
-                            width={0}
-                            height={0}
-                            className="h-10 w-auto"
-                            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                            alt="Company"
-                        />
+                        <Image width={0} height={0} className="h-16 w-auto" src={Logo} alt="Company" />
                         <h2 className="mt-6 text-xl font-semibold tracking-tight text-gray-900">Signup for your free trial</h2>
                         <p className="mt-2 text-sm leading-6 text-gray-500">
                             Already a member?

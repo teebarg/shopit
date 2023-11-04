@@ -117,8 +117,8 @@ export default async function Details() {
 
     return (
         <div className="py-2">
-            <div className="">
-                <h2 className="px-4 text-base font-semibold leading-7 sm:px-6 lg:px-8">Latest activity</h2>
+            <div>
+                <h2 className="text-base font-semibold font-display">Latest activity</h2>
                 <Table header={header} rows={rows}></Table>
             </div>
         </div>

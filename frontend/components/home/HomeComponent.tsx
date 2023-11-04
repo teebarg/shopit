@@ -30,15 +30,17 @@ export default async function HomeComponent() {
             <div className="bg-slate-50 px-6">
                 <div className="max-w-2xl mx-auto py-8">
                     <div className="text-center relative">
-                        <h1 className="text-4xl font-bold tracking-tight text-gray-900">The fast, easy way to develop apps and websites</h1>
-                        <p className="mt-6 text-lg leading-8 text-gray-600">
+                        <h1 className="text-4xl font-bold tracking-tight text-gray-700 font-display">
+                            The fast, easy way to develop apps and websites
+                        </h1>
+                        <p className="mt-6 text-lg text-gray-600">
                             Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo. Elit sunt amet fugiat veniam
                             occaecat fugiat aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam aperiam cum cupiditate quasi
                             dolor nulla explicabo, similique sit reprehenderit quisquam numquam delectus? Consequuntur natus sapiente quidem fugit
                             deserunt nam perferendis?
                         </p>
                         <div className="relative max-w-7xl w-auto h-[500px] mt-4">
-                            <Image src="/hero.webp" alt="hero" fill />
+                            <Image src="/hero.jpg" alt="hero" fill />
                         </div>
                     </div>
                 </div>
@@ -62,14 +64,16 @@ export default async function HomeComponent() {
             </div>
             <div className="bg-slate-50 py-10 px-6">
                 <div className="max-w-xl mx-auto text-center">
-                    <h1 className="text-3xl font-semibold tracking-tight text-gray-900">Get Started</h1>
-                    <p className="text-lg text-gray-600">
+                    <h1 className="text-3xl font-semibold tracking-tight text-gray-800 font-display">Get Started</h1>
+                    <p className="text-gray-600 mt-2">
                         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Porro deleniti eius ad sequi, ab minima voluptate quis voluptas
                         inventore. Architecto necessitatibus voluptatibus facilis itaque, sint sed optio aliquid laboriosam ad.
                     </p>
-                    <a href="https://blog.niyi.com.ng/" target="_blank" className="whitespace-nowrap font-semibold text-indigo-600 mt-8">
-                        Learn more <span aria-hidden="true">&rarr;</span>
-                    </a>
+                    <div className="mt-4">
+                        <a href="https://blog.niyi.com.ng/" target="_blank" className="whitespace-nowrap font-semibold text-indigo-600">
+                            Learn more <span aria-hidden="true">&rarr;</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </>

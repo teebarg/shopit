@@ -9,22 +9,22 @@ const raw = [
         href: "#",
         imageSrc: "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
         imageAlt: "Front of men's Basic Tee in black.",
-        price: "$35",
+        price: "₦3,500",
         color: "Black",
     },
     {
         id: 2,
-        name: "Basic Tee",
+        name: "White Tee",
         href: "#",
-        imageSrc: "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-        imageAlt: "Front of men's Basic Tee in black.",
-        price: "$35",
-        color: "Black",
+        imageSrc: "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-02.jpg",
+        imageAlt: "Front of men's White Tee in black.",
+        price: "₦4,200",
+        color: "White",
     },
 ];
 
 async function getProducts() {
-    await sleep(5000);
+    await sleep(4000);
     return raw;
 }
 

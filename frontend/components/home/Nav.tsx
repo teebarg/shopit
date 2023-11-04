@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Dialog } from "@headlessui/react";
+import Logo from "@/public/logo.png";
 
 const navigation = [
     { name: "Admin", href: "/admin" },
@@ -20,10 +21,9 @@ export default function HomeNav() {
     return (
         <header>
             <nav className="flex items-center justify-between px-6 lg:px-8" aria-label="Global">
-                <div className="flex lg:flex-1">
-                    <Link href="/" className="-m-1.5 relative h-24 w-28">
-                        <span className="sr-only">Your Company</span>
-                        <Image src="/logo.png" alt="Logo" fill />
+                <div className="flex lg:flex-1 py-2">
+                    <Link href="/" className="relative h-12 w-12">
+                        <Image src={Logo} alt="Logo" fill />
                     </Link>
                 </div>
                 <div className="flex lg:hidden">
@@ -44,17 +44,22 @@ export default function HomeNav() {
                     ))}
                 </div>
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-                    <Link href="/login" className="text-sm font-semibold leading-6 text-gray-900">
-                        Log in <span aria-hidden="true">&rarr;</span>
-                    </Link>
+                    {session ? (
+                        <Link href="/admin" className="text-sm font-semibold leading-6 text-gray-900">
+                            Dashboard
+                        </Link>
+                    ) : (
+                        <Link href="/login" className="text-sm font-semibold leading-6 text-gray-900">
+                            Log in <span aria-hidden="true">&rarr;</span>
+                        </Link>
+                    )}
                 </div>
             </nav>
             <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
                 <div className="fixed inset-0 z-50" />
                 <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
                     <div className="flex items-center justify-between">
-                        <Link href="/" className="-m-1.5 relative h-24 w-28">
-                            <span className="sr-only">Your Company</span>
+                        <Link href="/" className="relative h-12 w-12">
                             <Image src="/logo.png" alt="Logo" fill />
                         </Link>
                         <button type="button" className="-m-2.5 rounded-md p-2.5 text-gray-700" onClick={() => setMobileMenuOpen(false)}>
@@ -76,15 +81,20 @@ export default function HomeNav() {
                                 ))}
                             </div>
                             {!session ? (
-                                <div>
-                                    <Link
-                                        href="/login"
-                                        className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                                    >
-                                        Log in
-                                    </Link>
-                                </div>
-                            ) : null}
+                                <Link
+                                    href="/login"
+                                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                                >
+                                    Log in
+                                </Link>
+                            ) : (
+                                <Link
+                                    href="/admin"
+                                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                                >
+                                    Dashboard
+                                </Link>
+                            )}
                         </div>
                     </div>
                 </Dialog.Panel>
