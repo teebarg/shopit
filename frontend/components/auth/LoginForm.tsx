@@ -5,6 +5,8 @@ import { SignInResponse, signIn } from "next-auth/react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Alert from "@/components/core/Alert";
 import { TextField } from "@/components/core/Fields";
+import Google from "@/public/google.svg";
+import Image from "next/image";
 
 type Inputs = {
     email: string;
@@ -78,15 +80,8 @@ export default function LoginForm() {
                 {loading ? "Loading" : "Submit"}
             </button>
             <div className="divider">OR</div>
-            <button type="button" className="btn btn-accent w-full" onClick={() => signIn("google")}>
-                <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10-4.48-10-10-10zm5 7h-4v3h2c1.1 0 2-.9 2-2s-.9-2-2-2a2 2 0 0 0-2 2.45v2.09h3z"
-                    />
-                </svg>
+            <button type="button" className="btn w-full" onClick={() => signIn("google")}>
+                <Image src={Google} alt="Google" className="w-8" />
                 Sign in with Google
             </button>
             {error && (

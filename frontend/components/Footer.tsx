@@ -1,12 +1,13 @@
 import Image from "next/image";
 import SVG from "@/components/core/Svg";
+import Logo from "@/public/logo.svg";
 
 export default function Footer() {
     return (
         <footer className="footer px-10 py-4 border-t bg-base-200 text-base-content border-base-300 mt-4">
             <aside className="items-center grid-flow-col">
-                <div className="relative h-12 w-12">
-                    <Image src="/logo.png" alt="Logo" fill />
+                <div className="w-20">
+                    <Image src={Logo} alt="Logo" />
                 </div>
                 <p>
                     ACME Industries Ltd. <br />
