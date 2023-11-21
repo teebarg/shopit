@@ -20,4 +20,8 @@
     .form-fix {
         @apply focus:outline-0;
     }
+
+    .blue-radial {
+        background: radial-gradient(circle, #202047 0, #020917 100%);
+    }
 }
