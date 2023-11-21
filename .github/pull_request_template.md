@@ -17,7 +17,7 @@
 ## Description
 
 
-## QA Instructions, Screenshots, Recordings
+## QA Instructions, Screenshots
 
 
 ## Added tests?
@@ -25,16 +25,6 @@
 -   [ ] yes
 -   [ ] no, because they aren't needed
 -   [ ] no, because I need help
-
-## Added to documentation?
-
--   [ ] readme
--   [ ] no documentation needed
-
-## Are there any pre-deployment tasks we need to perform?
-
--   [ ] yes
--   [ ] no
 
 ## Are there any post-deployment tasks we need to perform?
 
