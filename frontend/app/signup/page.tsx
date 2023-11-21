@@ -26,12 +26,7 @@ export default function Login() {
                 </div>
             </div>
             <div className="relative hidden w-0 flex-1 lg:block">
-                <Image
-                    className="absolute inset-0 h-full w-full blue-radial"
-                    src={AuthGirl}
-                    alt="background image"
-                    fill
-                />
+                <Image className="absolute inset-0 h-full w-full blue-radial" src={AuthGirl} alt="background image" />
             </div>
         </div>
     );
