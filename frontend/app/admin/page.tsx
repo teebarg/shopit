@@ -5,6 +5,9 @@ import { Menu, Transition } from "@headlessui/react";
 import { ArrowDownCircleIcon, ArrowPathIcon, ArrowUpCircleIcon, EllipsisHorizontalIcon } from "@heroicons/react/20/solid";
 import cn from "classnames";
 import Image from "next/image";
+import Tuple from "@/public/tuple.svg";
+import Reform from "@/public/reform.svg";
+import SavvyCal from "@/public/savvycal.svg";
 
 type Status = "Paid" | "Withdraw" | "Overdue";
 
@@ -110,19 +113,19 @@ const clients: Client[] = [
     {
         id: 1,
         name: "Tuple",
-        imageUrl: "https://tailwindui.com/img/logos/48x48/tuple.svg",
+        imageUrl: Tuple,
         lastInvoice: { date: "December 13, 2022", dateTime: "2022-12-13", amount: "$2,000.00", status: "Overdue" },
     },
     {
         id: 2,
         name: "SavvyCal",
-        imageUrl: "https://tailwindui.com/img/logos/48x48/savvycal.svg",
+        imageUrl: SavvyCal,
         lastInvoice: { date: "January 22, 2023", dateTime: "2023-01-22", amount: "$14,000.00", status: "Paid" },
     },
     {
         id: 3,
         name: "Reform",
-        imageUrl: "https://tailwindui.com/img/logos/48x48/reform.svg",
+        imageUrl: Reform,
         lastInvoice: { date: "January 23, 2023", dateTime: "2023-01-23", amount: "$7,600.00", status: "Paid" },
     },
 ];

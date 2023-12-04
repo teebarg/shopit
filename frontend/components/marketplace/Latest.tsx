@@ -1,35 +1,26 @@
 import React from "react";
 import ProductItem from "@/components/marketplace/ProductItem";
 import { sleep } from "@/lib/utils";
-
-const raw = [
-    {
-        id: 1,
-        name: "Basic Tee",
-        href: "#",
-        imageSrc: "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-        imageAlt: "Front of men's Basic Tee in black.",
-        price: "₦3,500",
-        color: "Black",
-    },
-    {
-        id: 2,
-        name: "White Tee",
-        href: "#",
-        imageSrc: "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-02.jpg",
-        imageAlt: "Front of men's White Tee in black.",
-        price: "₦4,200",
-        color: "White",
-    },
-];
+import { GET } from "@/lib/http";
+import { Product } from "@/lib/types";
 
 async function getProducts() {
-    await sleep(4000);
-    return raw;
+    await sleep(2000);
+    const response: Product[] = await GET("/products/?limit=4");
+    // throw error if response is not ok
+    if (!response) {
+        throw new Error("Failed to load");
+    }
+    return response;
 }
 
 export default async function Latest() {
-    const products = await getProducts();
+    let products: Product[] = [];
+    try {
+        products = (await getProducts()) || [];
+    } catch (error) {
+        return <div>Failed to load</div>;
+    }
     return (
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
             {products.map((product) => (

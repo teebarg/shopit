@@ -77,4 +77,8 @@ const currency = (number: number): string => {
     return number.toLocaleString("en-NG", { style: "currency", currency: "NGN", maximumFractionDigits: 0 });
 };
 
-export { buildUrl, cleanDate, currency, startOfMonth, sleep, getInitials, getGreetingMessage, endOfMonth };
+const imgSrc = (image: string): string => {
+    return `${process.env.NEXT_PUBLIC_IMAGE_URL}/${image}?alt=media&token=${process.env.NEXT_PUBLIC_IMAGE_TOKEN}`;
+};
+
+export { buildUrl, cleanDate, currency, startOfMonth, sleep, getInitials, getGreetingMessage, endOfMonth, imgSrc };
