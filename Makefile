@@ -1,6 +1,8 @@
 .PHONY: help
 .EXPORT_ALL_VARIABLES:
 
+APP_NAME := shopit-backend
+
 # environment variables
 
 help:		## Show this help
@@ -38,6 +40,9 @@ stop:
 update:
 	docker compose -p local -f docker/docker-compose.yml --env-file docker/local.env up --build -d
 
+build:
+	docker build -f backend/Dockerfile -t $(APP_NAME) ./backend
+
 stage:
-	docker tag shopit:latest beafdocker/fast-template:latest
+	docker tag $(APP_NAME):latest beafdocker/fast-template:latest
 	docker push beafdocker/fast-template:latest
