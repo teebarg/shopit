@@ -3,6 +3,7 @@
 import csv
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
+from google.cloud.firestore_v1.base_query import FieldFilter
 
 import deps
 import schemas
@@ -12,17 +13,28 @@ router = APIRouter()
 
 
 @router.get("/", response_model=list[schemas.Product])
-async def get_products(db=Depends(deps.get_db)):
+async def get_products(name: str = "", tag: str = "", limit: int = 20, db=Depends(deps.get_db)):
     """
     Get all products.
     """
     products_ref = db.collection("products")
-    products_snapshot = products_ref.get()
+    if name:
+        # filter_1 = FieldFilter("name", ">=", q)
+        # filter_2 = FieldFilter("name", "<=", q)
 
-    return [
-        schemas.Product(**product.to_dict(), id=product.id)
-        for product in products_snapshot
-    ]
+        # Create the union filter of the two filters (queries)
+        # or_filter = Or(filters=[filter_1, filter_2])
+        # query_ref = products_ref.where(filter=FieldFilter("name", ">=", q))
+        # query_ref = products_ref.where('name', '>=', q).where('name', '<=', q + '\uf8ff').where(filter=FieldFilter("tags", "array_contains", "trending"));
+        query_ref = products_ref.where("name", ">=", name).where("name", "<=", name + "\uf8ff")
+        products_snapshot = query_ref.limit(limit).stream()
+    elif tag:
+        query_ref = products_ref.where(filter=FieldFilter("tags", "array_contains", tag))
+        products_snapshot = query_ref.limit(limit).stream()
+    else:
+        products_snapshot = products_ref.limit(limit).get()
+
+    return [schemas.Product(**product.to_dict(), id=product.id) for product in products_snapshot]
 
 
 @router.get("/{product_id}", response_model=schemas.Product)
@@ -39,9 +51,7 @@ async def get_product(product_id: str, db=Depends(deps.get_db)):
 
 
 @router.post("/", response_model=schemas.Product, status_code=201)
-async def create_product(
-    product: schemas.ProductCreate, db=Depends(deps.get_db)
-):
+async def create_product(product: schemas.ProductCreate, db=Depends(deps.get_db)):
     """
     Create a new product.
     """
@@ -61,9 +71,7 @@ async def create_product(
 
     # Check if the product already exists based on some unique identifier, e.g., "name"
     products_ref = db.collection("products")
-    existing_product = products_ref.where(
-        "name", "==", product_data["name"]
-    ).get()
+    existing_product = products_ref.where("name", "==", product_data["name"]).get()
 
     if len(existing_product) > 0:
         raise HTTPException(
@@ -80,9 +88,7 @@ async def create_product(
 
 
 @router.put("/{product_id}", response_model=schemas.Product)
-async def update_product(
-    product_id: str, product: schemas.ProductUpdate, db=Depends(deps.get_db)
-):
+async def update_product(product_id: str, product: schemas.ProductUpdate, db=Depends(deps.get_db)):
     """
     Update a specific product by ID.
     """
@@ -98,9 +104,7 @@ async def update_product(
 
 
 @router.post("/import-products/")
-async def import_products(
-    csv_file: UploadFile = File(...), db=Depends(deps.get_db)
-):
+async def import_products(csv_file: UploadFile = File(...), db=Depends(deps.get_db)):
     """
     Import products from a CSV file.
     """
@@ -133,9 +137,7 @@ async def import_products(
 
         batch.commit()
     except Exception:
-        raise HTTPException(
-            status_code=500, detail="Error while importing products."
-        )
+        raise HTTPException(status_code=500, detail="Error while importing products.")
 
     return {"message": "Products imported successfully."}
 
@@ -144,9 +146,7 @@ async def import_products(
     "/{product_id}/add_to_collection/{collection_id}",
     response_model=schemas.Product,
 )
-async def add_product_to_collection(
-    product_id: str, collection_id: str, db=Depends(deps.get_db)
-):
+async def add_product_to_collection(product_id: str, collection_id: str, db=Depends(deps.get_db)):
     """
     Add a product to a product collection.
     """
@@ -155,14 +155,10 @@ async def add_product_to_collection(
     if not product.exists:
         raise HTTPException(status_code=404, detail="Product not found.")
 
-    collection_ref = db.collection("product_collections").document(
-        collection_id
-    )
+    collection_ref = db.collection("product_collections").document(collection_id)
     collection = collection_ref.get()
     if not collection.exists:
-        raise HTTPException(
-            status_code=404, detail="Product collection not found."
-        )
+        raise HTTPException(status_code=404, detail="Product collection not found.")
 
     # Add the product ID to the product's collections list
     product_collections = product.get("collections") or []

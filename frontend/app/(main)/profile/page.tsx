@@ -13,7 +13,7 @@ export default async function Profile() {
     if (!me) {
         return <div>An error occurred</div>;
     }
-    const user = me.user;
+    const { user } = me;
     // @ts-expect-error
     const session = await getServerSession(authOptions);
     const image: string = session?.user?.image || "";
