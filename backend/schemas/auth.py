@@ -9,7 +9,7 @@ class Social(BaseModel):
     class Config:
         json_schema_extra = {
             "example": {
-                "email": "testuser@gmail.com",
+                "email": "test@gmail.com",
                 "firstname": "firstname",
                 "lastname": "lastname",
             }
@@ -23,8 +23,8 @@ class SignIn(BaseModel):
     class Config:
         json_schema_extra = {
             "example": {
-                "email": "testuser@gmail.com",
-                "password": "testpassword",
+                "email": "test@gmail.com",
+                "password": "password",
             }
         }
 
@@ -40,9 +40,9 @@ class SignUp(BaseModel):
     class Config:
         json_schema_extra = {
             "example": {
-                "email": "testuser@gmail.com",
-                "password": "testpassword",
-                "confirmPassword": "testpassword",
+                "email": "test@gmail.com",
+                "password": "password",
+                "confirmPassword": "password",
                 "firstname": "firstname",
                 "lastname": "lastname",
                 "phone": "phone",

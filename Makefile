@@ -25,9 +25,12 @@ serve-frontend:
 	@cd frontend; make dev
 
 dev:
-	make -j 3 lb serve-backend serve-frontend
+	make -j 4 lb db serve-backend serve-frontend
 
 # Using Docker
+db:
+	@docker compose -f backend/docker-compose.yml up --build
+
 ## Start local development environment
 start:
 	docker compose -p local -f docker/docker-compose.yml --env-file docker/local.env up --build

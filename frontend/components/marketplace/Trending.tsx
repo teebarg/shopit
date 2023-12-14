@@ -6,12 +6,12 @@ import { Product } from "@/lib/types";
 
 async function getProducts() {
     await sleep(4000);
-    const response: Product[] = await GET("/products/?tag=trending&limit=4");
+    const { products } = await GET("/products/?tag=6&limit=4");
     // throw error if response is not ok
-    if (!response) {
+    if (!products) {
         throw new Error("Failed to load");
     }
-    return response;
+    return products;
 }
 
 export default async function Trending() {

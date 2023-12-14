@@ -1,106 +1,78 @@
 # api/products.py
 
 import csv
+from typing import Any
 
-from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
-from google.cloud.firestore_v1.base_query import FieldFilter
+from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile
+from sqlalchemy.exc import IntegrityError
 
+import crud
 import deps
 import schemas
+from models.product import ProductOut
 
 # Create a router for products
 router = APIRouter()
 
 
-@router.get("/", response_model=list[schemas.Product])
-async def get_products(name: str = "", tag: str = "", limit: int = 20, db=Depends(deps.get_db)):
+@router.get("/", response_model=dict[str, Any])
+async def index(
+    db: deps.SessionDep,
+    name: str = "",
+    col: str = "",
+    tag: str = "",
+    offset: int = 0,
+    limit: int = Query(default=20, le=100),
+):
     """
     Get all products.
     """
-    products_ref = db.collection("products")
-    if name:
-        # filter_1 = FieldFilter("name", ">=", q)
-        # filter_2 = FieldFilter("name", "<=", q)
+    queries = {"col": col, "name": name, "tag": tag}
 
-        # Create the union filter of the two filters (queries)
-        # or_filter = Or(filters=[filter_1, filter_2])
-        # query_ref = products_ref.where(filter=FieldFilter("name", ">=", q))
-        # query_ref = products_ref.where('name', '>=', q).where('name', '<=', q + '\uf8ff').where(filter=FieldFilter("tags", "array_contains", "trending"));
-        query_ref = products_ref.where("name", ">=", name).where("name", "<=", name + "\uf8ff")
-        products_snapshot = query_ref.limit(limit).stream()
-    elif tag:
-        query_ref = products_ref.where(filter=FieldFilter("tags", "array_contains", tag))
-        products_snapshot = query_ref.limit(limit).stream()
-    else:
-        products_snapshot = products_ref.limit(limit).get()
-
-    return [schemas.Product(**product.to_dict(), id=product.id) for product in products_snapshot]
+    products = crud.product.get_multi(db=db, queries=queries, limit=limit, offset=offset)
+    return {
+        "products": products,
+        "offset": offset,
+        "limit": limit,
+    }
 
 
-@router.get("/{product_id}", response_model=schemas.Product)
-async def get_product(product_id: str, db=Depends(deps.get_db)):
+@router.get("/{id}", response_model=ProductOut)
+async def show(id: str, db: deps.SessionDep):
     """
     Get a specific product by ID.
     """
-    product_ref = db.collection("products").document(product_id)
-    product = product_ref.get()
-    if product.exists:
-        return schemas.Product(**product.to_dict())
-    else:
-        raise HTTPException(status_code=404, detail="Product not found.")
+    if product := crud.product.get(db=db, id=id):
+        return product
+    raise HTTPException(status_code=404, detail="Product not found.")
 
 
-@router.post("/", response_model=schemas.Product, status_code=201)
-async def create_product(product: schemas.ProductCreate, db=Depends(deps.get_db)):
+@router.post("/", response_model=ProductOut, status_code=201)
+async def store(product: schemas.ProductCreate, db: deps.SessionDep):
     """
     Create a new product.
     """
-    product_data = product.dict()
-
-    # Check if collections exist
-    if product_data.get("collections"):
-        collections_ref = db.collection("collections")
-        for item in product_data["collections"]:
-            collection_id = item.get("id")
-            collection = collections_ref.document(collection_id).get()
-            if not collection.exists:
-                raise HTTPException(
-                    status_code=404,
-                    detail=f"Collection {collection_id} doesn't exist.",
-                )
-
-    # Check if the product already exists based on some unique identifier, e.g., "name"
-    products_ref = db.collection("products")
-    existing_product = products_ref.where("name", "==", product_data["name"]).get()
-
-    if len(existing_product) > 0:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f'Product {product_data["name"]} already exists',
-        )
-
-    # Product does not exist, create the product document in the "products" collection
-    product_ref = products_ref.document()
-    product_ref.set(product_data)
-
-    data = product_ref.get()
-    return schemas.Product(**data.to_dict(), id=product_ref.id)
+    try:
+        return crud.product.create_product(db=db, product=product)
+    except IntegrityError as e:
+        raise HTTPException(status_code=422, detail=f"Error creating product, {e.orig.pgerror}")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error creating product, {e}")
 
 
-@router.put("/{product_id}", response_model=schemas.Product)
-async def update_product(product_id: str, product: schemas.ProductUpdate, db=Depends(deps.get_db)):
+@router.put("/{id}", response_model=ProductOut)
+async def update(id: str, update: schemas.ProductUpdate, db: deps.SessionDep):
     """
     Update a specific product by ID.
     """
-    product_ref = db.collection("products").document(product_id)
-    existing_product = product_ref.get()
-
-    if existing_product.exists:
-        product_ref.set(product.dict())
-        data = product_ref.get()
-        return schemas.Product(**data.to_dict(), id=product_ref.id)
-
-    raise HTTPException(status_code=404, detail="Product not found.")
+    try:
+        if product := crud.product.get(db=db, id=id):
+            return crud.product.update(db=db, db_obj=product, obj_in=update)
+        raise HTTPException(status_code=404, detail="Product not found.")
+    except IntegrityError as e:
+        raise HTTPException(status_code=422, detail=f"Error updating product, {e.orig.pgerror}")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error updating product, {e}")
 
 
 @router.post("/import-products/")
@@ -142,34 +114,39 @@ async def import_products(csv_file: UploadFile = File(...), db=Depends(deps.get_
     return {"message": "Products imported successfully."}
 
 
-@router.put(
-    "/{product_id}/add_to_collection/{collection_id}",
-    response_model=schemas.Product,
-)
-async def add_product_to_collection(product_id: str, collection_id: str, db=Depends(deps.get_db)):
+@router.put("/{id}/collections", response_model=ProductOut)
+async def product_collection(id: str, update: list[int], db: deps.SessionDep):
     """
-    Add a product to a product collection.
+    Update a specific product's collections by ID.
     """
-    product_ref = db.collection("products").document(product_id)
-    product = product_ref.get()
-    if not product.exists:
+    try:
+        if product := crud.product.get(db=db, id=id):
+            return crud.product.collection(db=db, db_obj=product, update=update)
         raise HTTPException(status_code=404, detail="Product not found.")
+    except IntegrityError as e:
+        raise HTTPException(
+            status_code=422, detail=f"Error updating product's collections, {e.orig.pgerror}"
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error updating product's collections, {e}")
 
-    collection_ref = db.collection("product_collections").document(collection_id)
-    collection = collection_ref.get()
-    if not collection.exists:
-        raise HTTPException(status_code=404, detail="Product collection not found.")
 
-    # Add the product ID to the product's collections list
-    product_collections = product.get("collections") or []
-    if collection_id not in product_collections:
-        product_collections.append(collection_id)
-        product_ref.update({"collections": product_collections})
+@router.put("/{id}/tags", response_model=ProductOut)
+async def product_tag(id: str, update: list[int], db: deps.SessionDep):
+    """
+    Update a specific product's tags by ID.
 
-    # Add the product ID to the product collection's products list
-    collection_products = collection.get("products") or []
-    if product_id not in collection_products:
-        collection_products.append(product_id)
-        collection_ref.update({"products": collection_products})
-
-    return schemas.Product(**product.to_dict())
+    payload = {
+        "tags": [1, 2, 3]
+    }
+    """
+    try:
+        if product := crud.product.get(db=db, id=id):
+            return crud.product.tag(db=db, db_obj=product, update=update)
+        raise HTTPException(status_code=404, detail="Product not found.")
+    except IntegrityError as e:
+        raise HTTPException(
+            status_code=422, detail=f"Error updating product's tags, {e.orig.pgerror}"
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error updating product's tags, {e}")

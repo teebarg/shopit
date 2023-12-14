@@ -17,7 +17,6 @@ services:
     volumes:
       - ../backend:/app/backend/:ro
 
-
   traefik:
     image: traefik:2.10.3
     command:
@@ -30,7 +29,6 @@ services:
       # - ./${TRAEFIK_CONFIG}:/config.yml:ro
       - ./lb-local.yml:/config.yml:ro
 
-
   frontend:
     build:
       context: ../frontend
@@ -40,3 +38,35 @@ services:
       - 4001:4001
     volumes:
       - ../frontend/:/app/
+
+  db:
+    image: postgres:12
+    container_name: db
+    env_file:
+      - .env
+    ports:
+      - "4003:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    depends_on:
+      - db
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@example.com
+      - PGADMIN_DEFAULT_PASSWORD=password
+    ports:
+      - 4004:80
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    ports:
+      - 4005:8080
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:

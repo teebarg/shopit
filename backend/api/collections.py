@@ -1,71 +1,86 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+# api/collections.py
 
+from typing import Any
+
+from fastapi import APIRouter, HTTPException, Query
+from sqlalchemy.exc import IntegrityError
+
+import crud
 import deps
 import schemas
+from models.product import Collection
 
-# Create a router for product collections
+# Create a router for collections
 router = APIRouter()
 
 
-@router.get("/", response_model=list[schemas.Collection])
-async def get_collections(db=Depends(deps.get_db)):
-    """
-    Get all product collections.
-    """
-    collections_ref = db.collection("collections")
-    collections_snapshot = collections_ref.get()
-
-    return [
-        schemas.Collection(**collection.to_dict(), id=collection.id)
-        for collection in collections_snapshot
-    ]
-
-
-@router.get("/{collection_id}", response_model=schemas.Collection)
-async def get_collection(collection_id: str, db=Depends(deps.get_db)):
-    """
-    Get a specific product collection by ID.
-    """
-    collection_ref = db.collection("collections").document(collection_id)
-    collection = collection_ref.get()
-    if collection.exists:
-        return schemas.Collection(**collection.to_dict(), id=collection_ref.id)
-    else:
-        raise HTTPException(status_code=404, detail="collection not found.")
-
-
-@router.post("/", response_model=schemas.Collection, status_code=201)
-async def create_collection(
-    collection: schemas.CollectionCreate, db=Depends(deps.get_db)
+@router.get("/", response_model=dict[str, Any])
+async def index(
+    db: deps.SessionDep, name: str = "", offset: int = 0, limit: int = Query(default=20, le=100)
 ):
     """
-    Create a new product collection.
+    Get all collections.
     """
-    collection_data = collection.dict()
+    queries = {}
+    if name:
+        queries["name"] = name
 
-    # check if the collection already exists based on some unique identifier, e.g., "name"
-    collections_ref = db.collection("collections")
-    existing_collection = collections_ref.where(
-        "name", "==", collection_data["name"]
-    ).get()
-    if len(existing_collection) > 0:
+    collections = crud.collection.get_multi(db=db, queries=queries, limit=limit, offset=offset)
+    return {
+        "collections": collections,
+        "offset": offset,
+        "limit": limit,
+    }
+
+
+@router.get("/{id}", response_model=Collection)
+async def show(id: str, db: deps.SessionDep):
+    """
+    Get a specific collection by ID.
+    """
+    if collection := crud.collection.get(db=db, id=id):
+        return collection
+    raise HTTPException(status_code=404, detail="Collection not found.")
+
+
+@router.post("/", response_model=Collection, status_code=201)
+async def create(collection: schemas.CollectionCreate, db: deps.SessionDep):
+    """
+    Create a new collection.
+    """
+    try:
+        return crud.collection.create(db=db, obj_in=collection)
+    except IntegrityError as e:
+        raise HTTPException(status_code=422, detail=f"Error creating collection, {e.orig.pgerror}")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error creating collection, {e}")
+
+
+@router.put("/{id}", response_model=Collection)
+async def update(id: int, update: schemas.CollectionUpdate, db: deps.SessionDep):
+    """
+    Update a specific collection by ID.
+    """
+    try:
+        if collection := crud.collection.get(db=db, id=id):
+            return crud.collection.update(db=db, db_obj=collection, obj_in=update)
+        raise HTTPException(status_code=404, detail="Collection not found.")
+    except IntegrityError as e:
+        raise HTTPException(status_code=422, detail=f"Error updating collection, {e.orig.pgerror}")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error updating collection, {e}")
+
+
+@router.delete("/{id}", response_model=Collection)
+async def delete(id: int, db: deps.SessionDep):
+    """
+    Get a specific collection by ID.
+    """
+    try:
+        if collection := crud.collection.remove(db=db, id=id):
+            return collection
+        raise HTTPException(status_code=404, detail="Collection not found.")
+    except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Collection already exists",
+            status_code=500, detail=f"Error deleting collection, invalid collection id, {e}"
         )
-
-    # Create the product collection document in the "product_collections" collection
-    collection_ref = collections_ref.document()
-    collection_ref.set(collection_data)
-    data = collection_ref.get()
-    return schemas.Collection(**data.to_dict(), id=collection_ref.id)
-
-
-# @router.put("/{collection_id}", response_model=Collection)
-# async def update_collection(collection_id: str, collection: Collection):
-#     """
-#     Update a specific product collection by ID.
-#     """
-#     collection_ref = db.collection("collections").document(collection_id)
-#     collection_ref.set(collection.dict())
-#     return collection
