@@ -2,7 +2,7 @@
 
 import React, { Fragment, useState } from "react";
 import { Dialog, Menu, Transition } from "@headlessui/react";
-import { Bars3Icon, BellIcon, CreditCardIcon, HomeIcon, MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, BellIcon, CreditCardIcon, HomeIcon, MagnifyingGlassIcon, XMarkIcon, UsersIcon } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
@@ -14,6 +14,7 @@ import Logo from "@/public/logo.svg";
 
 const navigation = [
     { name: "Dashboard", path: "/admin", icon: HomeIcon },
+    { name: "Users", path: "/admin/users", icon: UsersIcon },
     { name: "Details", path: "/admin/details", icon: CreditCardIcon },
     { name: "Settings", path: "/admin/settings", icon: CreditCardIcon },
 ];

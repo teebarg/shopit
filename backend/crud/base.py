@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Any, Dict, Generic, Optional, Type, TypeVar, Union
 
 from fastapi.encoders import jsonable_encoder
@@ -35,10 +36,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     def create(self, db: Session, *, obj_in: CreateSchemaType) -> ModelType:
         obj_in_data = jsonable_encoder(obj_in)
         db_obj = self.model(**obj_in_data)  # type: ignore
-        db.add(db_obj)
-        db.commit()
-        db.refresh(db_obj)
-        return db_obj
+        return self.sync(db=db, update=db_obj)
 
     def update(
         self, db: Session, *, db_obj: ModelType, obj_in: Union[UpdateSchemaType, Dict[str, Any]]
@@ -51,10 +49,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         for field in obj_data:
             if field in update_data:
                 setattr(db_obj, field, update_data[field])
-        db.add(db_obj)
-        db.commit()
-        db.refresh(db_obj)
-        return db_obj
+        return self.sync(db=db, update=db_obj, type="update")
 
     def update_or_create(
         self,
@@ -96,3 +91,12 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         db.delete(obj)
         db.commit()
         return obj
+
+    def sync(self, db: Session, update: Any, type: str = "create") -> Any:
+        update.updated_at = datetime.now()
+        if type == "create":
+            update.created_at = datetime.now()
+        db.add(update)
+        db.commit()
+        db.refresh(update)
+        return update

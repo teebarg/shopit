@@ -1,22 +1,4 @@
 services:
-  api:
-    build:
-      context: ../backend
-    command:
-      - uvicorn
-      - main:app
-      - --host
-      - 0.0.0.0
-      - --port
-      - "4002"
-      - --reload
-    env_file:
-      - ${ENV_FILE:-local.env}
-    ports:
-      - 4002:4002
-    volumes:
-      - ../backend:/app/backend/:ro
-
   traefik:
     image: traefik:2.10.3
     command:
@@ -29,6 +11,16 @@ services:
       # - ./${TRAEFIK_CONFIG}:/config.yml:ro
       - ./lb-local.yml:/config.yml:ro
 
+  api:
+    build:
+      context: ../backend
+    env_file:
+      - ${ENV_FILE:-local.env}
+    ports:
+      - 4002:4002
+    volumes:
+      - ../backend:/app/
+
   frontend:
     build:
       context: ../frontend
@@ -37,36 +29,23 @@ services:
     ports:
       - 4001:4001
     volumes:
-      - ../frontend/:/app/
+      - ../frontend:/app
 
-  db:
+  ddb:
     image: postgres:12
-    container_name: db
     env_file:
-      - .env
+      - ${ENV_FILE:-local.env}
     ports:
-      - "4003:5432"
+      - 4003:5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin
-    depends_on:
-      - db
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@example.com
-      - PGADMIN_DEFAULT_PASSWORD=password
-    ports:
-      - 4004:80
-
-  adminer:
+  adm:
     image: adminer
-    container_name: adminer
     ports:
-      - 4005:8080
+      - 4004:8080
     depends_on:
-      - db
+      - ddb
 
 volumes:
   postgres_data:

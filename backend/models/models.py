@@ -1,12 +1,14 @@
 from typing import Union
 
-from pydantic import BaseModel, EmailStr
+from pydantic import EmailStr
 from sqlalchemy import String
 from sqlmodel import Column, Field, Relationship, SQLModel
 
+from models.base import BaseModel
+
 
 # Shared properties
-class UserBase(SQLModel):
+class UserBase(BaseModel):
     # email: EmailStr = Field(unique=True, index=True)
     email: EmailStr = Field(sa_column=Column(String))
     is_active: bool = True
@@ -73,19 +75,3 @@ class Item(ItemBase, table=True):
 # Properties to return via API, id is always required
 class ItemOut(ItemBase):
     id: int
-
-
-# Generic message
-class Msg(BaseModel):
-    msg: str
-
-
-# JSON payload containing access token
-class Token(BaseModel):
-    access_token: str
-    token_type: str
-
-
-# Contents of JWT token
-class TokenPayload(BaseModel):
-    sub: Union[int, None] = None

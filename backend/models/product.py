@@ -2,8 +2,10 @@ from typing import Any, Optional, Union
 
 from sqlmodel import Field, Relationship, SQLModel
 
+from models.base import BaseModel
 
-class ProductCollection(SQLModel, table=True):
+
+class ProductCollection(BaseModel, table=True):
     __tablename__ = "product_collection"
     product_id: Optional[int] = Field(default=None, foreign_key="product.id", primary_key=True)
     collection_id: Optional[int] = Field(
@@ -11,13 +13,13 @@ class ProductCollection(SQLModel, table=True):
     )
 
 
-class ProductTag(SQLModel, table=True):
+class ProductTag(BaseModel, table=True):
     __tablename__ = "product_tag"
     product_id: Optional[int] = Field(default=None, foreign_key="product.id", primary_key=True)
     tag_id: Optional[int] = Field(default=None, foreign_key="tag.id", primary_key=True)
 
 
-class CollectionBase(SQLModel):
+class CollectionBase(BaseModel):
     is_active: bool = True
     name: str
 
@@ -37,7 +39,7 @@ class CollectionOut(CollectionBase):
     products: list["Product"] = []
 
 
-class TagBase(SQLModel):
+class TagBase(BaseModel):
     is_active: bool = True
     name: str
 
@@ -57,7 +59,7 @@ class TagOut(TagBase):
 
 
 # Shared properties
-class ProductBase(SQLModel):
+class ProductBase(BaseModel):
     is_active: bool = True
     name: str
     price: float = 0.0

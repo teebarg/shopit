@@ -20,10 +20,14 @@ async def index(
 ):
     """
     Get all tags.
+
+    :param db: The database session dependency.
+    :param name: Optional name parameter to filter tags by name.
+    :param offset: Optional offset parameter for pagination.
+    :param limit: Optional limit parameter for pagination (default: 20, max: 100).
+    :return: A dictionary containing the list of tags, offset, and limit.
     """
-    queries = {}
-    if name:
-        queries["name"] = name
+    queries = {"name": name}
 
     tags = crud.tag.get_multi(db=db, queries=queries, limit=limit, offset=offset)
     return {

@@ -134,9 +134,9 @@ alembic upgrade ae10+2
 
 ### To load initial data
 
-* Change dir to `backend` and run 
+* Run below in not using docker
 ```bash
-./prestart.sh
+make prep
 ```
 
 ## License

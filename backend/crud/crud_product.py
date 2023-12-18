@@ -22,13 +22,12 @@ class CRUDProduct(CRUDBase[Product, schemas.ProductCreate, schemas.ProductUpdate
     def get_multi(self, db: Session, queries: dict, limit: int, offset: int) -> list[ProductOut]:
         statement = select(Product)
         for key, value in queries.items():
-            print(key, value)
             if value and key == "col":
-                statement = statement.where(Product.collections.any(Collection.id == value))
+                statement = statement.where(Product.collections.any(Collection.name == value))
             if value and key == "tag":
-                statement = statement.where(Product.tags.any(Tag.id == value))
+                statement = statement.where(Product.tags.any(Tag.name == value))
             if value and key == "name":
-                statement = statement.where(Product[key].like(f"%{value}%"))
+                statement = statement.where(Product.name.like(f"%{value}%"))
         products = db.exec(statement.offset(offset).limit(limit))
 
         return [ProductOut(**i.dict(), collections=i.collections, tags=i.tags) for i in products]
@@ -50,7 +49,7 @@ class CRUDProduct(CRUDBase[Product, schemas.ProductCreate, schemas.ProductUpdate
                 tags=self.get_tag_update(db=db, update=product.dict()),
             )
 
-            res = crud.sync(db=db, update=product_data)
+            res = self.sync(db=db, update=product_data)
             res.collections = res.collections
             res.tags = res.tags
             return res
@@ -74,21 +73,21 @@ class CRUDProduct(CRUDBase[Product, schemas.ProductCreate, schemas.ProductUpdate
             db_obj.collections = self.get_collection_update(db=db, update=obj_in.dict())
             db_obj.tags = self.get_tag_update(db=db, update=obj_in.dict())
 
-            return crud.sync(db=db, update=db_obj)
+            return self.sync(db=db, update=db_obj)
         except Exception as e:
             raise e
 
     def collection(self, db: Session, *, db_obj: Product, update: list[int]) -> Product:
         try:
             db_obj.collections = self.get_collection_update(db=db, update={"collections": update})
-            return crud.sync(db=db, update=db_obj)
+            return self.sync(db=db, update=db_obj)
         except Exception as e:
             raise e
 
     def tag(self, db: Session, *, db_obj: Product, update: list[int]) -> Product:
         try:
             db_obj.tags = self.get_tag_update(db=db, update={"tags": update})
-            return crud.sync(db=db, update=db_obj)
+            return self.sync(db=db, update=db_obj)
         except Exception as e:
             raise e
 

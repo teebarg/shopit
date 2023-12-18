@@ -15,14 +15,6 @@ from .crud_user import user
 # For a new basic set of CRUD operations you could just do
 
 
-def create_user(*, db: Session, user_create: UserCreate) -> User:
-    db_obj = User.from_orm(user_create)
-    db.add(db_obj)
-    db.commit()
-    db.refresh(db_obj)
-    return db_obj
-
-
 def get_user_by_email(*, db: Session, email: str) -> User | None:
     statement = select(User).where(User.email == email)
     return db.exec(statement).first()
@@ -54,10 +46,3 @@ def update_or_create_user(
     db.commit()
     db.refresh(model)
     return model
-
-
-def sync(*, db: Session, update: Any) -> Any:
-    db.add(update)
-    db.commit()
-    db.refresh(update)
-    return update

@@ -27,6 +27,9 @@ serve-frontend:
 dev:
 	make -j 4 lb db serve-backend serve-frontend
 
+prep:
+	@cd backend && ./prestart.sh
+
 # Using Docker
 db:
 	@docker compose -f backend/docker-compose.yml up --build
@@ -43,9 +46,16 @@ stop:
 update:
 	docker compose -p local -f docker/docker-compose.yml --env-file docker/local.env up --build -d
 
+prep-docker:
+	docker exec local-api-1 ./prestart.sh
+
 build:
 	docker build -f backend/Dockerfile -t $(APP_NAME) ./backend
 
 stage:
 	docker tag $(APP_NAME):latest beafdocker/fast-template:latest
 	docker push beafdocker/fast-template:latest
+
+# Helpers
+c:
+	@cd scripts && python controller.py run -n $(name)

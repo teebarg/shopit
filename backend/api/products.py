@@ -53,7 +53,7 @@ async def store(product: schemas.ProductCreate, db: deps.SessionDep):
     Create a new product.
     """
     try:
-        return crud.product.create_product(db=db, product=product)
+        return crud.product.create(db=db, product=product)
     except IntegrityError as e:
         raise HTTPException(status_code=422, detail=f"Error creating product, {e.orig.pgerror}")
     except Exception as e:

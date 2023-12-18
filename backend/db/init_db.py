@@ -16,11 +16,16 @@ def init_db(session: Session, auth) -> None:
     # Base.metadata.create_all(bind=engine)
     user = session.exec(select(User).where(User.email == settings.FIRST_SUPERUSER)).first()
     if not user:
-        auth.create_user(email=settings.FIRST_SUPERUSER, password=settings.FIRST_SUPERUSER_PASSWORD)
-        user_in = UserCreate(
-            firstname=settings.FIRST_SUPERUSER_FIRSTNAME,
-            lastname=settings.FIRST_SUPERUSER_LASTNAME,
-            email=settings.FIRST_SUPERUSER,
-            is_superuser=True,
-        )
-        user = crud.create_user(db=session, user_create=user_in)
+        try:
+            user_in = UserCreate(
+                firstname=settings.FIRST_SUPERUSER_FIRSTNAME,
+                lastname=settings.FIRST_SUPERUSER_LASTNAME,
+                email=settings.FIRST_SUPERUSER,
+                is_superuser=True,
+            )
+            user = crud.user.create(db=session, obj_in=user_in)
+            auth.create_user(
+                email=settings.FIRST_SUPERUSER, password=settings.FIRST_SUPERUSER_PASSWORD
+            )
+        except Exception as e:
+            print(e)

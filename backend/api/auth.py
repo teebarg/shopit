@@ -80,7 +80,7 @@ async def sign_up(
         user = auth.create_user_with_email_and_password(email=email, password=password)
 
         user_in = UserCreate(firstname=firstname, lastname=lastname, email=email)
-        crud.create_user(db=session, user_create=user_in)
+        crud.user.create(db=session, obj_in=user_in)
 
         return JSONResponse(
             status_code=200,
@@ -187,7 +187,7 @@ def social(
         if user:
             return JSONResponse(status_code=200, content=get_token(str(user.id)))
 
-        user: User = crud.create_user(db=db, user_create=credentials)
+        user: User = crud.user.create(db=db, obj_in=credentials)
         return JSONResponse(status_code=200, content=get_token(str(user.id)))
 
     except Exception as e:

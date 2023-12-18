@@ -11,18 +11,6 @@ class CRUDUser(CRUDBase[User, schemas.UserCreate, schemas.UserUpdate]):
     def get_by_email(self, db: Session, *, email: str) -> Optional[User]:
         return db.query(User).filter(User.email == email).first()
 
-    def create(self, db: Session, *, obj_in: schemas.UserCreate) -> User:
-        db_obj = User(
-            email=obj_in.email,
-            firstname=obj_in.firstname,
-            lastname=obj_in.lastname,
-            is_superuser=obj_in.is_superuser,
-        )
-        db.add(db_obj)
-        db.commit()
-        db.refresh(db_obj)
-        return db_obj
-
     def update(
         self, db: Session, *, db_obj: User, obj_in: Union[schemas.UserUpdate, Dict[str, Any]]
     ) -> User:
