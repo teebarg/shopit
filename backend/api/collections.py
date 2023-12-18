@@ -21,11 +21,9 @@ async def index(
     """
     Get all collections.
     """
-    queries = {}
-    if name:
-        queries["name"] = name
-
-    collections = crud.collection.get_multi(db=db, queries=queries, limit=limit, offset=offset)
+    collections = crud.collection.get_multi(
+        db=db, queries={"name": name}, limit=limit, offset=offset
+    )
     return {
         "collections": collections,
         "offset": offset,

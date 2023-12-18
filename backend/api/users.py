@@ -25,9 +25,7 @@ async def index(
     """
     Get all users.
     """
-    queries = {"name": name}
-
-    users = crud.user.get_multi(db=db, queries=queries, limit=limit, offset=offset)
+    users = crud.user.get_multi(db=db, queries={"name": name}, limit=limit, offset=offset)
     return {
         "users": users,
         "offset": offset,

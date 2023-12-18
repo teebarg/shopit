@@ -27,9 +27,7 @@ async def index(
     :param limit: Optional limit parameter for pagination (default: 20, max: 100).
     :return: A dictionary containing the list of tags, offset, and limit.
     """
-    queries = {"name": name}
-
-    tags = crud.tag.get_multi(db=db, queries=queries, limit=limit, offset=offset)
+    tags = crud.tag.get_multi(db=db, queries={"name": name}, limit=limit, offset=offset)
     return {
         "tags": tags,
         "offset": offset,

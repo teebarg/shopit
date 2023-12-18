@@ -10,7 +10,6 @@ class Settings(BaseSettings):
     FIREBASE_CONFIG: dict = {}
     FIREBASE_CRED: dict = {}
 
-    # POSTGRES_SERVER: str = "http://db:4003"
     POSTGRES_SERVER: str
     POSTGRES_USER: str = "postgres"
     POSTGRES_PASSWORD: str = "postgres"
