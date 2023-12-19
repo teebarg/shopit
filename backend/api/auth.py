@@ -1,4 +1,3 @@
-import uuid
 from datetime import datetime, timedelta
 from typing import Any
 
@@ -6,11 +5,12 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
 from firebase_admin import auth as firebase_auth
-from google.cloud.firestore_v1.base_query import FieldFilter
 
+import crud
 import deps
 import schemas
 from core.config import settings
+from models.models import User, UserCreate
 
 # Create a router for users
 router = APIRouter()
@@ -59,8 +59,8 @@ async def login_for_access_token(
 @router.post("/signup")
 async def sign_up(
     credentials: schemas.SignUp,
+    session: deps.SessionDep,
     auth: Any = Depends(deps.get_auth),
-    db=Depends(deps.get_db),
 ):
     """
     User login to get access token (JWT).
@@ -70,7 +70,6 @@ async def sign_up(
     confirmPassword = credentials.confirmPassword
     firstname = credentials.firstname
     lastname = credentials.lastname
-    phone = credentials.phone
 
     # Validate password
     if password != confirmPassword:
@@ -80,18 +79,8 @@ async def sign_up(
         # user = firebase_auth.create_user( email=email, password=password)
         user = auth.create_user_with_email_and_password(email=email, password=password)
 
-        user_ref = db.collection("users").document(user["localId"])
-        user_ref.set(
-            {
-                "firstname": firstname,
-                "lastname": lastname,
-                "email": email,
-                "uid": user["localId"],
-                "role": "user",
-                "phone": phone,
-            },
-            merge=True,
-        )
+        user_in = UserCreate(firstname=firstname, lastname=lastname, email=email)
+        crud.user.create(db=session, obj_in=user_in)
 
         return JSONResponse(
             status_code=200,
@@ -150,7 +139,7 @@ def logout(current_user: schemas.User = Depends(deps.get_current_user)) -> Any:
 @router.post("/refresh-token")
 def refresh_token(
     refresh_token: str,
-    current_user: schemas.User = Depends(deps.get_current_user),
+    current_user: deps.CurrentUser,
     auth: Any = Depends(deps.get_auth),
 ) -> Any:
     """
@@ -174,7 +163,7 @@ def refresh_token(
 @router.post("/social")
 def social(
     credentials: schemas.Social,
-    db=Depends(deps.get_db),
+    db: deps.SessionDep,
     auth: Any = Depends(deps.get_auth),
 ) -> Any:
     """
@@ -182,8 +171,6 @@ def social(
     """
 
     email = credentials.email
-    firstname = credentials.firstname
-    lastname = credentials.lastname
 
     def get_token(uid: str) -> str:
         custom_token = firebase_auth.create_custom_token(uid).decode("utf-8")
@@ -196,26 +183,13 @@ def social(
         }
 
     try:
-        docs = db.collection("users").where(filter=FieldFilter("email", "==", email)).stream()
+        user: User = crud.get_user_by_email(db=db, email=email)
+        if user:
+            return JSONResponse(status_code=200, content=get_token(str(user.id)))
 
-        # Check if docs has one or more items
-        for i in docs:
-            uid = i.to_dict().get("uid")
-            return JSONResponse(status_code=200, content=get_token(uid))
+        user: User = crud.user.create(db=db, obj_in=credentials)
+        return JSONResponse(status_code=200, content=get_token(str(user.id)))
 
-        random_uuid = str(uuid.uuid4())
-        user_ref = db.collection("users").document(random_uuid)
-        user_ref.set(
-            {
-                "firstname": firstname,
-                "lastname": lastname,
-                "email": email,
-                "uid": random_uuid,
-                "role": "user",
-            },
-            merge=True,
-        )
-        return JSONResponse(status_code=200, content=get_token(random_uuid))
     except Exception as e:
         return JSONResponse(
             status_code=400,

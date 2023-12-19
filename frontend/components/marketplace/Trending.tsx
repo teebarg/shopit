@@ -6,12 +6,12 @@ import { Product } from "@/lib/types";
 
 async function getProducts() {
     await sleep(4000);
-    const response: Product[] = await GET("/products/?tag=trending&limit=4");
+    const { products } = await GET("/products/?tag=trending&limit=4");
     // throw error if response is not ok
-    if (!response) {
+    if (!products) {
         throw new Error("Failed to load");
     }
-    return response;
+    return products;
 }
 
 export default async function Trending() {
@@ -20,6 +20,9 @@ export default async function Trending() {
         products = (await getProducts()) || [];
     } catch (error) {
         return <div>Failed to load</div>;
+    }
+    if (products.length === 0) {
+        return <div className="px-6 py-8 rounded-md">No trending products!</div>;
     }
     return (
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">

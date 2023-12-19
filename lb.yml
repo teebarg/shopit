@@ -12,6 +12,12 @@ http:
         backend:
             rule: PathPrefix(`/api`)
             service: backend
+        db:
+            rule: PathPrefix(`/db`)
+            service: db
+        adminer:
+            rule: PathPrefix(`/adminer`)
+            service: adminer
 
     services:
         frontend:
@@ -22,3 +28,11 @@ http:
             loadBalancer:
                 servers:
                     - url: http://localhost:4002
+        db:
+            loadBalancer:
+                servers:
+                    - url: http://localhost:4003
+        adminer:
+            loadBalancer:
+                servers:
+                    - url: http://localhost:4005
