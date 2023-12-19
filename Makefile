@@ -25,6 +25,7 @@ serve-frontend:
 	@cd frontend; make dev
 
 dev:
+	pip install -r backend/requirements.txt --require-virtualenv
 	make -j 4 lb db serve-backend serve-frontend
 
 prep:
