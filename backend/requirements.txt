@@ -3,7 +3,7 @@ pydantic==2.3.0
 firebase-admin==5.0.0
 passlib==1.7.4
 python-jose==3.3.0
-PyJWT==2.1.0
+PyJWT==2.8.0
 black==23.9.1
 flake8==6.1.0
 isort==5.12.0
