@@ -21,7 +21,7 @@ async def login_for_access_token(
     credentials: schemas.SignIn,
     auth: Any = Depends(deps.get_auth),
     db=Depends(deps.get_db),
-):
+) -> Any:
     """
     User login to get access token (JWT).
     """
@@ -34,21 +34,15 @@ async def login_for_access_token(
             "access_token": user["idToken"],
             "refresh_token": user["refreshToken"],
             "expires": get_timestamp(),
-            "id": user["localId"],
         }
 
         # Enrich user
-        doc_ref = db.collection("users").document(user["localId"])
-        doc = doc_ref.get()
-        if doc.exists:
-            details = doc.to_dict()
+        if user := crud.get_user_by_email(db=db, email=user["email"]):
+            details = user.dict()
             details["name"] = details["firstname"] + " " + details["lastname"]
             content |= details
 
-        return JSONResponse(
-            status_code=200,
-            content=content,
-        )
+        return content
     except Exception as e:
         if "INVALID_LOGIN_CREDENTIALS" in str(e):
             raise HTTPException(status_code=400, detail="Invalid login credentials")
@@ -201,8 +195,8 @@ def get_timestamp() -> int:
     # Get the current datetime
     current_datetime = datetime.now()
 
-    # Add 1 hour (3600 seconds) to the current datetime
+    # Add 1 hour (3600 seconds) to the current datetime.
     new_datetime = current_datetime + timedelta(seconds=settings.ACCESS_TOKEN_EXPIRE_SECONDS)
 
-    # Convert the new datetime to a Unix timestamp (milliseconds since epoch)
+    # Convert the new datetime to a Unix timestamp (milliseconds since epoch).
     return int(new_datetime.timestamp() * 1000)

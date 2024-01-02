@@ -23,3 +23,8 @@ app.include_router(auth_router, prefix="/auth", tags=["auth"])  # Include the us
 @app.get("/")
 async def root():
     return {"message": "Hello World!!!"}
+
+
+@app.get("/api/health-check")
+async def health_check():
+    return {"message": "Server is running"}

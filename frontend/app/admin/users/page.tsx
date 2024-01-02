@@ -2,29 +2,29 @@ import Table from "@/components/core/Table";
 import { GET } from "@/lib/http";
 import { User } from "@/lib/types";
 import cn from "classnames";
+import { redirect } from "next/navigation";
 
 export const metadata = {
     title: "Users | Starter Template",
     description: "Shopit admin starter template built with Tailwind CSS and Next.js.",
 };
 
-async function getUsers() {
-    const { users } = await GET("/users/?limit=4");
-    // throw error if response is not ok
-    if (!users) {
-        throw new Error("Failed to load");
-    }
-    return users;
-}
-
 export default async function Users() {
     let users: User[] = [];
     try {
-        users = (await getUsers()) || [];
+        const { ok, status, data } = await GET("/users/?offset=0&limit=20");
+        if (ok) {
+            users = data.users;
+        } else {
+            if ([401, 403].includes(status)) {
+                throw new Error("Failed to load, Please contact admin");
+            }
+            return <div>Failed to load, Please contact admin</div>;
+        }
     } catch (error) {
-        return <div>Failed to load</div>;
+        redirect("/logout");
     }
-    if (users.length === 0) {
+    if (users?.length === 0) {
         return <div className="px-6 py-8 rounded-md">No Users!</div>;
     }
     const header = ["Name", "Email", "Status", "Date", "Last Updated"];

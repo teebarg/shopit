@@ -20,9 +20,22 @@ export async function middleware(req: NextRequest) {
         return NextResponse.redirect(url);
     }
 
+    if (pathname === "/logout") {
+        const url = new URL("/login", req.url);
+        // url.searchParams.set("callbackUrl", callbackUrl);
+        const logoutRes = NextResponse.redirect(url);
+        logoutRes.cookies.set({
+            name: "next-auth.session-token",
+            value: "",
+            path: "/",
+            maxAge: -1,
+        });
+        return logoutRes;
+    }
+
     return res;
 }
 
 export const config = {
-    matcher: ["/login", "/dashboard/:path*", "/signup", "/profile", "/admin/:path*"],
+    matcher: ["/login", "/logout", "/dashboard/:path*", "/signup", "/profile", "/admin/:path*"],
 };
