@@ -9,11 +9,11 @@ export const metadata = {
 };
 
 export default async function Profile() {
-    const me = await GET("/users/me");
-    if (!me) {
+    const { ok, data } = await GET("/users/me");
+    if (!ok) {
         return <div>An error occurred</div>;
     }
-    const { user } = me;
+    const { firstname, lastname, email, is_active } = data;
     // @ts-expect-error
     const session = await getServerSession(authOptions);
     const image: string = session?.user?.image || "";
@@ -28,15 +28,19 @@ export default async function Profile() {
                 <div className="flex-1 ml-6 space-y-4">
                     <div>
                         <p className="text-sm">Firstname:</p>
-                        <p className="text-lg font-semibold mt-0">{user.firstname}</p>
+                        <p className="text-lg font-semibold mt-0">{firstname}</p>
                     </div>
                     <div>
                         <p className="text-sm">Lastname:</p>
-                        <p className="text-lg font-semibold mt-0">{user.lastname}</p>
+                        <p className="text-lg font-semibold mt-0">{lastname}</p>
                     </div>
                     <div>
                         <p className="text-sm">Email:</p>
-                        <p className="text-lg font-semibold mt-0">{user.email}</p>
+                        <p className="text-lg font-semibold mt-0">{email}</p>
+                    </div>
+                    <div>
+                        <p className="text-sm">Status:</p>
+                        <p className="text-lg font-semibold mt-0">{is_active ? "Active" : "Inactive"}</p>
                     </div>
                 </div>
             </div>
