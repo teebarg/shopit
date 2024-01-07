@@ -26,7 +26,6 @@ jobs:
             run: |
               echo "GH_TOKEN: $GH_TOKEN"
               echo "github.head_ref: ${{ github.head_ref }}"
-              echo "github_secret: ${{ secrets.GH_TOKEN }}"
               echo "github_secret2: ${{ secrets.GITHUB_TOKEN }}"
 
           - name: Set up Python
@@ -50,7 +49,6 @@ jobs:
               git config --local user.email "action@github.com"
               git config --local user.name "GitHub Action"
               git commit -m "Update documentation" -a
-              git push --set-upstream origin ${{ github.head_ref }}
+              git push --set-upstream origin ${{ github.head_ref }} --ff
             env:
-              GH_TOKEN: ${{ secrets.GH_TOKEN }}
               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

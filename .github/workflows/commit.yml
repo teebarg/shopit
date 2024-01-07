@@ -31,6 +31,17 @@ jobs:
               with:
                   python-version: 3.11
 
+            - name: Install dependencies
+              run: |
+                # python -m pip install --upgrade pip
+                pip install -r requirements.txt
+
+            - name: Set up Make
+              run: sudo apt-get install build-essential
+
+            - name: Update Wiki
+              run: make wiki
+
             - name: Create changes
               run: |
                   echo "Commit Message 1" >> commitmessage.txt
