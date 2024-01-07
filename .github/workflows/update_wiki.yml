@@ -49,6 +49,6 @@ jobs:
               git config --local user.email "action@github.com"
               git config --local user.name "GitHub Action"
               git commit -m "Update documentation" -a
-              git push --set-upstream origin ${{ github.head_ref }} --ff
+              git push --set-upstream origin ${{ github.head_ref }}
             env:
               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
