@@ -12,7 +12,7 @@ export const metadata = {
 export default async function Users() {
     let users: User[] = [];
     try {
-        const { ok, status, data } = await GET("/users/?offset=0&limit=20");
+        const { ok, status, data } = await GET("/users/?offset=0&limit=10");
         if (ok) {
             users = data.users;
         } else {

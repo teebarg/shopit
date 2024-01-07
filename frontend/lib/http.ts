@@ -25,7 +25,7 @@ const Http = async (url: string, method: Method, body?: any, extra?: Object) => 
     });
 };
 
-const GET = async (path: string, tag: string) => {
+const GET = async (path: string, tag: string = "") => {
     const res = await Http(path, "GET", null, { next: { tags: [tag] } });
 
     if (!res.ok) {
