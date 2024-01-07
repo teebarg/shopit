@@ -22,4 +22,12 @@ type User = {
     updated_at: string;
 };
 
-export type { Product, collection, User };
+type Tag = {
+    id?: number;
+    name: string;
+    is_active: boolean;
+    created_at?: string;
+    updated_at?: string;
+};
+
+export type { Product, collection, User, Tag };

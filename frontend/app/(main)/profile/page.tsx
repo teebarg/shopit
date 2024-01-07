@@ -2,18 +2,29 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import Image from "next/image";
 import { GET } from "@/lib/http";
+import { redirect } from "next/navigation";
 
 export const metadata = {
     title: "Profile | Starter Template",
     description: "Shopit profile starter template built with Tailwind CSS and Next.js.",
 };
 
-export default async function Profile() {
-    const { ok, data } = await GET("/users/me");
-    if (!ok) {
-        return <div>An error occurred</div>;
+async function getData() {
+    const { ok, status, data } = await GET("/users/me", "me");
+
+    if ([401, 403].includes(status)) {
+        redirect("/logout");
     }
-    const { firstname, lastname, email, is_active } = data;
+
+    if (!ok) {
+        throw new Error("Failed to fetch data");
+    }
+
+    return data;
+}
+
+export default async function Profile() {
+    const { firstname, lastname, email, is_active } = await getData();
     // @ts-expect-error
     const session = await getServerSession(authOptions);
     const image: string = session?.user?.image || "";
