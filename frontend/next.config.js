@@ -2,9 +2,10 @@
 const nextConfig = {
     experimental: {
         appDir: true,
+        serverActions: true,
     },
     images: {
-        domains: ["tailwindui.com", "images.unsplash.com", "lh3.googleusercontent.com"],
+        domains: ["lh3.googleusercontent.com", "firebasestorage.googleapis.com"],
         dangerouslyAllowSVG: true,
     },
     output: "standalone",

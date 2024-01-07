@@ -1,22 +1,22 @@
 from pydantic import BaseModel
 
-from .collection import Collection, CollectionCreate
 
-
-class ProductCreate(BaseModel):
+class BaseProduct(BaseModel):
     name: str
     price: float
-    collections: list[Collection]  # New field to hold collection IDs
+    image: str = "product-01.jpeg"
+    is_active: bool = True
+    collections: list[int] = []
+    tags: list[int] = []
 
 
-class ProductUpdate(BaseModel):
-    name: str
-    price: float
-    collections: list[Collection]  # New field to hold collection IDs
-
-
-class Product(BaseModel):
+class Product(BaseProduct):
     id: str
-    name: str
-    price: float
-    collections: list[Collection]  # New field to hold collection IDs
+
+
+class ProductCreate(BaseProduct):
+    pass
+
+
+class ProductUpdate(BaseProduct):
+    pass

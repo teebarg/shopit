@@ -1,23 +1,4 @@
 services:
-  api:
-    build:
-      context: ../backend
-    command:
-      - uvicorn
-      - main:app
-      - --host
-      - 0.0.0.0
-      - --port
-      - "4002"
-      - --reload
-    env_file:
-      - ${ENV_FILE:-local.env}
-    ports:
-      - 4002:4002
-    volumes:
-      - ../backend:/app/backend/:ro
-
-
   traefik:
     image: traefik:2.10.3
     command:
@@ -30,6 +11,15 @@ services:
       # - ./${TRAEFIK_CONFIG}:/config.yml:ro
       - ./lb-local.yml:/config.yml:ro
 
+  api:
+    build:
+      context: ../backend
+    env_file:
+      - ${ENV_FILE:-local.env}
+    ports:
+      - 4002:4002
+    volumes:
+      - ../backend:/app/
 
   frontend:
     build:
@@ -39,4 +29,23 @@ services:
     ports:
       - 4001:4001
     volumes:
-      - ../frontend/:/app/
+      - ../frontend:/app
+
+  ddb:
+    image: postgres:12
+    env_file:
+      - ${ENV_FILE:-local.env}
+    ports:
+      - 4003:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  adm:
+    image: adminer
+    ports:
+      - 4004:8080
+    depends_on:
+      - ddb
+
+volumes:
+  postgres_data:

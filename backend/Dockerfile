@@ -27,8 +27,14 @@ RUN pip install uvicorn
 # Copy the entire project to the container's working directory
 COPY . .
 
-# Expose port 6000 (the port your FastAPI app is listening on)
+# Expose port 4002 (the port your FastAPI app is listening on)
 EXPOSE 4002
 
-# Use the full path to uvicorn when starting the application
-CMD ["python", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "4002"]
+# Copy your Bash script into the container
+COPY prestart.sh /usr/local/bin/
+
+# Make the script executable (if needed)
+RUN chmod +x /usr/local/bin/prestart.sh
+
+# Run your existing command and then the Bash script
+CMD ["sh", "-c", "/usr/local/bin/prestart.sh && python -m uvicorn main:app --host 0.0.0.0 --port 4002 --reload"]

@@ -1,6 +1,8 @@
 .PHONY: help
 .EXPORT_ALL_VARIABLES:
 
+APP_NAME := shopit-backend
+
 # environment variables
 
 help:		## Show this help
@@ -23,9 +25,16 @@ serve-frontend:
 	@cd frontend; make dev
 
 dev:
-	make -j 3 lb serve-backend serve-frontend
+	pip install -r backend/requirements.txt --require-virtualenv
+	make -j 4 lb db serve-backend serve-frontend
+
+prep:
+	@cd backend && ./prestart.sh
 
 # Using Docker
+db:
+	@docker compose -f backend/docker-compose.yml up --build
+
 ## Start local development environment
 start:
 	docker compose -p local -f docker/docker-compose.yml --env-file docker/local.env up --build
@@ -37,3 +46,17 @@ stop:
 # This target can be used in a separate terminal to update any containers after a change in config without restarting (environment variables, requirements.txt, etc)
 update:
 	docker compose -p local -f docker/docker-compose.yml --env-file docker/local.env up --build -d
+
+prep-docker:
+	docker exec local-api-1 ./prestart.sh
+
+build:
+	docker build -f backend/Dockerfile -t $(APP_NAME) ./backend
+
+stage:
+	docker tag $(APP_NAME):latest beafdocker/fast-template:latest
+	docker push beafdocker/fast-template:latest
+
+# Helpers
+c:
+	@cd scripts && python controller.py run -n $(name)

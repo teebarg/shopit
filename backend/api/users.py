@@ -1,23 +1,33 @@
-# api/users.py
-
 from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.responses import JSONResponse
+from fastapi import APIRouter, Query
 
+import crud
 import deps
-import schemas
-from core.config import settings  # Import the custom settings from core.config
+from models.models import User
 
 # Create a router for users
 router = APIRouter()
 
 
-@router.get("/me", response_model=schemas.User)
-def read_user_me(
-    current_user: schemas.User = Depends(deps.get_current_user),
-) -> schemas.User:
+@router.get("/me")
+def read_user_me(session: deps.SessionDep, current_user: deps.CurrentUser) -> User:
     """
     Get current user.
     """
-    return current_user
+    return current_user  # type: ignore
+
+
+@router.get("/", response_model=dict[str, Any])
+async def index(
+    db: deps.SessionDep, name: str = "", offset: int = 0, limit: int = Query(default=20, le=100)
+):
+    """
+    Get all users.
+    """
+    users = crud.user.get_multi(db=db, queries={"name": name}, limit=limit, offset=offset)
+    return {
+        "users": users,
+        "offset": offset,
+        "limit": limit,
+    }

@@ -7,47 +7,33 @@ from pydantic import BaseModel, EmailStr
 class UserBase(BaseModel):
     email: Optional[EmailStr] = None
     name: Optional[str] = None
+    is_superuser: bool = False
+    firstname: Optional[str] = None
+    lastname: Optional[str] = None
     uid: str
 
 
 # Properties to receive via API on creation
 class UserCreate(UserBase):
-    email: EmailStr
-    password: str
+    pass
 
 
 # Properties to receive via API on update
 class UserUpdate(UserBase):
-    password: Optional[str] = None
+    pass
 
 
 class UserInDBBase(UserBase):
     id: Optional[int] = None
 
-
-# Additional properties to return via API
-class User(UserBase):
-    pass
+    class Config:
+        from_attributes = True
 
 
 # Additional properties stored in DB
 class UserInDB(UserInDBBase):
-    hashed_password: str
+    pass
 
 
-class UserCredentials(BaseModel):
-    email: str
-    password: str
-
-
-class SignUp(BaseModel):
-    email: str
-    password: str
-
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "email": "testuser@gmail.com",
-                "password": "testpassword",
-            }
-        }
+class User(UserInDBBase):
+    pass
