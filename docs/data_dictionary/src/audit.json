@@ -34,7 +34,7 @@
             "Feature/Epic Origin": "",
             "Deprecated": false
         },
-        "D.beaff": {
+        "D.audit_fields": {
             "Description": "",
             "Example": [
                 "D.slate"
