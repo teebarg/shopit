@@ -34,20 +34,11 @@
             "Feature/Epic Origin": "",
             "Deprecated": false
         },
-        "D.beafffff": {
-            "Description": "",
-            "Example": ["D.slate"],
-            "Sensitive/PII/Internal": false,
-            "Notes/Limitations/Nuances": "",
-            "Dynamo Type": "List",
-            "Aliases": "",
-            "Tags": "",
-            "Feature/Epic Origin": "",
-            "Deprecated": false
-        },
         "D.audit_fields": {
             "Description": "",
-            "Example": ["D.slate"],
+            "Example": [
+                "D.slate"
+            ],
             "Sensitive/PII/Internal": false,
             "Notes/Limitations/Nuances": "",
             "Dynamo Type": "List",
