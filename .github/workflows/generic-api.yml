@@ -18,4 +18,4 @@ jobs:
       matrix:
         python-version: [3.11]
     steps:
-      - run: 'echo "No build required"'
+      - run: 'echo "No build required!!"'
