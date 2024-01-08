@@ -15,6 +15,7 @@ import Logo from "@/public/logo.svg";
 const navigation = [
     { name: "Dashboard", path: "/admin", icon: HomeIcon },
     { name: "Users", path: "/admin/users", icon: UsersIcon },
+    { name: "Tags", path: "/admin/tags", icon: UsersIcon },
     { name: "Details", path: "/admin/details", icon: CreditCardIcon },
     { name: "Settings", path: "/admin/settings", icon: CreditCardIcon },
 ];

@@ -102,3 +102,15 @@ export function SelectField({ name, label, className, register, ...props }: Fiel
         </div>
     );
 }
+
+export function CheckBoxField({ name, label, className, register, ...props }: FieldProps) {
+    let id = useId();
+    const formRules: Rules = {};
+
+    return (
+        <div className={className}>
+            {label && <Label id={id}>{label}</Label>}
+            <input id={id} type="checkbox" {...props} className="toggle toggle-primary" {...register(name, formRules)} />
+        </div>
+    );
+}

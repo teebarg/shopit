@@ -20,7 +20,11 @@ def read_user_me(session: deps.SessionDep, current_user: deps.CurrentUser) -> Us
 
 @router.get("/", response_model=dict[str, Any])
 async def index(
-    db: deps.SessionDep, name: str = "", offset: int = 0, limit: int = Query(default=20, le=100)
+    db: deps.SessionDep,
+    current_user: deps.CurrentUser,
+    name: str = "",
+    offset: int = 0,
+    limit: int = Query(default=20, le=100),
 ):
     """
     Get all users.

@@ -24,4 +24,10 @@
     .blue-radial {
         background: radial-gradient(circle, #202047 0, #020917 100%);
     }
+    .btn-error {
+        @apply bg-red-600 hover:bg-red-500 text-white min-w-[85px];
+    }
+    .btn-sm {
+        @apply min-h-[2.5rem] h-10;
+    }
 }

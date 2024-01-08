@@ -2,18 +2,29 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import Image from "next/image";
 import { GET } from "@/lib/http";
+import { redirect } from "next/navigation";
 
 export const metadata = {
     title: "Profile | Starter Template",
     description: "Shopit profile starter template built with Tailwind CSS and Next.js.",
 };
 
-export default async function Profile() {
-    const me = await GET("/users/me");
-    if (!me) {
-        return <div>An error occurred</div>;
+async function getData() {
+    const { ok, status, data } = await GET("/users/me", "me");
+
+    if ([401, 403].includes(status)) {
+        redirect("/logout");
     }
-    const { user } = me;
+
+    if (!ok) {
+        throw new Error("Failed to fetch data");
+    }
+
+    return data;
+}
+
+export default async function Profile() {
+    const { firstname, lastname, email, is_active } = await getData();
     // @ts-expect-error
     const session = await getServerSession(authOptions);
     const image: string = session?.user?.image || "";
@@ -28,15 +39,19 @@ export default async function Profile() {
                 <div className="flex-1 ml-6 space-y-4">
                     <div>
                         <p className="text-sm">Firstname:</p>
-                        <p className="text-lg font-semibold mt-0">{user.firstname}</p>
+                        <p className="text-lg font-semibold mt-0">{firstname}</p>
                     </div>
                     <div>
                         <p className="text-sm">Lastname:</p>
-                        <p className="text-lg font-semibold mt-0">{user.lastname}</p>
+                        <p className="text-lg font-semibold mt-0">{lastname}</p>
                     </div>
                     <div>
                         <p className="text-sm">Email:</p>
-                        <p className="text-lg font-semibold mt-0">{user.email}</p>
+                        <p className="text-lg font-semibold mt-0">{email}</p>
+                    </div>
+                    <div>
+                        <p className="text-sm">Status:</p>
+                        <p className="text-lg font-semibold mt-0">{is_active ? "Active" : "Inactive"}</p>
                     </div>
                 </div>
             </div>

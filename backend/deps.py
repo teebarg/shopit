@@ -1,4 +1,4 @@
-from typing import Annotated, Generator
+from typing import Annotated, Any, Generator
 
 import firebase_admin
 import pyrebase
@@ -31,51 +31,55 @@ def get_auth() -> Generator:
         if not firebase_admin._apps:  # Check if the app is not already initialized
             cred = credentials.Certificate(settings.FIREBASE_CRED)
             firebase_admin.initialize_app(cred)
-
         firebase = pyrebase.initialize_app(settings.FIREBASE_CONFIG)
 
         # Get a reference to the auth service
         yield firebase.auth()
+    except Exception as e:
+        print(f"auth init error, ${e}")
     finally:
         print("auth closed")
 
 
-def get_current_user_old(
-    token: str = Depends(reusable_oauth2), db=Depends(get_db)
-) -> schemas.UserInDB:
+def get_current_user(db: SessionDep, token: TokenDep, auth2: Any = Depends(get_auth)) -> User:
     try:
-        user = auth.verify_id_token(token)
-        doc_ref = db.collection("users").document(user["uid"])
-        doc = doc_ref.get()
-        return doc.to_dict()
-    except requests.exceptions.HTTPError:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Could not validate credentials",
-        )
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail=f"An error occurred while trying to validate credentials, {e}",
-        )
+        if token is None:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Token cannot be none",
+            )
 
-
-def get_current_user(db: SessionDep, token: TokenDep) -> User:
-    try:
         data = auth.verify_id_token(token)
-        user: User = crud.get_user_by_email(db=db, email=data["email"])
+        if "email" in data:
+            if user := crud.get_user_by_email(db=db, email=data["email"]):
+                return user
+        if user := crud.user.get(db=db, id=data["uid"]):
+            return user
 
-        if not user:
+        else:
             raise HTTPException(status_code=404, detail="User not found")
-        return user
-
     except requests.exceptions.HTTPError:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Could not validate credentials",
         )
     except Exception as e:
-        print(e)
+        print(f"Get current user error, ${e}")
+        if "Token expired" in str(e):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Token expired",
+            )
+        if "Wrong number of segments in token" in str(e):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Provide a valid token",
+            )
+        if "Could not verify token signature." in str(e):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Could not verify token signature.",
+            )
         raise HTTPException(
             status_code=500,
             detail=f"An error occurred while trying to validate credentials, {e}",
