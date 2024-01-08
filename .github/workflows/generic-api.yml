@@ -1,7 +1,10 @@
 # This is to allow the status check pass when api test is not running.||
 name: Z-Api Unit Test Checks
 on:
-  workflow_dispatch:
+  workflow_run:
+    workflows: [Commit to branch]
+    types:
+      - completed
   pull_request:
     types: [opened, synchronize, reopened]
     paths-ignore:

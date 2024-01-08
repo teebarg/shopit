@@ -35,15 +35,15 @@ jobs:
               with:
                   commit_message: Test commit
 
-    trigger_api_workflow:
-        needs: build
-        runs-on: ubuntu-latest
-        steps:
-        - name: Checkout repository
-          uses: actions/checkout@v4
+    # trigger_api_workflow:
+    #     needs: build
+    #     runs-on: ubuntu-latest
+    #     steps:
+    #     - name: Checkout repository
+    #       uses: actions/checkout@v4
 
-        - name: Run generic API workflow
-          run: |
-            gh workflow run generic-api.yml
-          env:
-            GITHUB_TOKEN: ${{ secrets.PAT }}
+    #     - name: Run generic API workflow
+    #       run: |
+    #         gh workflow run generic-api.yml
+    #       env:
+    #         GITHUB_TOKEN: ${{ secrets.PAT }}
