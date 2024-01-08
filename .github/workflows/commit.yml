@@ -35,15 +35,21 @@ jobs:
               with:
                   commit_message: Test commit
 
-    # trigger_api_workflow:
-    #     needs: build
-    #     runs-on: ubuntu-latest
-    #     steps:
-    #     - name: Checkout repository
-    #       uses: actions/checkout@v4
+    api_unit_test:
+        needs: build
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                os: [ubuntu-latest]
+                python-version: [3.11]
+        steps:
+            - run: 'echo "No build required!!"'
+        # steps:
+        # - name: Checkout repository
+        #   uses: actions/checkout@v4
 
-    #     - name: Run generic API workflow
-    #       run: |
-    #         gh workflow run generic-api.yml -f tags=false
-    #       env:
-    #         GITHUB_TOKEN: ${{ secrets.PAT }}
+        # - name: Run generic API workflow
+        #   run: |
+        #     gh workflow run generic-api.yml -f tags=false
+        #   env:
+        #     GITHUB_TOKEN: ${{ secrets.PAT }}
