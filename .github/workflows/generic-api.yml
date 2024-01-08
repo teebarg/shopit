@@ -1,9 +1,6 @@
 # This is to allow the status check pass when api test is not running.||
 name: Z-Api Unit Test Checks
 on:
-  push:
-      paths-ignore:
-          - "**.pyy"
   pull_request:
     types: [opened, synchronize, reopened]
     paths-ignore:

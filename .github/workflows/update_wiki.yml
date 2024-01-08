@@ -3,7 +3,7 @@ name: Update Wiki
 on:
   push:
       paths:
-          - "docs/data_dictionary/**"
+          - "docs/data_dictionary2/**"
 
 jobs:
   build:
@@ -45,14 +45,3 @@ jobs:
               git push --set-upstream origin ${{ github.head_ref }}
             env:
               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-          - name: Trigger Workflow
-            uses: actions/github-script@v6
-            with:
-              script: |
-                github.rest.actions.createWorkflowDispatch({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  workflow_id: 'generic-api.yml',
-                  ref: '${{ github.head_ref }}',
-                })
