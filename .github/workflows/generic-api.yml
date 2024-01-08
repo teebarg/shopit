@@ -3,7 +3,7 @@ name: Z-Api Unit Test Checks
 
 on:
   workflow_run:
-    workflows: [Commit to branch]
+    workflows: [Commit]
     types:
       - completed
 

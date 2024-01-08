@@ -1,4 +1,4 @@
-name: Commit to branch
+name: Commit
 
 on:
   push:
