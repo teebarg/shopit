@@ -41,6 +41,4 @@ jobs:
             - name: Invoke workflow in another repo with inputs
               uses: benc-uk/workflow-dispatch@v1
               with:
-                    workflow: my-workflow.yaml
-                    repo: benc-uk/example
-                    inputs: '{ "message": "blah blah", "something": false }'
+                    workflow: generic-api.yml
