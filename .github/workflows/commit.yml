@@ -1,4 +1,4 @@
-name: Commit
+name: Commit Changes
 
 on:
   push:
