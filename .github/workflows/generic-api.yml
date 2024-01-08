@@ -4,10 +4,10 @@ on:
   workflow_run:
     workflows: [Commit to branch]
 
-  pull_request:
-    types: [opened, synchronize, reopened]
-    paths:
-      - '**.pyy'
+  # pull_request:
+  #   types: [opened, synchronize, reopened]
+  #   paths:
+  #     - '**.pyy'
 jobs:
   api_unit_test:
     runs-on: ubuntu-latest
