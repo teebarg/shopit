@@ -45,3 +45,5 @@ jobs:
         - name: Run generic API workflow
           run: |
             gh workflow run generic-api.yml
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
