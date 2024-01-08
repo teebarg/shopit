@@ -8,11 +8,9 @@ on:
 jobs:
     build:
         runs-on: ubuntu-latest
-        permissions:
-            # Give the default GITHUB_TOKEN write permission to commit and push the changed files back to the repository.||
-            contents: write
-            pull-requests: write
-            repository-projects: write
+        # permissions:
+        #     # Give the default GITHUB_TOKEN write permission to commit and push the changed files back to the repository.||
+        #     contents: write
 
         defaults:
             run:
@@ -22,7 +20,6 @@ jobs:
             - name: Check out repository
               uses: actions/checkout@v4
               with:
-                  ref: ${{ github.head_ref }}
                   token: ${{ secrets.PAT }}
 
             - name: Set up Python
@@ -39,8 +36,3 @@ jobs:
               uses: stefanzweifel/git-auto-commit-action@v5
               with:
                   commit_message: Test commit
-
-            # - name: Invoke workflow in another repo with inputs
-            #   uses: benc-uk/workflow-dispatch@v1
-            #   with:
-            #         workflow: Z-Api Unit Test Checks
