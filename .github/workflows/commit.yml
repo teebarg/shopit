@@ -40,7 +40,6 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                os: [ubuntu-latest]
                 python-version: [3.11]
         steps:
             - run: 'echo "No build required!!"'
