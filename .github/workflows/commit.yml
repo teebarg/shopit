@@ -34,3 +34,14 @@ jobs:
               uses: stefanzweifel/git-auto-commit-action@v5
               with:
                   commit_message: Test commit
+
+    trigger_api_workflow:
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+        - name: Checkout repository
+          uses: actions/checkout@v4
+
+        - name: Run generic API workflow
+          run: |
+            gh workflow run generic-api.yml
