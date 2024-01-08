@@ -1,10 +1,9 @@
 name: Commit to branch
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
-    paths:
-     - "docs/data_dictionary/**"
+  push:
+      paths:
+          - "docs/data_dictionary/**"
 
 jobs:
     build:
