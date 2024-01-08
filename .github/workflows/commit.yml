@@ -1,13 +1,9 @@
 name: Commit Changes
 
 on:
-#   push:
-#       paths:
-#           - "docs/data_dictionary/**"
-  workflow_run:
-    workflows: [Test]
-    types:
-      - completed
+  push:
+      paths:
+          - "docs/data_dictionary/**"
 
 jobs:
     build:
