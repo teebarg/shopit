@@ -1,9 +1,13 @@
 name: Commit Changes
 
 on:
-  push:
-      paths:
-          - "docs/data_dictionary/**"
+#   push:
+#       paths:
+#           - "docs/data_dictionary/**"
+  workflow_run:
+    workflows: [Test]
+    types:
+      - completed
 
 jobs:
     build:
@@ -35,15 +39,15 @@ jobs:
               with:
                   commit_message: Test commit
 
-    trigger_api_workflow:
-        needs: build
-        runs-on: ubuntu-latest
-        steps:
-        - name: Checkout repository
-          uses: actions/checkout@v4
+    # trigger_api_workflow:
+    #     needs: build
+    #     runs-on: ubuntu-latest
+    #     steps:
+    #     - name: Checkout repository
+    #       uses: actions/checkout@v4
 
-        - name: Run generic API workflow
-          run: |
-            gh workflow run generic-api.yml -f tags=false
-          env:
-            GITHUB_TOKEN: ${{ secrets.PAT }}
+    #     - name: Run generic API workflow
+    #       run: |
+    #         gh workflow run generic-api.yml -f tags=false
+    #       env:
+    #         GITHUB_TOKEN: ${{ secrets.PAT }}
