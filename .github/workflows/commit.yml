@@ -43,9 +43,9 @@ jobs:
               with:
                 github-token: ${{ secrets.GITHUB_TOKEN }}
                 script: |
-                    const { data } = await github.actions.createWorkflowDispatch({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    workflow_id: 'generic-api.yml',
-                    });
-                    console.log(data);
+                    github.rest.actions.createWorkflowDispatch({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        workflow_id: 'generic-api.yml',
+                        ref: '${{ github.head_ref }}',
+                    })
