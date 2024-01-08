@@ -39,7 +39,7 @@ jobs:
 
           - name: Commit and Push Changes
             run: |
-              git config --local user.email "action@github.com"
+              git config --local user.email "action2@beaf.com"
               git config --local user.name "GitHub Action"
               git commit -m "Update documentation" -a
               git push --set-upstream origin ${{ github.head_ref }}
