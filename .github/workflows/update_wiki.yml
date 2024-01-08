@@ -3,7 +3,7 @@ name: Update Wiki
 on:
   push:
       paths:
-          - "docs/data_dictionary/**"
+          - "docs/data_dictionary22/**"
 
 jobs:
   build:
@@ -21,7 +21,6 @@ jobs:
             uses: actions/checkout@v4
             with:
                 ref: ${{ github.head_ref }}
-                token: ${{ secrets.PAT }}
 
           - name: Debug Information
             run: |
@@ -45,7 +44,7 @@ jobs:
               git commit -m "Update documentation" -a
               git push --set-upstream origin ${{ github.head_ref }}
             env:
-              GITHUB_TOKEN: ${{ secrets.PAT }}
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
           # - name: Trigger Workflow
           #   uses: actions/github-script@v6
