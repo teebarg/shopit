@@ -33,10 +33,10 @@ jobs:
                   echo "From commit workflow" >> commitmessage.txt
                   git status
 
-            # - name: Commit changes
-            #   uses: stefanzweifel/git-auto-commit-action@v5
-            #   with:
-            #       commit_message: Test commit
+            - name: Commit changes
+              uses: stefanzweifel/git-auto-commit-action@v5
+              with:
+                  commit_message: Test commit Skip
 
     # trigger_test_workflow:
     #     needs: build
