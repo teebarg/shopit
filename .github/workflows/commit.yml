@@ -35,49 +35,44 @@ jobs:
               with:
                   commit_message: Test commit
 
-    # api_unit_test:
-    #     needs: build
-    #     runs-on: ubuntu-latest
-    #     strategy:
-    #         matrix:
-    #             python-version: [3.11]
-    #     steps:
-    #         - run: 'echo "No build required!!"'
-        # steps:
-        # - name: Checkout repository
-        #   uses: actions/checkout@v4
-
-        # - name: Run generic API workflow
-        #   run: |
-        #     gh workflow run generic-api.yml -f tags=false
-        #   env:
-        #     GITHUB_TOKEN: ${{ secrets.PAT }}
-
-
     trigger_test_workflow:
-        runs-on: ubuntu-latest
         needs: build
+        runs-on: ubuntu-latest
         steps:
-        - name: Trigger Test Workflow
-          uses: actions/github-script@v7
-          with:
-            github-token: ${{ secrets.GITHUB_TOKEN }}
-            script: |
-                const { data: workflows } = await github.actions.listRepoWorkflows({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo
-                });
+            - name: Checkout repository
+              uses: actions/checkout@v4
 
-                const testWorkflow = workflows.workflows.find(w => w.name === 'Z-Api Unit Test Checks');
+            - name: Run generic API workflow
+              run: |
+                gh workflow run generic-api.yml
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-                if (testWorkflow) {
-                    const { data: workflowRun } = await github.actions.createWorkflowDispatch({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    workflow_id: testWorkflow.id
-                });
 
-                    console.log(`Test workflow run triggered: ${workflowRun.html_url}`);
-                } else {
-                    console.error('Test workflow not found');
-                }
+    # trigger_test_workflow:
+    #     runs-on: ubuntu-latest
+    #     needs: build
+    #     steps:
+    #     - name: Trigger Test Workflow
+    #       uses: actions/github-script@v7
+    #       with:
+    #         github-token: ${{ secrets.GITHUB_TOKEN }}
+    #         script: |
+    #             const { data: workflows } = await github.actions.listRepoWorkflows({
+    #                 owner: context.repo.owner,
+    #                 repo: context.repo.repo
+    #             });
+
+    #             const testWorkflow = workflows.workflows.find(w => w.name === 'Z-Api Unit Test Checks');
+
+    #             if (testWorkflow) {
+    #                 const { data: workflowRun } = await github.actions.createWorkflowDispatch({
+    #                 owner: context.repo.owner,
+    #                 repo: context.repo.repo,
+    #                 workflow_id: testWorkflow.id
+    #             });
+
+    #                 console.log(`Test workflow run triggered: ${workflowRun.html_url}`);
+    #             } else {
+    #                 console.error('Test workflow not found');
+    #             }
