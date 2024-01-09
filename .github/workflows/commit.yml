@@ -44,7 +44,7 @@ jobs:
               with:
                 workflow: generic-api.yml
                 token: ${{ secrets.PAT }}
-                ref: refs/heads/master
+                ref: ${{ github.ref }}
             # - name: Checkout repository
             #   uses: actions/checkout@v4
 
