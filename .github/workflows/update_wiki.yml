@@ -3,7 +3,7 @@ name: Update Wiki
 on:
   push:
       paths:
-          - "docs/data_dictionary/**"
+          - "docs/data_dictionary22/**"
 
 jobs:
   build:

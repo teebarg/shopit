@@ -3,11 +3,12 @@ name: Commit Update
 on:
   push:
       paths:
-          - "docs/data_dictionary22/**"
+          - "docs/data_dictionary/**"
 
 jobs:
     build:
         runs-on: ubuntu-latest
+        if: ${{ !contains(github.event.head_commit.message, 'Skip') }}}
         permissions:
             # Give the default GITHUB_TOKEN write permission to commit and push the changed files back to the repository.||
             contents: write
@@ -19,6 +20,8 @@ jobs:
         steps:
             - name: Check out repository
               uses: actions/checkout@v4
+              with:
+                token: ${{ secrets.PAT }}
 
             - name: Set up Python
               uses: actions/setup-python@v4
@@ -30,21 +33,21 @@ jobs:
                   echo "From commit workflow" >> commitmessage.txt
                   git status
 
-            - name: Commit changes
-              uses: stefanzweifel/git-auto-commit-action@v5
-              with:
-                  commit_message: Test commit
+            # - name: Commit changes
+            #   uses: stefanzweifel/git-auto-commit-action@v5
+            #   with:
+            #       commit_message: Test commit
 
-    trigger_test_workflow:
-        needs: build
-        runs-on: ubuntu-latest
-        steps:
-            - name: Invoke workflow without inputs
-              uses: benc-uk/workflow-dispatch@v1
-              with:
-                workflow: generic-api.yml
-                token: ${{ secrets.PAT }}
-                ref: ${{ github.ref }}
+    # trigger_test_workflow:
+    #     needs: build
+    #     runs-on: ubuntu-latest
+    #     steps:
+    #         - name: Invoke workflow without inputs
+    #           uses: benc-uk/workflow-dispatch@v1
+    #           with:
+    #             workflow: generic-api.yml
+    #             token: ${{ secrets.PAT }}
+    #             ref: ${{ github.ref }}
             # - name: Checkout repository
             #   uses: actions/checkout@v4
 
