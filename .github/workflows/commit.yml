@@ -1,4 +1,4 @@
-name: Commit Changes
+name: Commit
 
 on:
   push:
@@ -35,18 +35,18 @@ jobs:
               with:
                   commit_message: Test commit
 
-    trigger_test_workflow:
-        needs: build
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout repository
-              uses: actions/checkout@v4
+    # trigger_test_workflow:
+    #     needs: build
+    #     runs-on: ubuntu-latest
+    #     steps:
+    #         - name: Checkout repository
+    #           uses: actions/checkout@v4
 
-            - name: Run generic API workflow
-              run: |
-                gh workflow run generic-api.yml
-              env:
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #         - name: Run generic API workflow
+    #           run: |
+    #             gh workflow run generic-api.yml
+    #           env:
+    #             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
     # trigger_test_workflow:
