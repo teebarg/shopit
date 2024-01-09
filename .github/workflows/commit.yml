@@ -1,4 +1,4 @@
-name: Commit
+name: Commit Update
 
 on:
   push:
@@ -43,7 +43,7 @@ jobs:
               uses: benc-uk/workflow-dispatch@v1
               with:
                 workflow: generic-api.yml
-                token: ${{ secrets.PAT }}
+                token: ${{ secrets.GITHUB_TOKEN }}
             # - name: Checkout repository
             #   uses: actions/checkout@v4
 

@@ -1,16 +1,10 @@
-# This is to allow the status check pass when api test is not running.||
+# This is to allow the status check pass when api test is not running.
 name: Z-Api Unit Test Checks
-
 on:
-  workflow_run:
-    workflows: [Commit Update]
-    types:
-      - completed
-
-  # pull_request:
-  #   types: [opened, synchronize, reopened]
-  #   paths:
-  #     - '**.pyy'
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+    paths-ignore:
+      - '**.pyy'
 jobs:
   api_unit_test:
     runs-on: ubuntu-latest
@@ -18,4 +12,4 @@ jobs:
       matrix:
         python-version: [3.11]
     steps:
-      - run: 'echo "No build required!!"'
+      - run: 'echo "No build required"'
