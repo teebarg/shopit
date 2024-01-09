@@ -37,17 +37,17 @@ jobs:
             run: |
                 echo "Commit Message 1" >> commitmessage.txt
 
-          - name: Commit and Push Changes
-            run: |
-              git config --local user.email "action2@beaf.com"
-              git config --local user.name "Beaf Action"
-              git commit -m "Update documentation
+          # - name: Commit and Push Changes
+          #   run: |
+          #     git config --local user.email "action2@beaf.com"
+          #     git config --local user.name "Beaf Action"
+          #     git commit -m "Update documentation
 
 
-              skip-checks: true" -a
-              git push --set-upstream origin ${{ github.head_ref }}
-            env:
-              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          #     skip-checks: true" -a
+          #     git push --set-upstream origin ${{ github.head_ref }}
+          #   env:
+          #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
           # - name: Trigger Workflow
           #   uses: actions/github-script@v6
