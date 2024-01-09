@@ -3,7 +3,7 @@ name: Update Wiki
 on:
   push:
       paths:
-          - "docs/data_dictionary22/**"
+          - "docs/data_dictionary/**"
 
 jobs:
   build:
@@ -41,7 +41,7 @@ jobs:
             run: |
               git config --local user.email "action2@beaf.com"
               git config --local user.name "Beaf Action"
-              git commit -m "Update documentation" -a
+              git commit -m "Update documentation" -a --no-verify
               git push --set-upstream origin ${{ github.head_ref }}
             env:
               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
