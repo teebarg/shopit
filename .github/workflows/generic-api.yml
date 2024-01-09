@@ -1,10 +1,11 @@
 # This is to allow the status check pass when api test is not running.
 name: Z-Api Unit Test Checks
 on:
-  pull_request:
-    types: [opened, synchronize, reopened, edited]
-    paths-ignore:
-      - '**.pyy'
+  workflow_dispatch:
+  # pull_request:
+  #   types: [opened, synchronize, reopened]
+  #   paths-ignore:
+  #     - '**.pyy'
 jobs:
   api_unit_test:
     runs-on: ubuntu-latest
