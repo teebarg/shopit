@@ -43,7 +43,8 @@ jobs:
               uses: benc-uk/workflow-dispatch@v1
               with:
                 workflow: generic-api.yml
-                token: ${{ secrets.GITHUB_TOKEN }}
+                token: ${{ secrets.PAT }}
+                ref: refs/heads/master
             # - name: Checkout repository
             #   uses: actions/checkout@v4
 
