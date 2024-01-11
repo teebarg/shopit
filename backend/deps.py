@@ -81,7 +81,7 @@ def get_current_user(db: SessionDep, token: TokenDep, auth2: Any = Depends(get_a
                 detail="Could not verify token signature.",
             )
         raise HTTPException(
-            status_code=500,
+            status_code=status.HTTP_403_FORBIDDEN,
             detail=f"An error occurred while trying to validate credentials, {e}",
         )
 

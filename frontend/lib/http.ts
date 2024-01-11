@@ -17,6 +17,7 @@ const Http = async (url: string, method: Method, body?: any, extra?: Object) => 
         method,
         headers: {
             Accept: "application/json",
+            "Content-Type": "application/json",
             Authorization: `Bearer ${session?.user?.accessToken}`,
         },
         ...extra,
