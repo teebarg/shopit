@@ -1,0 +1,13 @@
+name: Test
+
+on:
+  push
+
+jobs:
+  test_job:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.11]
+    steps:
+      - run: 'echo "TEST!!!"'
