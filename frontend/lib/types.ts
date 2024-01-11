@@ -22,4 +22,19 @@ type User = {
     updated_at: string;
 };
 
-export type { Product, collection, User };
+type Tag = {
+    id?: number;
+    name: string;
+    is_active: boolean;
+    created_at?: string;
+    updated_at?: string;
+};
+
+type Pagination = {
+    page: number;
+    per_page: number;
+    total_count: number;
+    total_pages: number;
+};
+
+export type { Product, collection, User, Tag, Pagination };

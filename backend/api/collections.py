@@ -16,18 +16,21 @@ router = APIRouter()
 
 @router.get("/", response_model=dict[str, Any])
 async def index(
-    db: deps.SessionDep, name: str = "", offset: int = 0, limit: int = Query(default=20, le=100)
+    db: deps.SessionDep,
+    name: str = "",
+    page: int = Query(default=1, gt=0),
+    per_page: int = Query(default=20, le=100),
 ):
     """
     Get all collections.
     """
     collections = crud.collection.get_multi(
-        db=db, queries={"name": name}, limit=limit, offset=offset
+        db=db, queries={"name": name}, per_page=per_page, offset=(page - 1) * per_page
     )
     return {
         "collections": collections,
-        "offset": offset,
-        "limit": limit,
+        "page": page,
+        "per_page": per_page,
     }
 
 

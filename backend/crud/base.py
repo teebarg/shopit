@@ -23,12 +23,24 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         """
         self.model = model
 
-    def get_multi(self, db: Session, queries: dict, limit: int, offset: int) -> list[ModelType]:
+    def get_multi(
+        self,
+        db: Session,
+        queries: dict,
+        per_page: int,
+        offset: int,
+        sort: str = "desc",
+    ) -> list[ModelType]:
         statement = select(self.model)
         for key, value in queries.items():
             if value and key == "name":
                 statement = statement.where(self.model.name.like(f"%{value}%"))
-        return db.exec(statement.offset(offset).limit(limit))
+            if sort == "desc":
+                statement = statement.order_by(self.model.created_at.desc())
+        return db.exec(statement.offset(offset).limit(per_page))
+
+    def all(self, db: Session) -> list[ModelType]:
+        return db.query(self.model)
 
     def get(self, db: Session, id: Any) -> Optional[ModelType]:
         return db.get(self.model, id)
