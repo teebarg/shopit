@@ -12,8 +12,8 @@ export const metadata = {
     description: "Shopit admin starter template built with Tailwind CSS and Next.js.",
 };
 
-async function getData() {
-    const { ok, status, data } = await GET("/tags/?offset=0&limit=10", "tags");
+async function getData(page: string = "1", per_page: string = "10") {
+    const { ok, status, data } = await GET(`/tags/?page=${page}&per_page=${per_page}`, "tags");
 
     if ([401, 403].includes(status)) {
         redirect("/logout");
@@ -26,8 +26,9 @@ async function getData() {
     return data;
 }
 
-export default async function Tags() {
-    const { tags } = await getData();
+export default async function Tags({ searchParams }: { searchParams: { page: string; per_page: string } }) {
+    const { tags, ...pag } = await getData(searchParams.page, searchParams.per_page);
+    const startIndex = (pag.page - 1) * pag.per_page;
 
     if (tags?.length === 0) {
         return <div className="px-6 py-8 rounded-md">No Tags!</div>;
@@ -36,7 +37,7 @@ export default async function Tags() {
     const rows = tags.map((item: Tag, index: number) => {
         return [
             <div className="" key={index + "g"}>
-                <div className="font-bold">{index + 1}.</div>
+                <div className="font-bold">{startIndex + index + 1}.</div>
             </div>,
             <div className="flex items-center space-x-3" key={index + "a"}>
                 <div className="font-bold">{item.name}</div>
@@ -72,7 +73,7 @@ export default async function Tags() {
                         Create Tag
                     </Button>
                 </div>
-                <Table header={header} rows={rows}></Table>
+                <Table header={header} rows={rows} pagination={pag}></Table>
             </div>
         </div>
     );

@@ -8,7 +8,7 @@ export default async function Latest() {
     let products: Product[] = [];
     try {
         await sleep(2000);
-        const { ok, data } = await GET("/products/?limit=4");
+        const { ok, data } = await GET("/products/?per_page=4");
         if (ok) {
             products = data.products;
         } else {

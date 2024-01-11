@@ -8,7 +8,7 @@ export default async function Trending() {
     let products: Product[] = [];
     try {
         await sleep(4000);
-        const { ok, data } = await GET("/products/?tag=trending&limit=4");
+        const { ok, data } = await GET("/products/?tag=trending&per_page=4");
         if (ok) {
             products = data.products;
         } else {

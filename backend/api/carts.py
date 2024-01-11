@@ -16,24 +16,29 @@ router = APIRouter()
 
 @router.get("/", response_model=dict[str, Any])
 async def index(
-    db: deps.SessionDep, name: str = "", offset: int = 0, limit: int = Query(default=20, le=100)
+    db: deps.SessionDep,
+    name: str = "",
+    page: int = Query(default=1, gt=0),
+    per_page: int = Query(default=20, le=100),
 ):
     """
     Get all carts.
 
     :param db: The database session dependency.
     :param name: Optional name parameter to filter Carts by name.
-    :param offset: Optional offset parameter for pagination.
-    :param limit: Optional limit parameter for pagination (default: 20, max: 100).
-    :return: A dictionary containing the list of Carts, offset, and limit.
+    :param page: Optional page parameter for pagination.
+    :param per_page: Optional per_page parameter for pagination (default: 20, max: 100).
+    :return: A dictionary containing the list of Carts, page, and per_page.
     """
     queries = {"name": name}
 
-    carts = crud.cart.get_multi(db=db, queries=queries, limit=limit, offset=offset)
+    carts = crud.cart.get_multi(
+        db=db, queries=queries, per_page=per_page, offset=(page - 1) * per_page
+    )
     return {
         "carts": carts,
-        "offset": offset,
-        "limit": limit,
+        "page": page,
+        "per_page": per_page,
     }
 
 

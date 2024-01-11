@@ -23,15 +23,24 @@ async def index(
     db: deps.SessionDep,
     current_user: deps.CurrentUser,
     name: str = "",
-    offset: int = 0,
-    limit: int = Query(default=20, le=100),
+    page: int = Query(default=1, gt=0),
+    per_page: int = Query(default=20, le=100),
 ):
     """
     Get all users.
     """
-    users = crud.user.get_multi(db=db, queries={"name": name}, limit=limit, offset=offset)
+    users = crud.user.get_multi(
+        db=db, queries={"name": name}, per_page=per_page, offset=(page - 1) * per_page
+    )
+    # Get total count
+    total_count = crud.user.all(db=db).count()
+
+    # Calculate total pages
+    total_pages = (total_count // per_page) + (total_count % per_page > 0)
     return {
         "users": users,
-        "offset": offset,
-        "limit": limit,
+        "page": page,
+        "per_page": per_page,
+        "total_count": total_count,
+        "total_pages": total_pages,
     }

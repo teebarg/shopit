@@ -30,4 +30,11 @@ type Tag = {
     updated_at?: string;
 };
 
-export type { Product, collection, User, Tag };
+type Pagination = {
+    page: number;
+    per_page: number;
+    total_count: number;
+    total_pages: number;
+};
+
+export type { Product, collection, User, Tag, Pagination };

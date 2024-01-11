@@ -21,19 +21,21 @@ async def index(
     name: str = "",
     col: str = "",
     tag: str = "",
-    offset: int = 0,
-    limit: int = Query(default=20, le=100),
+    page: int = Query(default=1, gt=0),
+    per_page: int = Query(default=20, le=100),
 ):
     """
     Get all products.
     """
     queries = {"col": col, "name": name, "tag": tag}
 
-    products = crud.product.get_multi(db=db, queries=queries, limit=limit, offset=offset)
+    products = crud.product.get_multi(
+        db=db, queries=queries, per_page=per_page, offset=(page - 1) * per_page
+    )
     return {
         "products": products,
-        "offset": offset,
-        "limit": limit,
+        "page": page,
+        "per_page": per_page,
     }
 
 

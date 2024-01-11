@@ -9,27 +9,33 @@ export const metadata = {
     description: "Shopit admin starter template built with Tailwind CSS and Next.js.",
 };
 
-export default async function Users() {
-    let users: User[] = [];
-    try {
-        const { ok, status, data } = await GET("/users/?offset=0&limit=10");
-        if (ok) {
-            users = data.users;
-        } else {
-            if ([401, 403].includes(status)) {
-                throw new Error("Failed to load, Please contact admin");
-            }
-            return <div>Failed to load, Please contact admin</div>;
-        }
-    } catch (error) {
+async function getData(page: string = "1", per_page: string = "10") {
+    const { ok, status, data } = await GET(`/users/?page=${page}&per_page=${per_page}`, "users");
+
+    if ([401, 403].includes(status)) {
         redirect("/logout");
     }
+
+    if (!ok) {
+        throw new Error("Failed to fetch data");
+    }
+
+    return data;
+}
+
+export default async function Users({ searchParams }: { searchParams: { page: string; per_page: string } }) {
+    const { users, ...pag } = await getData(searchParams.page, searchParams.per_page);
+    const startIndex = (pag.page - 1) * pag.per_page;
+
     if (users?.length === 0) {
         return <div className="px-6 py-8 rounded-md">No Users!</div>;
     }
-    const header = ["Name", "Email", "Status", "Date", "Last Updated"];
+    const header = ["S/N", "Name", "Email", "Status", "Date", "Last Updated"];
     const rows = users.map((item: User, index: number) => {
         return [
+            <div className="" key={index + "g"}>
+                <div className="font-bold">{startIndex + index + 1}.</div>
+            </div>,
             <div className="flex items-center space-x-3" key={index + "a"}>
                 <div className="font-bold">
                     {item.firstname} {item.lastname}
@@ -64,7 +70,7 @@ export default async function Users() {
         <div className="py-2">
             <div>
                 <h2 className="text-base font-semibold font-display">Users</h2>
-                <Table header={header} rows={rows}></Table>
+                <Table header={header} rows={rows} pagination={pag}></Table>
             </div>
         </div>
     );
