@@ -4,25 +4,21 @@ import { sleep } from "@/lib/utils";
 import { GET } from "@/lib/http";
 import { Product } from "@/lib/types";
 
-async function getProducts() {
-    await sleep(4000);
-    const { products } = await GET("/products/?tag=trending&limit=4");
-    // throw error if response is not ok
-    if (!products) {
-        throw new Error("Failed to load");
-    }
-    return products;
-}
-
 export default async function Trending() {
     let products: Product[] = [];
     try {
-        products = (await getProducts()) || [];
+        await sleep(4000);
+        const { ok, data } = await GET("/products/?tag=trending&per_page=4");
+        if (ok) {
+            products = data.products;
+        } else {
+            return <div>Failed to load, Please contact admin</div>;
+        }
     } catch (error) {
         return <div>Failed to load</div>;
     }
     if (products.length === 0) {
-        return <div className="px-6 py-8 rounded-md">No trending products!</div>;
+        return <div className="py-4 rounded-md">No trending products!</div>;
     }
     return (
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">

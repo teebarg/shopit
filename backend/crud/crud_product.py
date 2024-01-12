@@ -19,7 +19,7 @@ class CRUDProduct(CRUDBase[Product, schemas.ProductCreate, schemas.ProductUpdate
 
         return collections
 
-    def get_multi(self, db: Session, queries: dict, limit: int, offset: int) -> list[ProductOut]:
+    def get_multi(self, db: Session, queries: dict, per_page: int, offset: int) -> list[ProductOut]:
         statement = select(Product)
         for key, value in queries.items():
             if value and key == "col":
@@ -28,7 +28,7 @@ class CRUDProduct(CRUDBase[Product, schemas.ProductCreate, schemas.ProductUpdate
                 statement = statement.where(Product.tags.any(Tag.name == value))
             if value and key == "name":
                 statement = statement.where(Product.name.like(f"%{value}%"))
-        products = db.exec(statement.offset(offset).limit(limit))
+        products = db.exec(statement.offset(offset).limit(per_page))
 
         return [ProductOut(**i.dict(), collections=i.collections, tags=i.tags) for i in products]
 

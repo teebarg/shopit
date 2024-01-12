@@ -2,34 +2,40 @@ import Table from "@/components/core/Table";
 import { GET } from "@/lib/http";
 import { User } from "@/lib/types";
 import cn from "classnames";
+import { redirect } from "next/navigation";
 
 export const metadata = {
     title: "Users | Starter Template",
     description: "Shopit admin starter template built with Tailwind CSS and Next.js.",
 };
 
-async function getUsers() {
-    const { users } = await GET("/users/?limit=4");
-    // throw error if response is not ok
-    if (!users) {
-        throw new Error("Failed to load");
+async function getData(page: string = "1", per_page: string = "10") {
+    const { ok, status, data } = await GET(`/users/?page=${page}&per_page=${per_page}`, "users");
+
+    if ([401, 403].includes(status)) {
+        redirect("/logout");
     }
-    return users;
+
+    if (!ok) {
+        throw new Error("Failed to fetch data");
+    }
+
+    return data;
 }
 
-export default async function Users() {
-    let users: User[] = [];
-    try {
-        users = (await getUsers()) || [];
-    } catch (error) {
-        return <div>Failed to load</div>;
-    }
-    if (users.length === 0) {
+export default async function Users({ searchParams }: { searchParams: { page: string; per_page: string } }) {
+    const { users, ...pag } = await getData(searchParams.page, searchParams.per_page);
+    const startIndex = (pag.page - 1) * pag.per_page;
+
+    if (users?.length === 0) {
         return <div className="px-6 py-8 rounded-md">No Users!</div>;
     }
-    const header = ["Name", "Email", "Status", "Date", "Last Updated"];
+    const header = ["S/N", "Name", "Email", "Status", "Date", "Last Updated"];
     const rows = users.map((item: User, index: number) => {
         return [
+            <div className="" key={index + "g"}>
+                <div className="font-bold">{startIndex + index + 1}.</div>
+            </div>,
             <div className="flex items-center space-x-3" key={index + "a"}>
                 <div className="font-bold">
                     {item.firstname} {item.lastname}
@@ -64,7 +70,7 @@ export default async function Users() {
         <div className="py-2">
             <div>
                 <h2 className="text-base font-semibold font-display">Users</h2>
-                <Table header={header} rows={rows}></Table>
+                <Table header={header} rows={rows} pagination={pag}></Table>
             </div>
         </div>
     );

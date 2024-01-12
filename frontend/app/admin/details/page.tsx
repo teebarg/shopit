@@ -80,6 +80,7 @@ function classNames(...classes: string[]) {
 
 export default async function Details() {
     const header = ["Name", "Title", "Status", "Duration", "Deployed at"];
+    const pag = { page: 1, per_page: 10, total_count: 5, total_pages: 1 };
     const rows = activityItems.map((item: ActivityItem, index: number) => {
         return [
             <div className="flex items-center space-x-3" key={index + "a"}>
@@ -119,7 +120,7 @@ export default async function Details() {
         <div className="py-2">
             <div>
                 <h2 className="text-base font-semibold font-display">Latest activity</h2>
-                <Table header={header} rows={rows}></Table>
+                <Table header={header} rows={rows} pagination={pag}></Table>
             </div>
         </div>
     );
