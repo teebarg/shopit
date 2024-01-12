@@ -1,6 +1,7 @@
 name: Api Deployment
 
 on:
+    push:
     workflow_dispatch:
         inputs:
             app:
