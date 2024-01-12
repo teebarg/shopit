@@ -27,15 +27,15 @@ jobs:
                   python-version: 3.11
                   cache: 'pip'
 
-            - name: Cache Dependencies
-              id: cache
-              uses: actions/cache@v3
-              with:
-                path: ~/.cache/pip
-                key: ${{ runner.os }}-dic-${{ hashFiles('**/requirements.txt') }}
+            # - name: Cache Dependencies
+            #   id: cache
+            #   uses: actions/cache@v3
+            #   with:
+            #     path: ~/.cache/pip
+            #     key: ${{ runner.os }}-dic-${{ hashFiles('**/requirements.txt') }}
 
             - name: Install dependencies
-              if: steps.cache.outputs.cache-hit != 'true'
+              # iif: steps.cache.outputs.cache-hit != 'true'
               run: |
                   pip install -r ./requirements.txt
 
