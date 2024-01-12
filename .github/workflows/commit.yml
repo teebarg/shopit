@@ -31,7 +31,7 @@ jobs:
               uses: actions/cache@v3
               with:
                 path: ~/.cache/pip
-                key: ${{ runner.os }}-dictionary-${{ hashFiles('**/requirements.txt') }}
+                key: ${{ runner.os }}-dic-${{ hashFiles('**/requirements.txt') }}
 
             - name: Install dependencies
               if: steps.cache.outputs.cache-hit != 'true'
