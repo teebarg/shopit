@@ -38,13 +38,16 @@ jobs:
               run: |
                   pip install -r ./requirements.txt
 
-            - name: Create changes
+            - name: Set up make
               run: |
-                  echo "From commit workflow" >> commitmessage.txt
-                  git status
+                  sudo apt-get install make
 
-            # - name: Commit changes
-            #   uses: stefanzweifel/git-auto-commit-action@v5
-            #   with:
-            #       commit_message: Test commit Skip
+            - name: Build data dictionary
+              run: |
+                  make wiki
+
+            - name: Commit changes
+              uses: stefanzweifel/git-auto-commit-action@v5
+              with:
+                  commit_message: Test commit Skip
 
