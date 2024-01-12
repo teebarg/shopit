@@ -16,7 +16,7 @@ const Http = async (url: string, method: Method, body?: any, extra?: Object) => 
     return await fetch(process.env.NEXT_PUBLIC_API_DOMAIN + url, {
         method,
         headers: {
-            accept: "application/json",
+            Accept: "application/json",
             "Content-Type": "application/json",
             Authorization: `Bearer ${session?.user?.accessToken}`,
         },
