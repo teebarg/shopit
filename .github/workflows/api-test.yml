@@ -31,8 +31,8 @@ jobs:
     - name: API Unit Tests (Library)
       run: |
         cd backend
-        git config --local user.email "action@github.com"
-        git config --local user.name "Github Action"
+        git config --local user.email "teebarg01@gmail.com"
+        git config --local user.name "Niyi"
         python -m pip install --upgrade pip
         pip install -r requirements.txt
       env:
