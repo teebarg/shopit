@@ -20,10 +20,18 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: 3.11
         cache: 'pip'
+    # - name: Commit and Push Changes
+    #   run: |
+    #     git config --local user.email "action@github.com"
+    #     git config --local user.name "Github Action"
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: API Unit Tests (Library)
       run: |
         cd backend
+        git config --local user.email "action@github.com"
+        git config --local user.name "Github Action"
         python -m pip install --upgrade pip
         pip install -r requirements.txt
