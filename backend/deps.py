@@ -28,7 +28,7 @@ TokenDep = Annotated[str, Depends(reusable_oauth2)]
 
 def get_auth() -> Generator:
     try:
-        if not firebase_admin._apps:  # Check if the app is not already initialized
+        if not firebase_admin._apps:  # Check if the app is not already initialized!!!
             cred = credentials.Certificate(settings.FIREBASE_CRED)
             firebase_admin.initialize_app(cred)
         firebase = pyrebase.initialize_app(settings.FIREBASE_CONFIG)
