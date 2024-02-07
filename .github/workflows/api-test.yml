@@ -17,6 +17,8 @@ jobs:
     - uses: actions/checkout@v2
       with:
         ref: ${{ github.event.pull_request.head.sha }}
+        repository: bolsternet/libs
+        token: ${{ secrets.LIB_REPO_ACCESS_PRIVATE_KEY }}
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
@@ -31,7 +33,7 @@ jobs:
     - name: API Unit Tests (Library)
       run: |
         cd backend
-        git config --global url."https://${{ secrets.LIB_REPO_ACCESS_PRIVATE_KEY }}@github".insteadOf https://github
+        # git config --global url."https://${{ secrets.LIB_REPO_ACCESS_PRIVATE_KEY }}@github".insteadOf https://github
         # git config --global user.name "Niyi"
         # git config --global user.email "teebarg01@gmail.com"
         python -m pip install --upgrade pip
