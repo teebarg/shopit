@@ -3,6 +3,7 @@ git+https://github.com/bolsternet/libs.git@v0.0.1
 # git@github.com:bolsternet/libs.git#v0.0.1
 # git+https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/bolsternet/libs.git@v0.0.1
 # git+https://{token}@github.com/bolsternet/libs.git@v0.0.1
+# git+ssh://git@github.com/bolsternet/lib.git@v0.0.1
 fastapi[all]==0.103.0
 pydantic==2.3.0
 firebase-admin==5.0.0
