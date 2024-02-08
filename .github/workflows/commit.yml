@@ -1,0 +1,54 @@
+name: Commit Update
+
+on:
+  push:
+      paths:
+          - "docs/data_dictionary/**"
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        if: "!contains(github.event.head_commit.message, 'Skip')"
+        permissions:
+            # Give the default GITHUB_TOKEN write permission to commit and push the changed files back to the repository.||
+            contents: write
+
+        defaults:
+            run:
+                working-directory: docs/data_dictionary
+
+        steps:
+            - name: Check out repository
+              uses: actions/checkout@v4
+
+            - name: Set up Python
+              uses: actions/setup-python@v4
+              with:
+                  python-version: 3.11
+                  cache: 'pip'
+
+            # - name: Cache Dependencies
+            #   id: cache
+            #   uses: actions/cache@v3
+            #   with:
+            #     path: ~/.cache/pip
+            #     key: ${{ runner.os }}-dic-${{ hashFiles('**/requirements.txt') }}
+
+            - name: Install dependencies
+              # iif: steps.cache.outputs.cache-hit != 'true'
+              run: |
+                  pip install -r ./requirements.txt
+
+            - name: Set up make
+              run: |
+                  sudo apt-get install make
+
+            - name: Build data dictionary
+              run: |
+                  make wiki
+
+            - name: Commit changes
+              uses: stefanzweifel/git-auto-commit-action@v5
+              with:
+                  commit_message: Test commit Skip
+

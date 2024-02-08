@@ -1,0 +1,175 @@
+{
+    "__METADATA__": {
+        "__HEADER__": "User Search Log",
+        "__DESCRIPTION__": "A log of searches that a partner, client or admin performs per session.",
+        "__ACCESS_PATTERNS__": [
+            {
+                "Access Pattern": "Get a record by PK and SK",
+                "Query": "PK='USER#${user_bid}', SK='SEARCH_SESSION#{jwt_token_iat}', limit=1, fields='PK,SK,D'"
+            },
+            {
+                "Access Pattern": "Get all records associated with a user",
+                "Query": "PK='USER#${user_bid}', SK__begins_with='SEARCH_SESSION#', fields='PK,SK,D'"
+            },
+            {
+                "Access Pattern": "Get all partner-generated search sessions",
+                "Query": "index='GSI1', scan=True, SK__begins_with='SEARCH_SESSION#', fields='PK,SK,D'"
+            },
+            {
+                "Access Pattern": "Get all partner-generated search sessions for a specific partner",
+                "Query": "index='GSI1', SK__begins_with='SEARCH_SESSION#', G1={TAG#tagID}, fields='PK,SK,D'"
+            }
+        ],
+        "__PARKING_LOT__": [],
+        "__REDSHIFT_TABLE__": "bolsters.public.search_sessions"
+    },
+    "__DOCUMENTATION__": {
+        "PK": {
+            "Description": "User who performed the search",
+            "Example": "USER#kangaliaadmin",
+            "Sensitive/PII/Internal": false,
+            "Notes/Limitations/Nuances": "",
+            "Dynamo Type": "String",
+            "Aliases": "",
+            "Tags": "",
+            "Feature/Epic Origin": "",
+            "Deprecated": false
+        },
+        "SK": {
+            "Description": "Datetime suffix comes from the 'issued at' (iat) UTC timestamp from the requester's JWT.",
+            "Example": "SEARCH_SESSION#2023-01-23T18:54:46Z",
+            "Sensitive/PII/Internal": false,
+            "Notes/Limitations/Nuances": "Used to represent a user's search 'session'",
+            "Dynamo Type": "String",
+            "Aliases": "",
+            "Tags": "",
+            "Feature/Epic Origin": "",
+            "Deprecated": false
+        },
+        "D.dt": {
+            "Description": "The timestamp when the search was performed",
+            "Example": "2023-01-23T21:20:21Z",
+            "Sensitive/PII/Internal": false,
+            "Notes/Limitations/Nuances": "",
+            "Dynamo Type": "String",
+            "Aliases": "",
+            "Tags": "",
+            "Feature/Epic Origin": "",
+            "Deprecated": false
+        },
+        "D.filters.D.roles": {
+            "Description": "",
+            "Example": "STAFF",
+            "Sensitive/PII/Internal": false,
+            "Notes/Limitations/Nuances": "",
+            "Dynamo Type": "String",
+            "Aliases": "",
+            "Tags": "",
+            "Feature/Epic Origin": "",
+            "Deprecated": false
+        },
+        "D.filters.Profile.worktype.keyword": {
+            "Description": "",
+            "Example": "\"Board Member\"\\|\"Fractional\"",
+            "Sensitive/PII/Internal": false,
+            "Notes/Limitations/Nuances": "",
+            "Dynamo Type": "String",
+            "Aliases": "",
+            "Tags": "",
+            "Feature/Epic Origin": "",
+            "Deprecated": false
+        },
+        "D.numResults": {
+            "Description": "The number of results returned based on the filters supplied to the search service",
+            "Example": 6,
+            "Sensitive/PII/Internal": false,
+            "Notes/Limitations/Nuances": "",
+            "Dynamo Type": "Number",
+            "Aliases": "",
+            "Tags": "",
+            "Feature/Epic Origin": "",
+            "Deprecated": false
+        },
+        "Details.activeType": {
+            "Description": "The user's current active type",
+            "Example": "partner",
+            "Sensitive/PII/Internal": false,
+            "Notes/Limitations/Nuances": "",
+            "Dynamo Type": "String",
+            "Aliases": "",
+            "Tags": "",
+            "Feature/Epic Origin": "",
+            "Deprecated": false
+        },
+        "Details.isAdmin": {
+            "Description": "",
+            "Example": true,
+            "Sensitive/PII/Internal": false,
+            "Notes/Limitations/Nuances": "",
+            "Dynamo Type": "Boolean",
+            "Aliases": "",
+            "Tags": "",
+            "Feature/Epic Origin": "",
+            "Deprecated": false
+        },
+        "Details.referrer": {
+            "Description": "The URL path from the API request's `Referer` header.",
+            "Example": "/admin/s/talent",
+            "Sensitive/PII/Internal": false,
+            "Notes/Limitations/Nuances": "Possible values are `/admin/s/talent` or `/app/s/talent` ",
+            "Dynamo Type": "String",
+            "Aliases": "",
+            "Tags": "",
+            "Feature/Epic Origin": "",
+            "Deprecated": false
+        },
+        "Details.userTags": {
+            "Description": "The list of all tags the user making the search request has.",
+            "Example": [
+                "kangalia-bb"
+            ],
+            "Sensitive/PII/Internal": false,
+            "Notes/Limitations/Nuances": "This is blank for admins.",
+            "Dynamo Type": "List",
+            "Aliases": "",
+            "Tags": "",
+            "Feature/Epic Origin": "",
+            "Deprecated": false
+        },
+        "G1": {
+            "Description": "Represents a partner's tag or the first tag from the list of client tags",
+            "Example": "TAG#kangalia-bb",
+            "Sensitive/PII/Internal": false,
+            "Notes/Limitations/Nuances": "This is blank for admins and empty if the user doesn't have tags",
+            "Dynamo Type": "String",
+            "Aliases": "",
+            "Tags": "",
+            "Feature/Epic Origin": "",
+            "Deprecated": false
+        }
+    },
+    "__RECORD__": {
+        "PK": "USER#kangaliaadmin",
+        "SK": "SEARCH_SESSION#2023-01-23T18:54:46Z",
+        "D": [
+            {
+                "dt": "2023-01-23T21:20:21Z",
+                "filters": {
+                    "D.roles": "STAFF",
+                    "Profile.worktype.keyword": "\"Board Member\"|\"Fractional\""
+                },
+                "numResults": 6
+            }
+        ],
+        "Details": {
+            "activeType": "partner",
+            "isAdmin": true,
+            "referrer": "/admin/s/talent",
+            "userTags": [
+                "kangalia-bb",
+                "usv"
+            ]
+        },
+        "G1": "TAG#kangalia-bb"
+    }
+}

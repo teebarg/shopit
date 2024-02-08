@@ -1,0 +1,47 @@
+name: Update Wiki
+
+on:
+  push:
+      paths:
+          - "docs/data_dictionary22/**"
+
+jobs:
+  build:
+      runs-on: ubuntu-latest
+      permissions:
+        # Give the default GITHUB_TOKEN write permission to commit and push the changed files back to the repository.
+        contents: write
+
+      defaults:
+        run:
+          working-directory: docs/data_dictionary
+
+      steps:
+          - name: Check out repository
+            uses: actions/checkout@v4
+            with:
+                ref: ${{ github.head_ref }}
+
+          - name: Debug Information
+            run: |
+              echo "GH_TOKEN: $GH_TOKEN"
+              echo "github.head_ref: ${{ github.head_ref }}"
+              echo "github_secret2: ${{ secrets.GITHUB_TOKEN }}"
+
+          - name: Set up Python
+            uses: actions/setup-python@v2
+            with:
+                python-version: 3.11
+
+          - name: Create changes
+            run: |
+                echo "Commit Message 1" >> commitmessage.txt
+
+          - name: Commit and Push Changes
+            run: |
+              git config --local user.email "action@github.com"
+              git config --local user.name "Github Action"
+              git commit -m "Update documentation Skip" -a
+              git push --set-upstream origin ${{ github.head_ref }}
+            env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

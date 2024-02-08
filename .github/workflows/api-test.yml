@@ -1,0 +1,34 @@
+name: Api Unit Test Checks
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '**.py'
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  api_unit_test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.11']
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.11
+        cache: 'pip'
+    - name: API Unit Tests (Library)
+      run: |
+        cd backend
+        git config --global url."https://${{ secrets.PAT2 }}@github".insteadOf https://github
+        # git config --global user.name "Niyi"
+        # git config --global user.email "teebarg01@gmail.com"
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

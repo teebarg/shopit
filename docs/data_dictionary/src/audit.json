@@ -1,0 +1,162 @@
+{
+    "__METADATA__": {
+        "__HEADER__": "Audit Records",
+        "__DESCRIPTION__": "Recorded record changes around records of interest.",
+        "__ACCESS_PATTERNS__": [
+            {
+                "Access Pattern": "Get all data",
+                "Query": "bolsters_db.query(PK__begins_with='USER#', SK__begins_with='AUDIT#', fields='PK,SK,D,G1,G2,G3', scan=True)"
+            }
+        ],
+        "__PARKING_LOT__": [],
+        "__REDSHIFT_TABLE__": "bolsters.public.member_edge_audits"
+    },
+    "__DOCUMENTATION__": {
+        "PK": {
+            "Description": "",
+            "Example": "USER#jimmydavis-ENGAGEMENT#01GVEF59ARVDFSG15NB5J479E2",
+            "Sensitive/PII/Internal": false,
+            "Notes/Limitations/Nuances": "Resource PK & SK. If either key is constant it's omitted.",
+            "Dynamo Type": "String",
+            "Aliases": "",
+            "Tags": "",
+            "Feature/Epic Origin": "",
+            "Deprecated": false
+        },
+        "SK": {
+            "Description": "Constant 'AUDIT#' with the date time of the record's creation.",
+            "Example": "AUDIT#2023-03-13T22:22:56Z",
+            "Sensitive/PII/Internal": false,
+            "Notes/Limitations/Nuances": "",
+            "Dynamo Type": "String",
+            "Aliases": "",
+            "Tags": "",
+            "Feature/Epic Origin": "",
+            "Deprecated": false
+        },
+        "D.audit_fields": {
+            "Description": "",
+            "Example": [
+                "D.slate"
+            ],
+            "Sensitive/PII/Internal": false,
+            "Notes/Limitations/Nuances": "",
+            "Dynamo Type": "List",
+            "Aliases": "",
+            "Tags": "",
+            "Feature/Epic Origin": "",
+            "Deprecated": false
+        },
+        "D.client_ip": {
+            "Description": "Modifier's IP",
+            "Example": "::1",
+            "Sensitive/PII/Internal": false,
+            "Notes/Limitations/Nuances": "::1 is localhost",
+            "Dynamo Type": "String",
+            "Aliases": "",
+            "Tags": "",
+            "Feature/Epic Origin": "",
+            "Deprecated": false
+        },
+        "D.method": {
+            "Description": "Request's method",
+            "Example": "PUT",
+            "Sensitive/PII/Internal": false,
+            "Notes/Limitations/Nuances": "",
+            "Dynamo Type": "String",
+            "Aliases": "",
+            "Tags": "",
+            "Feature/Epic Origin": "",
+            "Deprecated": false
+        },
+        "D.new_image.D.slate": {
+            "Description": "",
+            "Example": "01HAW4F0S8650CP6HJJ3Q397B3",
+            "Sensitive/PII/Internal": false,
+            "Notes/Limitations/Nuances": "",
+            "Dynamo Type": "String",
+            "Aliases": "",
+            "Tags": "",
+            "Feature/Epic Origin": "",
+            "Deprecated": false
+        },
+        "D.new_image.G1": {
+            "Description": "D.new_image shows all of the changes that were made during the request.",
+            "Example": "ACTIVE#2023-03-13T22:22:56Z",
+            "Sensitive/PII/Internal": false,
+            "Notes/Limitations/Nuances": "",
+            "Dynamo Type": "String",
+            "Aliases": "",
+            "Tags": "",
+            "Feature/Epic Origin": "",
+            "Deprecated": false
+        },
+        "D.old_image.G1": {
+            "Description": "D.old_image shows all of the previous attributes our resource had before the request.",
+            "Example": "PENDING#2023-03-13T22:21:34Z",
+            "Sensitive/PII/Internal": false,
+            "Notes/Limitations/Nuances": "",
+            "Dynamo Type": "String",
+            "Aliases": "",
+            "Tags": "",
+            "Feature/Epic Origin": "",
+            "Deprecated": false
+        },
+        "G1": {
+            "Description": "New status that was modified",
+            "Example": "ACTIVE",
+            "Sensitive/PII/Internal": false,
+            "Notes/Limitations/Nuances": "",
+            "Dynamo Type": "String",
+            "Aliases": "",
+            "Tags": "",
+            "Feature/Epic Origin": "",
+            "Deprecated": false
+        },
+        "G2": {
+            "Description": "BID of the user modifying our resource.",
+            "Example": "chrisclientpartner",
+            "Sensitive/PII/Internal": false,
+            "Notes/Limitations/Nuances": "",
+            "Dynamo Type": "String",
+            "Aliases": "",
+            "Tags": "",
+            "Feature/Epic Origin": "",
+            "Deprecated": false
+        },
+        "G3": {
+            "Description": "Main resource we're modifying.",
+            "Example": "ENGAGEMENT#01GVKDGNJR029FK0F1MTRWW5ZG",
+            "Sensitive/PII/Internal": false,
+            "Notes/Limitations/Nuances": "",
+            "Dynamo Type": "String",
+            "Aliases": "",
+            "Tags": "",
+            "Feature/Epic Origin": "",
+            "Deprecated": false
+        }
+    },
+    "__RECORD__": {
+        "PK": "USER#jimmydavis-ENGAGEMENT#01GVEF59ARVDFSG15NB5J479E2",
+        "SK": "AUDIT#2023-03-13T22:22:56Z",
+        "D": {
+            "audit_fields": [
+                "D.slate"
+            ],
+            "client_ip": "::1",
+            "method": "PUT",
+            "new_image": {
+                "D": {
+                    "slate": "01HAW4F0S8650CP6HJJ3Q397B3"
+                },
+                "G1": "ACTIVE#2023-03-13T22:22:56Z"
+            },
+            "old_image": {
+                "G1": "PENDING#2023-03-13T22:21:34Z"
+            }
+        },
+        "G1": "ACTIVE",
+        "G2": "chrisclientpartner",
+        "G3": "ENGAGEMENT#01GVKDGNJR029FK0F1MTRWW5ZG"
+    }
+}
