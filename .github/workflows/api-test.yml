@@ -22,16 +22,10 @@ jobs:
       with:
         python-version: 3.11
         cache: 'pip'
-    # - name: Commit and Push Changes
-    #   run: |
-    #     git config --local user.email "action@github.com"
-    #     git config --local user.name "Github Action"
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: API Unit Tests (Library)
       run: |
         cd backend
-        # git config --global url."https://${{ secrets.GITHUB_TOKEN }}@github".insteadOf https://github
+        git config --global url."https://${{ secrets.PAT }}@github".insteadOf https://github
         # git config --global user.name "Niyi"
         # git config --global user.email "teebarg01@gmail.com"
         python -m pip install --upgrade pip
