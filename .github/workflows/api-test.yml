@@ -25,7 +25,7 @@ jobs:
     - name: API Unit Tests (Library)
       run: |
         cd backend
-        git config --global url."https://${{ secrets.PAT }}@github".insteadOf https://github
+        git config --global url."https://${{ secrets.GITHUB_TOKEN }}@github".insteadOf https://github
         # git config --global user.name "Niyi"
         # git config --global user.email "teebarg01@gmail.com"
         python -m pip install --upgrade pip
