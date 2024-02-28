@@ -89,7 +89,7 @@ async def update(id: int, update: schemas.TagUpdate, db: deps.SessionDep):
 @router.delete("/{id}", response_model=Tag)
 async def delete(id: int, db: deps.SessionDep):
     """
-    Get a specific tag by ID.
+    Delete a specific tag by ID.
     """
     try:
         if tag := crud.tag.remove(db=db, id=id):

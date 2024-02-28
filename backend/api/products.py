@@ -1,6 +1,7 @@
 # api/products.py
 
 import csv
+from io import BytesIO
 from typing import Any
 
 from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile
@@ -32,10 +33,17 @@ async def index(
     products = crud.product.get_multi(
         db=db, queries=queries, per_page=per_page, offset=(page - 1) * per_page
     )
+    # Get total count
+    total_count = crud.product.all(db=db).count()
+
+    # Calculate total pages
+    total_pages = (total_count // per_page) + (total_count % per_page > 0)
     return {
         "products": products,
         "page": page,
         "per_page": per_page,
+        "total_count": total_count,
+        "total_pages": total_pages,
     }
 
 
@@ -75,6 +83,21 @@ async def update(id: str, update: schemas.ProductUpdate, db: deps.SessionDep):
         raise HTTPException(status_code=422, detail=f"Error updating product, {e.orig.pgerror}")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error updating product, {e}")
+
+
+@router.delete("/{id}", response_model=ProductOut)
+async def delete(id: int, db: deps.SessionDep):
+    """
+    Delete a specific product by ID.
+    """
+    try:
+        if product := crud.product.remove(db=db, id=id):
+            return product
+        raise HTTPException(status_code=404, detail="Product not found.")
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Error deleting product, invalid product id, {e}"
+        )
 
 
 @router.post("/import-products/")
@@ -127,7 +150,8 @@ async def product_collection(id: str, update: list[int], db: deps.SessionDep):
         raise HTTPException(status_code=404, detail="Product not found.")
     except IntegrityError as e:
         raise HTTPException(
-            status_code=422, detail=f"Error updating product's collections, {e.orig.pgerror}"
+            status_code=422,
+            detail=f"Error updating product's collections, {e.orig.pgerror}",
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error updating product's collections, {e}")
@@ -152,3 +176,46 @@ async def product_tag(id: str, update: list[int], db: deps.SessionDep):
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error updating product's tags, {e}")
+
+
+# Upload product image
+@router.patch("/{id}/image", response_model=Any)
+async def upload_product_image(
+    id: str,
+    file: UploadFile = File(...),
+    db=Depends(deps.get_db),
+    bucket=Depends(deps.get_storage),
+):
+    """
+    Upload a product image.
+    """
+    # if not image.filename.endswith(".jpg"):
+    #     raise HTTPException(
+    #         status_code=400,
+    #         detail="Invalid file format. Only JPG files are allowed.",
+    #     )
+
+    try:
+        # Check file size
+        max_size_kb = 200
+
+        # Read the file content
+        file_content = await file.read()
+
+        if len(file_content) > max_size_kb * 1024:
+            return {"message": "File size exceeds KB"}
+            # raise HTTPException(status_code=400, detail="File size exceeds KB")
+            # raise HTTPException(status_code=400, detail=f"File size exceeds {max_size_kb} KB")
+
+        file_name = f"{id}.jpeg"
+        blob = bucket.blob(file_name)
+        blob.upload_from_file(BytesIO(file_content), content_type=file.content_type)
+
+        if product := crud.product.get(db=db, id=id):
+            return crud.product.update(db=db, db_obj=product, obj_in={"image": file_name})
+        raise HTTPException(status_code=404, detail="Product not found.")
+
+        # return {"message": "Product image uploaded successfully."}
+    except Exception as e:
+        print(f"An exception occurred while trying to upload image: {e}")
+        raise HTTPException(status_code=500, detail=f"Error while uploading product image. {e}")
