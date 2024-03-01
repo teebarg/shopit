@@ -20,6 +20,6 @@ Mako==1.3.2
 alembic==1.13.1
 tenacity==8.2.3
 python-multipart==0.0.6
-uvicorn==0.23.2
+uvicorn==0.27.1
 email-validator==2.0.0.post2
 pydantic-settings==2.0.3
