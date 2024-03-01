@@ -22,4 +22,4 @@ tenacity==8.2.3
 python-multipart==0.0.6
 uvicorn==0.23.2
 email-validator==2.0.0.post2
-pydantic-settings==2.0.3
+pydantic-settings==2.2.1
