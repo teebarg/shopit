@@ -25,7 +25,8 @@ def init_db(session: Session, auth) -> None:
             )
             user = crud.user.create(db=session, obj_in=user_in)
             auth.create_user(
-                email=settings.FIRST_SUPERUSER, password=settings.FIRST_SUPERUSER_PASSWORD
+                email=settings.FIRST_SUPERUSER,
+                password=settings.FIRST_SUPERUSER_PASSWORD,
             )
         except Exception as e:
             print(e)

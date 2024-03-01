@@ -13,13 +13,14 @@ from models.product import Collection, Product, ProductOut, Tag
 class CRUDProduct(CRUDBase[Product, schemas.ProductCreate, schemas.ProductUpdate]):
     def get_collection_update(self, db: Session, update: dict) -> Optional[list[Collection]]:
         collections: list[Collection] = []
-        for i in update.get("collections"):
+        for i in update.get("collections", []):
             if collection := crud.collection.get(db=db, id=i):
                 collections.append(collection)
-
         return collections
 
-    def get_multi(self, db: Session, queries: dict, limit: int, offset: int) -> list[ProductOut]:
+    def get_multi(
+        self, db: Session, queries: dict, per_page: int, offset: int, sort: str = "desc"
+    ) -> list[ProductOut]:
         statement = select(Product)
         for key, value in queries.items():
             if value and key == "col":
@@ -28,7 +29,9 @@ class CRUDProduct(CRUDBase[Product, schemas.ProductCreate, schemas.ProductUpdate
                 statement = statement.where(Product.tags.any(Tag.name == value))
             if value and key == "name":
                 statement = statement.where(Product.name.like(f"%{value}%"))
-        products = db.exec(statement.offset(offset).limit(limit))
+        if sort == "desc":
+            statement = statement.order_by(self.model.created_at.desc())
+        products = db.exec(statement.offset(offset).limit(per_page))
 
         return [ProductOut(**i.dict(), collections=i.collections, tags=i.tags) for i in products]
 
@@ -45,6 +48,7 @@ class CRUDProduct(CRUDBase[Product, schemas.ProductCreate, schemas.ProductUpdate
                 name=product.name,
                 price=product.price,
                 image=product.image,
+                is_active=product.is_active,
                 collections=self.get_collection_update(db=db, update=product.dict()),
                 tags=self.get_tag_update(db=db, update=product.dict()),
             )
@@ -57,7 +61,11 @@ class CRUDProduct(CRUDBase[Product, schemas.ProductCreate, schemas.ProductUpdate
             raise e
 
     def update(
-        self, db: Session, *, db_obj: Product, obj_in: Union[schemas.ProductUpdate, Dict[str, Any]]
+        self,
+        db: Session,
+        *,
+        db_obj: Product,
+        obj_in: Union[schemas.ProductUpdate, Dict[str, Any]],
     ) -> Product:
         try:
             obj_data = jsonable_encoder(db_obj)
@@ -70,10 +78,12 @@ class CRUDProduct(CRUDBase[Product, schemas.ProductCreate, schemas.ProductUpdate
                 if field in update_data:
                     setattr(db_obj, field, update_data[field])
 
-            db_obj.collections = self.get_collection_update(db=db, update=obj_in.dict())
-            db_obj.tags = self.get_tag_update(db=db, update=obj_in.dict())
+            if update_data.get("collections"):
+                db_obj.collections = self.get_collection_update(db=db, update=update_data)
+            if update_data.get("tags"):
+                db_obj.tags = self.get_tag_update(db=db, update=update_data)
 
-            return self.sync(db=db, update=db_obj)
+            return self.sync(db=db, update=db_obj, type="update")
         except Exception as e:
             raise e
 
@@ -93,7 +103,7 @@ class CRUDProduct(CRUDBase[Product, schemas.ProductCreate, schemas.ProductUpdate
 
     def get_tag_update(self, db: Session, update: dict) -> Optional[list[Tag]]:
         tags: list[Tag] = []
-        for i in update.get("tags"):
+        for i in update.get("tags", []):
             if tag := crud.tag.get(db=db, id=i):
                 tags.append(tag)
         return tags

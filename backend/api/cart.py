@@ -21,9 +21,7 @@ async def get_cart(cart_id: str, db=Depends(deps.get_db)):
 
 
 @router.post("/{cart_id}", response_model=schemas.CartItem)
-async def add_to_cart(
-    cart_id: str, item: schemas.CartItemCreate, db=Depends(deps.get_db)
-):
+async def add_to_cart(cart_id: str, item: schemas.CartItemCreate, db=Depends(deps.get_db)):
     """
     Add an item to the cart.
     """
@@ -31,9 +29,7 @@ async def add_to_cart(
     quantity = item.quantity
 
     # check if the product exists
-    product_ref = (
-        db.collection("products").where("sku", "==", product_sku).limit(1)
-    )
+    product_ref = db.collection("products").where("sku", "==", product_sku).limit(1)
     product = product_ref.get()
     if len(product) == 0:
         raise HTTPException(status_code=404, detail="Product not found.")

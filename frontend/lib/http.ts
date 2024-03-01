@@ -1,46 +1,48 @@
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import { getSession } from "next-auth/react";
 
-const GET = async (path: string) => {
-    // @ts-expect-error
-    const session: any = await getServerSession(authOptions);
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMAIN}${path}`, {
-        method: "GET",
-        headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${session?.user?.accessToken}`,
-        },
-    });
+type Method = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
-    // if (res.status === 403) {
-    //     try {
-    //         const temp = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/signout?callbackUrl=/api/auth/session`, {
-    //             method: "POST",
-    //             headers: {,
-    //                 "Content-Type": "application/x-www-form-urlencoded",
-    //             },
-    //             // @ts-ignore
-    //             body: new URLSearchParams({
-    //                 csrfToken: await fetch(`${process.env.NEXTAUTH_URL}/api/auth/csrf`).then((rs) => rs.text()),
-    //                 callbackUrl: "/",
-    //                 json: true,
-    //             }),
-    //         });
-
-    //         const data = await temp.json();
-    //         console.log(data);
-
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    //     return null;
-    // }
-
-    if (!res.ok) {
-        return null;
+const Http = async (url: string, method: Method, body?: any, extra?: Object) => {
+    let session: any = null;
+    if (typeof window === "undefined") {
+        // @ts-expect-error
+        session = await getServerSession(authOptions);
+    } else {
+        session = await getSession();
     }
 
-    return res.json();
+    return await fetch(process.env.NEXT_PUBLIC_API_DOMAIN + url, {
+        method,
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session?.user?.accessToken}`,
+        },
+        ...extra,
+        body,
+    });
 };
 
-export { GET };
+const GET = async (path: string, tag: string = "") => {
+    const res = await Http(path, "GET", null, { next: { tags: [tag] } });
+
+    if (!res.ok) {
+        return { ok: false, status: res.status, data: null };
+    }
+
+    return { ok: true, status: res.status, data: await res.json() };
+};
+
+const DELETE = async (path: string) => {
+    const res = await Http(path, "DELETE");
+
+    if (!res.ok) {
+        return { ok: false, status: res.status, data: null };
+    }
+
+    return { ok: true, status: res.status, data: await res.json() };
+};
+
+export { Http, GET, DELETE };

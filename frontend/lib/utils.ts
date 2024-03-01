@@ -78,7 +78,7 @@ const currency = (number: number): string => {
 };
 
 const imgSrc = (image: string): string => {
-    return `${process.env.NEXT_PUBLIC_IMAGE_URL}/${image}?alt=media&token=${process.env.NEXT_PUBLIC_IMAGE_TOKEN}`;
+    return `${process.env.NEXT_PUBLIC_IMAGE_URL}/${image}?alt=media`;
 };
 
 export { buildUrl, cleanDate, currency, startOfMonth, sleep, getInitials, getGreetingMessage, endOfMonth, imgSrc };
