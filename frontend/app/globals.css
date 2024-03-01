@@ -24,10 +24,28 @@
     .blue-radial {
         background: radial-gradient(circle, #202047 0, #020917 100%);
     }
+
     .btn-error {
         @apply bg-red-600 hover:bg-red-500 text-white min-w-[85px];
     }
+
     .btn-sm {
         @apply min-h-[2.5rem] h-10;
+    }
+
+    .badge {
+        @apply inline-flex items-center rounded-full px-2 py-1 text-xs font-medium;
+    }
+
+    .badge-purple {
+        @apply bg-purple-100 text-purple-700;
+    }
+
+    .badge-red {
+        @apply bg-red-100 text-red-700;
+    }
+
+    .link {
+        @apply text-blue-600 hover:text-blue-500 underline;
     }
 }

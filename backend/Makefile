@@ -17,3 +17,7 @@ stop:
 
 dev:
 	uvicorn main:app --host 0.0.0.0 --port $(PORT)  --reload
+
+format:
+	black .
+	ruff --fix .

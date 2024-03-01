@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { getSession } from "next-auth/react";
 
-type Method = "GET" | "POST" | "PUT" | "DELETE";
+type Method = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 const Http = async (url: string, method: Method, body?: any, extra?: Object) => {
     let session: any = null;

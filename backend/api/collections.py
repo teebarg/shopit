@@ -27,10 +27,17 @@ async def index(
     collections = crud.collection.get_multi(
         db=db, queries={"name": name}, per_page=per_page, offset=(page - 1) * per_page
     )
+    # Get total count
+    total_count = crud.collection.all(db=db).count()
+
+    # Calculate total pages
+    total_pages = (total_count // per_page) + (total_count % per_page > 0)
     return {
         "collections": collections,
         "page": page,
         "per_page": per_page,
+        "total_count": total_count,
+        "total_pages": total_pages,
     }
 
 
@@ -75,7 +82,7 @@ async def update(id: int, update: schemas.CollectionUpdate, db: deps.SessionDep)
 @router.delete("/{id}", response_model=Collection)
 async def delete(id: int, db: deps.SessionDep):
     """
-    Get a specific collection by ID.
+    Delete a specific collection by ID.
     """
     try:
         if collection := crud.collection.remove(db=db, id=id):
@@ -83,5 +90,6 @@ async def delete(id: int, db: deps.SessionDep):
         raise HTTPException(status_code=404, detail="Collection not found.")
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Error deleting collection, invalid collection id, {e}"
+            status_code=500,
+            detail=f"Error deleting collection, invalid collection id, {e}",
         )

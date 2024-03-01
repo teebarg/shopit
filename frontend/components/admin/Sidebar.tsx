@@ -15,7 +15,9 @@ import Logo from "@/public/logo.svg";
 const navigation = [
     { name: "Dashboard", path: "/admin", icon: HomeIcon },
     { name: "Users", path: "/admin/users", icon: UsersIcon },
+    { name: "Collections", path: "/admin/collections", icon: UsersIcon },
     { name: "Tags", path: "/admin/tags", icon: UsersIcon },
+    { name: "Products", path: "/admin/products", icon: UsersIcon },
     { name: "Details", path: "/admin/details", icon: CreditCardIcon },
     { name: "Settings", path: "/admin/settings", icon: CreditCardIcon },
 ];
@@ -39,7 +41,7 @@ export default function SideBar({ children }: { children: React.ReactNode }) {
     return (
         <div>
             <Transition.Root show={sidebarOpen} as={Fragment}>
-                <Dialog as="div" className="relative z-50 lg:hidden" onClose={setSidebarOpen}>
+                <Dialog as="div" className="relative lg:hidden" onClose={setSidebarOpen}>
                     <Transition.Child
                         as={Fragment}
                         enter="transition-opacity ease-linear duration-300"
@@ -161,7 +163,7 @@ export default function SideBar({ children }: { children: React.ReactNode }) {
             </div>
 
             <div className="lg:pl-72">
-                <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
+                <div className="sticky top-0 z-20 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
                     <button type="button" className="-m-2.5 p-2.5 text-gray-700 lg:hidden" onClick={() => setSidebarOpen(true)}>
                         <Bars3Icon className="h-6 w-6" aria-hidden="true" />
                     </button>
@@ -252,7 +254,7 @@ export default function SideBar({ children }: { children: React.ReactNode }) {
                     </div>
                 </div>
 
-                <main className="py-8">
+                <main>
                     <div className="px-4 sm:px-6 lg:px-8">{children}</div>
                 </main>
             </div>

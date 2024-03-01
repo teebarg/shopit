@@ -1,5 +1,6 @@
 import React, { useId } from "react";
-import { UseFormRegister } from "react-hook-form";
+import { Controller, UseFormRegister } from "react-hook-form";
+import Select from "react-select";
 
 const formClasses = "input input-bordered w-full form-fix";
 
@@ -111,6 +112,24 @@ export function CheckBoxField({ name, label, className, register, ...props }: Fi
         <div className={className}>
             {label && <Label id={id}>{label}</Label>}
             <input id={id} type="checkbox" {...props} className="toggle toggle-primary" {...register(name, formRules)} />
+        </div>
+    );
+}
+
+export function MutiSelectField({ name, label, className, options, control, defaultValue }: any) {
+    let id = useId();
+
+    return (
+        <div className={className}>
+            {label && <Label id={id}>{label}</Label>}
+            <Controller
+                control={control}
+                defaultValue={defaultValue}
+                name={name}
+                render={({ field: { onChange, onBlur, value } }) => (
+                    <Select isMulti classNamePrefix="select" options={options} onChange={onChange} onBlur={onBlur} value={value} />
+                )}
+            />
         </div>
     );
 }

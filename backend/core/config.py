@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     POSTGRES_USER: str = "postgres"
     POSTGRES_PASSWORD: str = "postgres"
     POSTGRES_DB: str = "postgres"
+    STORAGE_BUCKET: str = "bucket"
     SQLALCHEMY_DATABASE_URI: str | None = None
 
     @validator("SQLALCHEMY_DATABASE_URI", pre=True)

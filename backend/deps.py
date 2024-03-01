@@ -5,7 +5,7 @@ import pyrebase
 import requests
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from firebase_admin import auth, credentials
+from firebase_admin import auth, credentials, storage
 from sqlmodel import Session
 
 import crud
@@ -30,7 +30,7 @@ def get_auth() -> Generator:
     try:
         if not firebase_admin._apps:  # Check if the app is not already initialized
             cred = credentials.Certificate(settings.FIREBASE_CRED)
-            firebase_admin.initialize_app(cred)
+            firebase_admin.initialize_app(cred, {"storageBucket": settings.STORAGE_BUCKET})
         firebase = pyrebase.initialize_app(settings.FIREBASE_CONFIG)
 
         # Get a reference to the auth service
@@ -39,6 +39,20 @@ def get_auth() -> Generator:
         print(f"auth init error, ${e}")
     finally:
         print("auth closed")
+
+
+def get_storage() -> Generator:
+    try:
+        if not firebase_admin._apps:  # Check if the app is not already initialized
+            cred = credentials.Certificate(settings.FIREBASE_CRED)
+            firebase_admin.initialize_app(cred, {"storageBucket": settings.STORAGE_BUCKET})
+
+        # Get a reference to the bucket
+        yield storage.bucket()
+    except Exception as e:
+        print(f"storage init error, {e}")
+    finally:
+        print("storage closed")
 
 
 def get_current_user(db: SessionDep, token: TokenDep, auth2: Any = Depends(get_auth)) -> User:

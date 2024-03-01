@@ -1,14 +1,21 @@
-type collection = {
-    id: number;
+type Collection = {
+    id?: number;
     name: string;
+    is_active: boolean;
+    created_at?: string;
+    updated_at?: string;
 };
 
 type Product = {
-    id: number;
+    id?: number;
     name: string;
-    image: string;
-    price: number;
-    collections?: collection[];
+    image?: string;
+    is_active: boolean;
+    price?: number;
+    collections?: Collection[];
+    tags?: Tag[];
+    created_at?: string;
+    updated_at?: string;
 };
 
 type User = {
@@ -37,4 +44,4 @@ type Pagination = {
     total_pages: number;
 };
 
-export type { Product, collection, User, Tag, Pagination };
+export type { Product, Collection, User, Tag, Pagination };
