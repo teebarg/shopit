@@ -1,6 +1,6 @@
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
-from pydantic import EmailStr, PostgresDsn, validator
+from pydantic import EmailStr, PostgresDsn, ValidationInfo, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -17,17 +17,17 @@ class Settings(BaseSettings):
     STORAGE_BUCKET: str = "bucket"
     SQLALCHEMY_DATABASE_URI: str | None = None
 
-    @validator("SQLALCHEMY_DATABASE_URI", pre=True)
-    def assemble_db_connection(cls, v: Optional[str], values: Dict[str, Any]) -> Any:
+    @field_validator("SQLALCHEMY_DATABASE_URI", mode="before")
+    def assemble_db_connection(cls, v: Optional[str], info: ValidationInfo) -> Any:
         if isinstance(v, str):
             return v
         return str(
             PostgresDsn.build(
                 scheme="postgresql",
-                username=values.get("POSTGRES_USER"),
-                password=values.get("POSTGRES_PASSWORD"),
-                host=values.get("POSTGRES_SERVER"),
-                path=f"{values.get('POSTGRES_DB') or ''}",
+                username=info.data.get("POSTGRES_USER"),
+                password=info.data.get("POSTGRES_PASSWORD"),
+                host=info.data.get("POSTGRES_SERVER"),
+                path=f"{info.data.get('POSTGRES_DB') or ''}",
             )
         )
 
