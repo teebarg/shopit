@@ -2,7 +2,6 @@
 .EXPORT_ALL_VARIABLES:
 
 APP_NAME := shopit-backend
-
 # environment variables
 
 help:		## Show this help
@@ -56,6 +55,15 @@ build:
 stage:
 	docker tag $(APP_NAME):latest beafdocker/fast-template:latest
 	docker push beafdocker/fast-template:latest
+
+backend-test:
+	cd backend/
+
+	POSTGRES_SERVER=null \
+	python -m pytest
+
+frontend-test:
+	@cd frontend && npm run test
 
 # Helpers
 c:

@@ -13,6 +13,18 @@ exclude = '''
 )/
 '''
 
+[tool.ruff]
+select = [
+    "B",      # flake8-bugbear
+    "C",      # flake8-comprehensions
+    "C90",    # mccabe
+    "E",      # pycodestyle errors
+    "F",      # pyflakes
+    "I",      # isort
+    "Q",      # flake8-quotes
+    "RUF100", # Unused noqa directive
+]
+
 [tool.isort]
 profile = "black"
 line_length = 88

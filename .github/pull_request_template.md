@@ -14,17 +14,9 @@
 -   [ ] Optimization
 -   [ ] Documentation Update
 
-## Description
-
 
 ## QA Instructions, Screenshots
 
-
-## Added tests?
-
--   [ ] yes
--   [ ] no, because they aren't needed
--   [ ] no, because I need help
 
 ## Are there any post-deployment tasks we need to perform?
 
