@@ -62,6 +62,9 @@ backend-test:
 	POSTGRES_SERVER=null \
 	python -m pytest
 
+frontend-test:
+	@cd frontend && npm run test
+
 # Helpers
 c:
 	@cd scripts && python controller.py run -n $(name)

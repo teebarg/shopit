@@ -4,27 +4,20 @@ from typing import cast
 import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
-
-# from fastapi import FastAPI
-# from fastapi.testclient import TestClient
 from sqlmodel import Session
 
-from core.config import settings
 from db.engine import engine
-from db.init_db import init_db
 from deps import get_current_user
 from main import app
-from models.models import User, UserOut
+from models.models import User
 
 
-# @pytest.fixture(scope="session", autouse=True)
 @pytest.fixture
 def db() -> Generator:
     with Session(engine) as session:
         yield session
 
 
-# @pytest.fixture(scope="module")
 @pytest.fixture
 def client(current_user: User) -> Generator:
     with TestClient(app) as c:
@@ -39,7 +32,6 @@ def unathenticated_client() -> Generator:
         yield c
 
 
-# @pytest.fixture(scope="module")
 @pytest.fixture
 def normal_user_token_headers(client: TestClient) -> dict[str, str]:
     """
