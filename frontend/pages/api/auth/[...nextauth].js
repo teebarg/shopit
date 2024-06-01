@@ -31,7 +31,7 @@ async function refreshAccessToken(token) {
             refreshToken: refreshedTokens.refresh_token ?? token.refreshToken, // Fall back to old refresh token
         };
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return token;
     }
 }
@@ -48,7 +48,7 @@ export const authOptions = {
                     const res = await fetch(loginUri, {
                         method: "POST",
                         body: JSON.stringify(credentials),
-                        headers: { "Content-Type": "application/json" },
+                        headers: { accept: "application/json", "Content-Type": "application/json" },
                     });
                     const user = await res.json();
 
@@ -64,7 +64,7 @@ export const authOptions = {
                     }
                     return null;
                 } catch (error) {
-                    console.log(error);
+                    console.error(error);
                     return null;
                 }
             },

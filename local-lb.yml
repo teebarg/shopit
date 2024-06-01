@@ -29,16 +29,16 @@ http:
         frontend:
             loadBalancer:
                 servers:
-                    - url: http://frontend:3000
+                    - url: http://localhost:3000
         backend:
             loadBalancer:
                 servers:
-                    - url: http://backend:80
+                    - url: http://localhost:4002
         db:
             loadBalancer:
                 servers:
-                    - url: http://db:5432
+                    - url: http://localhost:4003
         adminer:
             loadBalancer:
                 servers:
-                    - url: http://adminer:8080
+                    - url: http://localhost:4005

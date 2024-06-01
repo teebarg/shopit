@@ -3,11 +3,11 @@
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Alert from "@/components/core/Alert";
-import { CheckBoxField, TextField } from "@/components/core/Fields";
+import { SwitchField, TextField } from "@/components/core/Fields";
 import { action } from "@/app/actions";
 import { Collection } from "@/lib/types";
 import { Http } from "@/lib/http";
-import Button from "@/components/core/Button";
+import { Button } from "@nextui-org/react";
 
 type Inputs = {
     name: string;
@@ -15,7 +15,7 @@ type Inputs = {
 };
 
 export default function CollectionForm({
-    collection = { name: "", is_active: true },
+    collection = { name: "", is_active: false },
     mode = "create",
     onClose,
 }: {
@@ -31,6 +31,7 @@ export default function CollectionForm({
     const isCreate = mode === "create";
 
     const {
+        control,
         register,
         handleSubmit,
         reset,
@@ -87,7 +88,7 @@ export default function CollectionForm({
                             />
                         </div>
                         <div>
-                            <CheckBoxField name="is_active" label="Status" register={register} />
+                            <SwitchField name="is_active" label="Status" register={register} control={control} />
                         </div>
                         {error && (
                             <Alert type="alert" delay={5000} onClose={() => setError(false)}>
@@ -103,10 +104,10 @@ export default function CollectionForm({
                 </div>
             </div>
             <div className="flex flex-shrink-0 justify-end px-4 py-4 space-x-2 border-t border-gray-200">
-                <Button mode="white" click={onClose}>
+                <Button color="danger" onPress={onClose}>
                     Cancel
                 </Button>
-                <Button type="submit" mode="primary" isLoading={loading}>
+                <Button type="submit" color="primary" isLoading={loading}>
                     {isCreate ? "Submit" : "Update"}
                 </Button>
             </div>

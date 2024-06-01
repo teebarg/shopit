@@ -1,4 +1,3 @@
-# Use the official Python image as the base image
 FROM python:3.11-slim-buster as builder
 
 # Set environment variables

@@ -29,7 +29,7 @@ export default async function Profile() {
     const session = await getServerSession(authOptions);
     const image: string = session?.user?.image || "";
     return (
-        <div className="px-4 py-2">
+        <div className="px-8 py-2">
             <h2 className="text-base font-semibold leading-7">Personal Information</h2>
             <p className="text-sm leading-6 text-gray-600">Use a permanent address where you can receive mail.</p>
             <div className="flex mt-6">

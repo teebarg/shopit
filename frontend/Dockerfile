@@ -1,8 +1,7 @@
-FROM node:18-alpine AS base
+FROM node:20-alpine AS base
 
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-EXPOSE 4001
-CMD npm run dev
+EXPOSE 3000

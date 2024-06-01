@@ -1,7 +1,34 @@
 {
-    "extends": ["next/core-web-vitals", "eslint:recommended", "prettier", "plugin:prettier/recommended"],
+    "$schema": "https://json.schemastore.org/eslintrc.json",
+    "env": {
+        "browser": false,
+        "es2021": true,
+        "node": true
+    },
+    "extends": [
+        "next/core-web-vitals",
+        "eslint:recommended",
+        "prettier",
+        "plugin:prettier/recommended",
+        "plugin:react-hooks/recommended",
+        "plugin:jsx-a11y/recommended"
+    ],
     "plugins": ["prettier"],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 12,
+        "sourceType": "module"
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    },
     "rules": {
+        "no-console": "warn",
         "react/prop-types": "off",
         "react/react-in-jsx-scope": "off" // React 17 has JSX Transform, no need for React import
         // Additional rules or overrides go here

@@ -1,26 +1,18 @@
-version: "3.8"
 services:
 
   db:
     image: postgres:12
-    container_name: db
-    env_file:
-      - .env
     ports:
       - "4003:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin
-    depends_on:
-      - db
+      - shopit-data:/var/lib/postgresql/data
+    env_file:
+      - .env
     environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@example.com
-      - PGADMIN_DEFAULT_PASSWORD=password
-    ports:
-      - 4004:80
+      - PGDATA=/var/lib/postgresql/data/pgdata
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD?Variable not set}
+      - POSTGRES_USER=${POSTGRES_USER?Variable not set}
+      - POSTGRES_DB=${POSTGRES_DB?Variable not set}
 
   adminer:
     image: adminer
@@ -31,4 +23,4 @@ services:
       - db
 
 volumes:
-  postgres_data:
+  shopit-data:

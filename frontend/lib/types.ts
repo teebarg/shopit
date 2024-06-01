@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 type Collection = {
     id?: number;
     name: string;
@@ -44,4 +46,20 @@ type Pagination = {
     total_pages: number;
 };
 
-export type { Product, Collection, User, Tag, Pagination };
+type Column = {
+    name: string;
+    uid: string | number;
+    sortable?: boolean;
+};
+
+type TableProps = {
+    columns: Column[];
+    rows?: { [key: string]: any }[];
+    pagination?: Pagination;
+    callbackFunction: (user: any, columnKey: string | number) => ReactNode;
+    onSearchChange: (value: string) => void;
+    onAddNew?: () => void;
+    query: string;
+};
+
+export type { Product, Collection, User, Tag, Pagination, Column, TableProps };

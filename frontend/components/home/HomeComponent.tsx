@@ -31,7 +31,9 @@ export default async function HomeComponent() {
                 <div className="max-w-2xl mx-auto py-8">
                     <div className="text-center relative">
                         <h1 className="text-4xl font-bold tracking-tight text-gray-700 font-display">
-                            The fast, easy way to develop apps and websites
+                            The fast, easy way to{" "}
+                            <span className="from-[#FF1CF7] to-[#b249f8] bg-clip-text text-transparent bg-gradient-to-b">develop</span> apps and
+                            websites
                         </h1>
                         <p className="mt-6 text-lg text-gray-600">
                             Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo. Elit sunt amet fugiat veniam

@@ -81,4 +81,8 @@ const imgSrc = (image: string): string => {
     return `${process.env.NEXT_PUBLIC_IMAGE_URL}/${image}?alt=media`;
 };
 
-export { buildUrl, cleanDate, currency, startOfMonth, sleep, getInitials, getGreetingMessage, endOfMonth, imgSrc };
+const capitalize = (str: string): string => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
+export { buildUrl, cleanDate, currency, startOfMonth, sleep, getInitials, getGreetingMessage, endOfMonth, imgSrc, capitalize };

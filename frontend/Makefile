@@ -1,7 +1,6 @@
-# Makefile for building and running the FastAPI app in Docker
-
 # Variables
-APP_NAME := frontend
+PROJECT_SLUG := shopit
+APP_NAME := $(PROJECT_SLUG)-frontend
 PORT := 4001
 
 # Targets
