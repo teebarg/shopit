@@ -60,7 +60,9 @@ async def create(cart: schemas.CartCreate, db: deps.SessionDep):
     try:
         return crud.cart.create(db=db, obj_in=cart)
     except IntegrityError as e:
-        raise HTTPException(status_code=422, detail=f"An error occurred, {e.orig.pgerror}")
+        raise HTTPException(
+            status_code=422, detail=f"An error occurred, {e.orig.pgerror}"
+        )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred, {e}")
 
@@ -75,7 +77,9 @@ async def update(id: int, update: schemas.CartUpdate, db: deps.SessionDep):
             return crud.cart.update(db=db, db_obj=cart, obj_in=update)
         raise HTTPException(status_code=404, detail="Cart not found.")
     except IntegrityError as e:
-        raise HTTPException(status_code=422, detail=f"Error updating cart, {e.orig.pgerror}")
+        raise HTTPException(
+            status_code=422, detail=f"Error updating cart, {e.orig.pgerror}"
+        )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error updating cart, {e}")
 
@@ -90,4 +94,6 @@ async def delete(id: int, db: deps.SessionDep):
             return cart
         raise HTTPException(status_code=404, detail="Cart not found.")
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error deleting cart, invalid cart id, {e}")
+        raise HTTPException(
+            status_code=500, detail=f"Error deleting cart, invalid cart id, {e}"
+        )

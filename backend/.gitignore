@@ -6,5 +6,6 @@ __pycache__
 .git
 .env
 cred.json
+app.log
 
 .idea/

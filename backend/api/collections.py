@@ -59,7 +59,9 @@ async def create(collection: schemas.CollectionCreate, db: deps.SessionDep):
     try:
         return crud.collection.create(db=db, obj_in=collection)
     except IntegrityError as e:
-        raise HTTPException(status_code=422, detail=f"Error creating collection, {e.orig.pgerror}")
+        raise HTTPException(
+            status_code=422, detail=f"Error creating collection, {e.orig.pgerror}"
+        )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error creating collection, {e}")
 
@@ -74,7 +76,9 @@ async def update(id: int, update: schemas.CollectionUpdate, db: deps.SessionDep)
             return crud.collection.update(db=db, db_obj=collection, obj_in=update)
         raise HTTPException(status_code=404, detail="Collection not found.")
     except IntegrityError as e:
-        raise HTTPException(status_code=422, detail=f"Error updating collection, {e.orig.pgerror}")
+        raise HTTPException(
+            status_code=422, detail=f"Error updating collection, {e.orig.pgerror}"
+        )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error updating collection, {e}")
 

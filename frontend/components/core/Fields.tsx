@@ -1,19 +1,10 @@
 import React, { useId } from "react";
 import { Controller, UseFormRegister } from "react-hook-form";
-import Select from "react-select";
 import { Input } from "@nextui-org/input";
 import { EyeSlashFilledIcon, EyeFilledIcon } from "@/components/icons";
-import { Checkbox, Switch } from "@nextui-org/react";
+import { Checkbox, Switch, Select, SelectItem } from "@nextui-org/react";
 
 const formClasses = "input input-bordered w-full form-fix";
-
-function Label({ id, children }: { id: string; children: React.ReactNode }) {
-    return (
-        <label htmlFor={id} className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-200">
-            {children}
-        </label>
-    );
-}
 
 type Types = "text" | "password" | "email" | "number";
 
@@ -129,40 +120,47 @@ export function TextField({ name, label, type = "text", defaultValue, register, 
     );
 }
 
-export function SelectField({ name, label, className, register, ...props }: FieldProps) {
+export function SelectField({
+    name,
+    label,
+    error,
+    options,
+    control,
+    rules,
+    variant = "flat",
+    selectionMode = "single",
+    labelPlacement = "inside",
+    description = "",
+}: any) {
     let id = useId();
+    const { required } = rules || {};
 
     return (
-        <div className={className}>
-            {label && <Label id={id}>{label}</Label>}
-            <select id={id} {...props} className={formClasses} {...register(name)} />
-        </div>
-    );
-}
-
-export function CheckBoxField2({ name, label, className, register, ...props }: FieldProps) {
-    let id = useId();
-    const formRules: Rules = {};
-
-    return (
-        <div className={className}>
-            {label && <Label id={id}>{label}</Label>}
-            <input id={id} type="checkbox" {...props} className="toggle toggle-primary" {...register(name, formRules)} />
-        </div>
-    );
-}
-
-export function MutiSelectField({ name, label, className, options, control }: any) {
-    let id = useId();
-
-    return (
-        <div className={className}>
-            {label && <Label id={id}>{label}</Label>}
+        <div key={id} className="w-full">
             <Controller
                 control={control}
                 name={name}
-                render={({ field: { onChange, onBlur, value } }) => (
-                    <Select isMulti classNamePrefix="select" options={options} onChange={onChange} onBlur={onBlur} value={value} />
+                render={({ field: { onChange, value } }) => (
+                    <Select
+                        color="secondary"
+                        variant={variant}
+                        isRequired={required}
+                        label={label}
+                        onChange={onChange}
+                        selectedKeys={value}
+                        placeholder="Select an animal"
+                        description={description}
+                        selectionMode={selectionMode}
+                        className="max-w-xs"
+                        labelPlacement={labelPlacement}
+                        size="md"
+                        errorMessage={error?.message}
+                        isInvalid={error}
+                    >
+                        {options.map((item: { value: string; label: string }) => (
+                            <SelectItem key={item.value}>{item.label}</SelectItem>
+                        ))}
+                    </Select>
                 )}
             />
         </div>

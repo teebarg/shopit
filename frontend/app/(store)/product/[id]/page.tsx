@@ -3,6 +3,7 @@ import { ShieldCheckIcon } from "@heroicons/react/24/outline";
 import cn from "classnames";
 import { imgSrc, currency } from "@/lib/utils";
 import Image from "next/image";
+import Link from "next/link";
 
 const product = {
     name: "Everyday Ruck Snack",
@@ -29,13 +30,13 @@ export default function Product() {
                 {/* Product details */}
                 <div className="lg:max-w-lg lg:self-end">
                     <nav aria-label="Breadcrumb">
-                        <ol role="list" className="flex items-center space-x-2">
+                        <ol className="flex items-center space-x-2">
                             {product.breadcrumbs.map((breadcrumb, breadcrumbIdx) => (
                                 <li key={breadcrumb.id}>
                                     <div className="flex items-center text-sm">
-                                        <a href={breadcrumb.href} className="font-medium text-gray-500 hover:text-gray-900">
+                                        <Link href={breadcrumb.href} className="font-medium text-gray-500 hover:text-gray-900">
                                             {breadcrumb.name}
-                                        </a>
+                                        </Link>
                                         {breadcrumbIdx !== product.breadcrumbs.length - 1 ? (
                                             <svg
                                                 viewBox="0 0 20 20"
@@ -127,13 +128,13 @@ export default function Product() {
                                 </div>
                             </div>
                             <div className="mt-4">
-                                <a href="#" className="group inline-flex text-sm text-gray-500 hover:text-gray-700">
+                                <Link href="/" className="group inline-flex text-sm text-gray-500 hover:text-gray-700">
                                     <span>What size should I buy?</span>
                                     <QuestionMarkCircleIcon
                                         className="ml-2 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                                         aria-hidden="true"
                                     />
-                                </a>
+                                </Link>
                             </div>
                             <div className="mt-10">
                                 <button
@@ -144,13 +145,13 @@ export default function Product() {
                                 </button>
                             </div>
                             <div className="mt-6 text-center">
-                                <a href="#" className="group inline-flex text-base font-medium">
+                                <Link href="/" className="group inline-flex text-base font-medium">
                                     <ShieldCheckIcon
                                         className="mr-2 h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                                         aria-hidden="true"
                                     />
                                     <span className="text-gray-500 hover:text-gray-700">Lifetime Guarantee</span>
-                                </a>
+                                </Link>
                             </div>
                         </form>
                     </section>

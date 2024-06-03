@@ -8,6 +8,7 @@ import Image from "next/image";
 import Tuple from "@/public/tuple.svg";
 import Reform from "@/public/reform.svg";
 import SavvyCal from "@/public/savvycal.svg";
+import Link from "next/link";
 
 type Status = "Paid" | "Withdraw" | "Overdue";
 
@@ -267,11 +268,8 @@ export default function Admin() {
                         <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
                             <div className="flex items-center justify-between">
                                 <h2 className="text-base font-semibold leading-7 text-gray-900">Recent clients</h2>
-                                <a href="#" className="text-sm font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-                                    View all<span className="sr-only">, clients</span>
-                                </a>
                             </div>
-                            <ul role="list" className="mt-6 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8">
+                            <ul className="mt-6 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8">
                                 {clients.map((client: Client) => (
                                     <li key={client.id} className="overflow-hidden rounded-xl border border-gray-200">
                                         <div className="flex items-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
@@ -296,28 +294,28 @@ export default function Admin() {
                                                     <Menu.Items className="absolute right-0 z-10 mt-0.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
                                                         <Menu.Item>
                                                             {({ active }) => (
-                                                                <a
-                                                                    href="#"
+                                                                <Link
+                                                                    href="/"
                                                                     className={cn(
                                                                         active ? "bg-gray-50" : "",
                                                                         "block px-3 py-1 text-sm leading-6 text-gray-900"
                                                                     )}
                                                                 >
                                                                     View<span className="sr-only">, {client.name}</span>
-                                                                </a>
+                                                                </Link>
                                                             )}
                                                         </Menu.Item>
                                                         <Menu.Item>
                                                             {({ active }) => (
-                                                                <a
-                                                                    href="#"
+                                                                <Link
+                                                                    href="/"
                                                                     className={cn(
                                                                         active ? "bg-gray-50" : "",
                                                                         "block px-3 py-1 text-sm leading-6 text-gray-900"
                                                                     )}
                                                                 >
                                                                     Edit<span className="sr-only">, {client.name}</span>
-                                                                </a>
+                                                                </Link>
                                                             )}
                                                         </Menu.Item>
                                                     </Menu.Items>

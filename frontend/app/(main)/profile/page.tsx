@@ -12,8 +12,12 @@ export const metadata = {
 async function getData() {
     const { ok, status, data } = await GET("/users/me", "me");
 
-    if ([401, 403].includes(status)) {
+    if ([401].includes(status)) {
         redirect("/logout");
+    }
+
+    if ([403].includes(status)) {
+        redirect("/");
     }
 
     if (!ok) {

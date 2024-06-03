@@ -13,10 +13,14 @@ async function refreshAccessToken(token) {
         const response = await fetch(url, {
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${token.accessToken}`,
+                "X-Auth": token?.accessToken,
             },
             method: "POST",
         });
+
+        if ([401, 403].includes(response.status)) {
+            throw new Error();
+        }
 
         const refreshedTokens = await response.json();
 
@@ -32,7 +36,7 @@ async function refreshAccessToken(token) {
         };
     } catch (error) {
         console.error(error);
-        return token;
+        throw error;
     }
 }
 
@@ -93,11 +97,16 @@ export const authOptions = {
             if (Date.now() < token.accessTokenExpires) {
                 return token;
             }
-            return refreshAccessToken(token);
+            try {
+                return await refreshAccessToken(token);
+            } catch (error) {
+                token = null;
+                return token;
+            }
         },
         async session({ session, token }) {
-            session.user.id = token.id;
-            session.user.accessToken = token.accessToken;
+            session.user.id = token?.id;
+            session.user.accessToken = token?.accessToken;
             return session;
         },
         async signIn({ user, account, profile }) {

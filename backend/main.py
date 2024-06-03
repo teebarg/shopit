@@ -16,8 +16,12 @@ app.include_router(products_router, prefix="/api/products", tags=["products"])
 app.include_router(tags_router, prefix="/api/tags", tags=["tags"])
 app.include_router(collections_router, prefix="/api/collections", tags=["collections"])
 app.include_router(cart_router, prefix="/api/cart", tags=["cart"])
-app.include_router(users_router, prefix="/api/users", tags=["users"])  # Include the user router
-app.include_router(auth_router, prefix="/auth", tags=["auth"])  # Include the user router
+app.include_router(
+    users_router, prefix="/api/users", tags=["users"]
+)  # Include the user router
+app.include_router(
+    auth_router, prefix="/auth", tags=["auth"]
+)  # Include the user router
 
 app.add_middleware(
     CORSMiddleware,

@@ -33,14 +33,14 @@ export default function SlideOut({ onClose, title = "Confirm", children }: Slide
                                 leaveTo="translate-x-full"
                             >
                                 <Dialog.Panel className="pointer-events-auto w-screen max-w-md">
-                                    <div className="flex h-full flex-col bg-white shadow-xl">
+                                    <div className="flex h-screen flex-col bg-background shadow-xl">
                                         <div className="px-4 sm:px-6 py-6 border-b border-gray-200">
                                             <div className="flex items-start justify-between">
-                                                <Dialog.Title className="text-lg font-semibold leading-6 text-gray-900">{title}</Dialog.Title>
+                                                <Dialog.Title className="text-lg font-semibold leading-6">{title}</Dialog.Title>
                                                 <div className="ml-3 flex h-7 items-center">
                                                     <button
                                                         type="button"
-                                                        className="relative rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                                        className="relative rounded-md focus:outline-none focus:ring-0"
                                                         onClick={onClose}
                                                     >
                                                         <span className="absolute -inset-2.5"></span>
@@ -49,7 +49,7 @@ export default function SlideOut({ onClose, title = "Confirm", children }: Slide
                                                 </div>
                                             </div>
                                         </div>
-                                        {children}
+                                        <div className="flex-1 overflow-y-auto">{children}</div>
                                     </div>
                                 </Dialog.Panel>
                             </Transition.Child>

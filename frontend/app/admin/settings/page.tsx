@@ -53,7 +53,7 @@ export default function Settings() {
                             <h2 className="text-base font-semibold leading-7 text-gray-900">Bank accounts</h2>
                             <p className="mt-1 text-sm leading-6 text-gray-500">Connect bank accounts to your account.</p>
 
-                            <ul role="list" className="mt-6 divide-y divide-gray-100 border-t border-gray-200 text-sm leading-6">
+                            <ul className="mt-6 divide-y divide-gray-100 border-t border-gray-200 text-sm leading-6">
                                 <li className="flex justify-between gap-x-6 py-6">
                                     <div className="font-medium text-gray-900">TD Canada Trust</div>
                                     <button type="button" className="font-semibold text-indigo-600 hover:text-indigo-500">
@@ -79,7 +79,7 @@ export default function Settings() {
                             <h2 className="text-base font-semibold leading-7 text-gray-900">Integrations</h2>
                             <p className="mt-1 text-sm leading-6 text-gray-500">Connect applications to your account.</p>
 
-                            <ul role="list" className="mt-6 divide-y divide-gray-100 border-t border-gray-200 text-sm leading-6">
+                            <ul className="mt-6 divide-y divide-gray-100 border-t border-gray-200 text-sm leading-6">
                                 <li className="flex justify-between gap-x-6 py-6">
                                     <div className="font-medium text-gray-900">QuickBooks</div>
                                     <button type="button" className="font-semibold text-indigo-600 hover:text-indigo-500">

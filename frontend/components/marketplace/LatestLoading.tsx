@@ -6,6 +6,7 @@ export default function LatestLoading() {
                     <div className="w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"></div>
                     <div className="mt-4 flex justify-between">
                         <div>
+                            {/* eslint-disable-next-line jsx-a11y/heading-has-content */}
                             <h3 className="h-4 bg-gray-400"></h3>
                             <p className="mt-1 h-4 bg-gray-400"></p>
                         </div>

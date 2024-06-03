@@ -1,5 +1,4 @@
 from datetime import datetime, timezone
-from typing import Union
 
 from sqlmodel import Field, SQLModel
 

@@ -2,7 +2,8 @@ from sqlmodel import Session, select
 
 import crud
 from core.config import settings
-from models.models import User, UserCreate  # noqa: F401
+from core.logging import logger
+from models.models import User, UserCreate
 
 # make sure all SQLModel models are imported (app.models) before initializing DB
 # otherwise, SQLModel might fail to initialize relationships properly
@@ -14,7 +15,9 @@ def init_db(session: Session, auth) -> None:
     # But if you don't want to use migrations, create
     # the tables un-commenting the next line
     # Base.metadata.create_all(bind=engine)
-    user = session.exec(select(User).where(User.email == settings.FIRST_SUPERUSER)).first()
+    user = session.exec(
+        select(User).where(User.email == settings.FIRST_SUPERUSER)
+    ).first()
     if not user:
         try:
             user_in = UserCreate(
@@ -29,4 +32,4 @@ def init_db(session: Session, auth) -> None:
                 password=settings.FIRST_SUPERUSER_PASSWORD,
             )
         except Exception as e:
-            print(e)
+            logger.error(e)
