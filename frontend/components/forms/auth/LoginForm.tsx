@@ -67,13 +67,7 @@ export default function LoginForm() {
                 />
             </div>
             <div>
-                <PasswordField
-                    name="password"
-                    label="Password"
-                    register={register}
-                    error={errors?.password}
-                    rules={{ required: true, minLength: 8 }}
-                />
+                <PasswordField name="password" label="Password" register={register} error={errors?.password} rules={{ required: true }} />
             </div>
             {loading ? (
                 <Button color="primary" isLoading size="lg" fullWidth type="submit">

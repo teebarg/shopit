@@ -157,9 +157,7 @@ export function SelectField({
                         errorMessage={error?.message}
                         isInvalid={error}
                     >
-                        {options.map((item: { value: string; label: string }) => (
-                            <SelectItem key={item.value}>{item.label}</SelectItem>
-                        ))}
+                        {options?.map((item: { value: string; label: string }) => <SelectItem key={item.value}>{item.label}</SelectItem>)}
                     </Select>
                 )}
             />

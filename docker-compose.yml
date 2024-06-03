@@ -1,23 +1,25 @@
 services:
-  proxy:
+  traefik:
     image: traefik:v2.9
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./lb.yml:/config.yml:ro
-    ports:
-      - 4000:4000
-      - 4001:8080
-    # Duplicate the command from docker-compose.yml to add --api.insecure=true
     command:
       - traefik
       - --entrypoints.dev.address=:4000
       - --providers.file.filename=/config.yml
       - --api.insecure=true
-      # Enable the Traefik log, for configurations and errors
-      - --log
+    ports:
+      - 4000:4000
+      - 4001:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./lb.yml:/config.yml:ro
+    networks:
+      - traefik-public
+      - default
 
   db:
     image: postgres:12
+    ports:
+      - 4004:5432
     networks:
       - traefik-public
       - default
@@ -33,6 +35,8 @@ services:
 
   adminer:
     image: adminer
+    ports:
+      - 4005:8080
     networks:
       - traefik-public
       - default
@@ -41,6 +45,8 @@ services:
 
   backend:
     image: '${DOCKER_IMAGE_BACKEND?Variable not set}:${TAG-latest}'
+    ports:
+      - 4002:8000
     networks:
       - traefik-public
       - default
@@ -48,7 +54,6 @@ services:
       - db
     env_file:
       - ./backend/.env
-
     build:
       context: ./backend
       args:
@@ -60,6 +65,8 @@ services:
 
   frontend:
     image: '${DOCKER_IMAGE_FRONTEND?Variable not set}:${TAG-latest}'
+    ports:
+      - 4003:3000
     networks:
       - traefik-public
       - default
@@ -77,6 +84,7 @@ services:
       - NODE_ENV=development
     env_file:
       - ./frontend/.env
+
 volumes:
   shopit-data:
 

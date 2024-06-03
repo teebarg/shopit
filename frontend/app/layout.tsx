@@ -16,7 +16,7 @@ const lexend = Lexend({
 });
 
 export const metadata = {
-    title: "Create Next FastApi App",
+    title: "ShopIt App",
     description: "A fast and easy way to create a Next.js app with FastAPI",
 };
 

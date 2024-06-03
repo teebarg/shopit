@@ -18,9 +18,6 @@ http:
         backend-redoc:
             rule: PathPrefix(`/redoc`)
             service: backend
-        db:
-            rule: PathPrefix(`/db`)
-            service: db
         adminer:
             rule: PathPrefix(`/adminer`)
             service: adminer
@@ -34,10 +31,6 @@ http:
             loadBalancer:
                 servers:
                     - url: http://localhost:4002
-        db:
-            loadBalancer:
-                servers:
-                    - url: http://localhost:4003
         adminer:
             loadBalancer:
                 servers:

@@ -49,11 +49,18 @@ export const authOptions = {
             // eslint-disable-next-line no-unused-vars
             async authorize(credentials, req) {
                 try {
+                    const { email, password } = credentials;
                     const res = await fetch(loginUri, {
                         method: "POST",
-                        body: JSON.stringify(credentials),
-                        headers: { accept: "application/json", "Content-Type": "application/json" },
+                        body: JSON.stringify({ email, password }),
+                        headers: { "Content-Type": "application/json" },
                     });
+
+                    if (!res.ok) {
+                        const errorText = await res.text();
+                        throw new Error(`Login request failed: ${res.status} - ${errorText}`);
+                    }
+
                     const user = await res.json();
 
                     if (res.ok && user) {

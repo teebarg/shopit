@@ -28,8 +28,8 @@ export default function ProductForm({
     onClose,
 }: {
     product?: Product;
-    tags?: any[];
-    collections?: any[];
+    tags?: { value: string | number; label: string }[];
+    collections?: { value: string | number; label: string }[];
     mode?: string;
     onClose?: () => void;
 }) {

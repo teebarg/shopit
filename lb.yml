@@ -1,3 +1,6 @@
+log:
+    level: DEBUG
+
 http:
     routers:
         frontend:
@@ -18,9 +21,6 @@ http:
         backend-redoc:
             rule: PathPrefix(`/redoc`)
             service: backend
-        db:
-            rule: PathPrefix(`/db`)
-            service: db
         adminer:
             rule: PathPrefix(`/adminer`)
             service: adminer
@@ -29,16 +29,12 @@ http:
         frontend:
             loadBalancer:
                 servers:
-                    - url: http://frontend:3000
+                    - url: "http://frontend:3000"
         backend:
             loadBalancer:
                 servers:
-                    - url: http://backend:80
-        db:
-            loadBalancer:
-                servers:
-                    - url: http://db:5432
+                    - url: "http://backend:8000"
         adminer:
             loadBalancer:
                 servers:
-                    - url: http://adminer:8080
+                    - url: "http://adminer:8080"

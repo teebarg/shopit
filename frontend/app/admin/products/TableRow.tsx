@@ -35,8 +35,8 @@ export default function TableRow({
 
     const [product, setProduct] = useState<Product>();
     const [mode, setMode] = useState<"create" | "update">("create");
-    const [tags, setTags] = useState([]);
-    const [collections, setCollections] = useState({} as Collection);
+    const [tags, setTags] = useState<{ value: string | number; label: string }[]>([]);
+    const [collections, setCollections] = useState<{ value: string | number; label: string }[]>([]);
     const [showModal, setShowModal] = useState<boolean>(false);
     const [selected, setSeleted] = useState<string | number>(0);
     const [isPending, startTransition] = useTransition();
@@ -56,6 +56,7 @@ export default function TableRow({
         const fetchData = async (url: string, setDataCallback: any) => {
             try {
                 const { ok, data } = await GET(url);
+                console.log("🚀 ~ fetchData ~ data:", data);
 
                 if (!ok) {
                     setDataCallback([]);
@@ -65,7 +66,7 @@ export default function TableRow({
                 const transformedData =
                     setDataCallback === setTags
                         ? data.tags.map((tag: any) => ({ id: tag.id, value: tag.id, label: tag.name }))
-                        : data.collections.map((collection: any) => ({ value: collection.id, label: collection.name }));
+                        : data.collections.map((collection: any) => ({ id: collection.id, value: collection.id, label: collection.name }));
 
                 setDataCallback(transformedData);
             } catch (error) {

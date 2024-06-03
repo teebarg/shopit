@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import SignUpForm from "@/components/auth/SignUpForm";
+import SignUpForm from "@/components/forms/auth/SignUpForm";
 import AuthGirl from "@/public/auth-girl.svg";
 import { ThemeSwitch } from "@/components/theme-switch";
 

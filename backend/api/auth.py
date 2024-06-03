@@ -5,7 +5,6 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
 from firebase_admin import auth as firebase_auth
-from sqlmodel import Session
 
 import crud
 import deps
@@ -21,7 +20,7 @@ router = APIRouter()
 async def login_for_access_token(
     credentials: schemas.SignIn,
     auth: Any = Depends(deps.get_auth),
-    db=Annotated[Session, Depends(deps.get_db)],
+    db=Depends(deps.get_db)
 ) -> Any:
     """
     User login to get access token (JWT).
