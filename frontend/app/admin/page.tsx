@@ -8,6 +8,7 @@ import Image from "next/image";
 import Tuple from "@/public/tuple.svg";
 import Reform from "@/public/reform.svg";
 import SavvyCal from "@/public/savvycal.svg";
+import Link from "next/link";
 
 type Status = "Paid" | "Withdraw" | "Overdue";
 
@@ -134,7 +135,7 @@ export default function Admin() {
     return (
         <>
             <main>
-                <div className="relative isolate overflow-hidden">
+                <div className="relative isolate overflow-hidden bg-content1 mt-4">
                     {/* Stats */}
                     <div className="border-b border-b-gray-900/10 lg:border-t lg:border-t-gray-900/5">
                         <dl className="mx-auto grid max-w-7xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:px-2 xl:px-0">
@@ -146,11 +147,16 @@ export default function Admin() {
                                         "flex items-baseline flex-wrap justify-between gap-y-2 gap-x-4 border-t border-gray-900/5 px-4 py-10 sm:px-6 lg:border-t-0 xl:px-8"
                                     )}
                                 >
-                                    <dt className="text-sm font-medium leading-6 text-gray-500">{stat.name}</dt>
-                                    <dd className={cn(stat.changeType === "negative" ? "text-rose-600" : "text-gray-700", "text-xs font-medium")}>
+                                    <dt className="text-sm font-medium leading-6">{stat.name}</dt>
+                                    <dd
+                                        className={cn(
+                                            stat.changeType === "negative" ? "text-rose-600" : "text-content4-foreground",
+                                            "text-xs font-medium"
+                                        )}
+                                    >
                                         {stat.change}
                                     </dd>
-                                    <dd className="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900">{stat.value}</dd>
+                                    <dd className="w-full flex-none text-3xl font-medium leading-10 tracking-tight">{stat.value}</dd>
                                 </div>
                             ))}
                         </dl>
@@ -174,11 +180,9 @@ export default function Admin() {
                     {/* Recent activity table */}
                     <div>
                         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                            <h2 className="mx-auto max-w-2xl text-base font-semibold leading-6 text-gray-900 lg:mx-0 lg:max-w-none">
-                                Recent activity
-                            </h2>
+                            <h2 className="mx-auto max-w-2xl font-semibold leading-6 lg:mx-0 lg:max-w-none">Recent activity</h2>
                         </div>
-                        <div className="mt-6 overflow-hidden border-t border-gray-100">
+                        <div className="mt-6 overflow-hidden border-t border-default-100 bg-content1">
                             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                                 <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
                                     <table className="w-full text-left">
@@ -192,11 +196,11 @@ export default function Admin() {
                                         <tbody>
                                             {days.map((day) => (
                                                 <Fragment key={day.dateTime}>
-                                                    <tr className="text-sm leading-6 text-gray-900">
+                                                    <tr className="text-sm leading-6">
                                                         <th scope="colgroup" colSpan={3} className="relative isolate py-2 font-semibold">
                                                             <time dateTime={day.dateTime}>{day.date}</time>
-                                                            <div className="absolute inset-y-0 right-full -z-10 w-screen border-b border-gray-200 bg-gray-50" />
-                                                            <div className="absolute inset-y-0 left-0 -z-10 w-screen border-b border-gray-200 bg-gray-50" />
+                                                            <div className="absolute inset-y-0 right-full -z-10 w-screen border-b border-default-200 bg-default-100" />
+                                                            <div className="absolute inset-y-0 left-0 -z-10 w-screen border-b border-default-200 bg-default-100" />
                                                         </th>
                                                     </tr>
                                                     {day.transactions.map((transaction: Transactions) => (
@@ -204,14 +208,12 @@ export default function Admin() {
                                                             <td className="relative py-5 pr-6">
                                                                 <div className="flex gap-x-6">
                                                                     <transaction.icon
-                                                                        className="hidden h-6 w-5 flex-none text-gray-400 sm:block"
+                                                                        className="hidden h-6 w-5 flex-none text-default-300 sm:block"
                                                                         aria-hidden="true"
                                                                     />
                                                                     <div className="flex-auto">
                                                                         <div className="flex items-start gap-x-3">
-                                                                            <div className="text-sm font-medium leading-6 text-gray-900">
-                                                                                {transaction.amount}
-                                                                            </div>
+                                                                            <div className="text-sm font-medium leading-6">{transaction.amount}</div>
                                                                             <div
                                                                                 className={cn(
                                                                                     statuses[transaction.status],
@@ -222,24 +224,24 @@ export default function Admin() {
                                                                             </div>
                                                                         </div>
                                                                         {transaction.tax ? (
-                                                                            <div className="mt-1 text-xs leading-5 text-gray-500">
+                                                                            <div className="mt-1 text-xs leading-5 text-default-500">
                                                                                 {transaction.tax} tax
                                                                             </div>
                                                                         ) : null}
                                                                     </div>
                                                                 </div>
-                                                                <div className="absolute bottom-0 right-full h-px w-screen bg-gray-100" />
-                                                                <div className="absolute bottom-0 left-0 h-px w-screen bg-gray-100" />
                                                             </td>
                                                             <td className="hidden py-5 pr-6 sm:table-cell">
-                                                                <div className="text-sm leading-6 text-gray-900">{transaction.client}</div>
-                                                                <div className="mt-1 text-xs leading-5 text-gray-500">{transaction.description}</div>
+                                                                <div className="text-sm leading-6">{transaction.client}</div>
+                                                                <div className="mt-1 text-xs leading-5 text-default-500">
+                                                                    {transaction.description}
+                                                                </div>
                                                             </td>
                                                             <td className="py-5 text-right">
                                                                 <div className="flex justify-end">
                                                                     <a
                                                                         href={transaction.href}
-                                                                        className="text-sm font-medium leading-6 text-indigo-600 hover:text-indigo-500"
+                                                                        className="text-sm font-medium leading-6 text-primary hover:text-indigo-500"
                                                                     >
                                                                         View<span className="hidden sm:inline"> transaction</span>
                                                                         <span className="sr-only">
@@ -247,8 +249,8 @@ export default function Admin() {
                                                                         </span>
                                                                     </a>
                                                                 </div>
-                                                                <div className="mt-1 text-xs leading-5 text-gray-500">
-                                                                    Invoice <span className="text-gray-900">#{transaction.invoiceNumber}</span>
+                                                                <div className="mt-1 text-xs leading-5 text-default-500">
+                                                                    Invoice <span className="text-foreground">#{transaction.invoiceNumber}</span>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -266,21 +268,18 @@ export default function Admin() {
                     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                         <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
                             <div className="flex items-center justify-between">
-                                <h2 className="text-base font-semibold leading-7 text-gray-900">Recent clients</h2>
-                                <a href="#" className="text-sm font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-                                    View all<span className="sr-only">, clients</span>
-                                </a>
+                                <h2 className="text-base font-semibold leading-7">Recent clients</h2>
                             </div>
-                            <ul role="list" className="mt-6 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8">
+                            <ul className="mt-6 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8 bg-content1">
                                 {clients.map((client: Client) => (
-                                    <li key={client.id} className="overflow-hidden rounded-xl border border-gray-200">
-                                        <div className="flex items-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
-                                            <div className="relative h-12 w-12 flex-none rounded-lg bg-white object-cover ring-1 ring-gray-900/10 overflow-hidden">
+                                    <li key={client.id} className="overflow-hidden rounded-xl border border-default-100">
+                                        <div className="flex items-center gap-x-4 border-b border-default-100 bg-default-100 p-6">
+                                            <div className="relative h-12 w-12 flex-none rounded-lg object-cover ring-1 ring-gray-900/10 overflow-hidden">
                                                 <Image src={client.imageUrl} alt={client.name} fill />
                                             </div>
-                                            <div className="text-sm font-medium leading-6 text-gray-900">{client.name}</div>
+                                            <div className="text-sm font-medium leading-6">{client.name}</div>
                                             <Menu as="div" className="relative ml-auto">
-                                                <Menu.Button className="-m-2.5 block p-2.5 text-gray-400 hover:text-gray-500">
+                                                <Menu.Button className="-m-2.5 block p-2.5">
                                                     <span className="sr-only">Open options</span>
                                                     <EllipsisHorizontalIcon className="h-5 w-5" aria-hidden="true" />
                                                 </Menu.Button>
@@ -293,48 +292,48 @@ export default function Admin() {
                                                     leaveFrom="transform opacity-100 scale-100"
                                                     leaveTo="transform opacity-0 scale-95"
                                                 >
-                                                    <Menu.Items className="absolute right-0 z-10 mt-0.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
+                                                    <Menu.Items className="absolute right-0 z-10 mt-0.5 w-32 origin-top-right rounded-md bg-default-100 py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
                                                         <Menu.Item>
                                                             {({ active }) => (
-                                                                <a
-                                                                    href="#"
+                                                                <Link
+                                                                    href="/"
                                                                     className={cn(
-                                                                        active ? "bg-gray-50" : "",
-                                                                        "block px-3 py-1 text-sm leading-6 text-gray-900"
+                                                                        active ? "bg-default-200" : "",
+                                                                        "block px-3 py-1 text-sm leading-6"
                                                                     )}
                                                                 >
                                                                     View<span className="sr-only">, {client.name}</span>
-                                                                </a>
+                                                                </Link>
                                                             )}
                                                         </Menu.Item>
                                                         <Menu.Item>
                                                             {({ active }) => (
-                                                                <a
-                                                                    href="#"
+                                                                <Link
+                                                                    href="/"
                                                                     className={cn(
-                                                                        active ? "bg-gray-50" : "",
-                                                                        "block px-3 py-1 text-sm leading-6 text-gray-900"
+                                                                        active ? "bg-default-200" : "",
+                                                                        "block px-3 py-1 text-sm leading-6"
                                                                     )}
                                                                 >
                                                                     Edit<span className="sr-only">, {client.name}</span>
-                                                                </a>
+                                                                </Link>
                                                             )}
                                                         </Menu.Item>
                                                     </Menu.Items>
                                                 </Transition>
                                             </Menu>
                                         </div>
-                                        <dl className="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm leading-6">
+                                        <dl className="-my-3 divide-y divide-default-200 px-6 py-4 text-sm leading-6">
                                             <div className="flex justify-between gap-x-4 py-3">
-                                                <dt className="text-gray-500">Last invoice</dt>
-                                                <dd className="text-gray-700">
+                                                <dt className="text-default-500">Last invoice</dt>
+                                                <dd>
                                                     <time dateTime={client.lastInvoice.dateTime}>{client.lastInvoice.date}</time>
                                                 </dd>
                                             </div>
                                             <div className="flex justify-between gap-x-4 py-3">
-                                                <dt className="text-gray-500">Amount</dt>
+                                                <dt className="text-default-500">Amount</dt>
                                                 <dd className="flex items-start gap-x-2">
-                                                    <div className="font-medium text-gray-900">{client.lastInvoice.amount}</div>
+                                                    <div className="font-medium">{client.lastInvoice.amount}</div>
                                                     <div
                                                         className={cn(
                                                             statuses[client.lastInvoice.status],

@@ -7,7 +7,7 @@ import { CheckBoxField, TextField } from "@/components/core/Fields";
 import { action } from "@/app/actions";
 import { Tag } from "@/lib/types";
 import { Http } from "@/lib/http";
-import Button from "@/components/core/Button";
+import { Button } from "@nextui-org/react";
 
 type Inputs = {
     name: string;
@@ -23,6 +23,7 @@ export default function TagForm({ tag = { name: "", is_active: true }, mode = "c
     const isCreate = mode === "create";
 
     const {
+        control,
         register,
         handleSubmit,
         reset,
@@ -58,7 +59,6 @@ export default function TagForm({ tag = { name: "", is_active: true }, mode = "c
             action("tags");
             setSuccess(true);
         } catch (error) {
-            console.log(error);
             setErrorMessage("An error occurred, please contact the administrator");
             setLoading(false);
         }
@@ -77,15 +77,11 @@ export default function TagForm({ tag = { name: "", is_active: true }, mode = "c
                 />
             </div>
             <div>
-                <CheckBoxField name="is_active" label="Status" register={register} />
+                <CheckBoxField name="is_active" label="Status" register={register} control={control} />
             </div>
-            <Button type="submit" mode="primary" css="w-full" isLoading={loading}>
+            <Button type="submit" color="primary" className="w-full" isLoading={loading}>
                 {isCreate ? "Submit" : "Update"}
             </Button>
-            {/* <button type="submit" className="btn btn-primary w-full">
-                {loading && <span className="loading loading-spinner"></span>}
-                {loading ? "Loading" : isCreate ? "Submit" : "Update"}
-            </button> */}
             {error && (
                 <Alert type="alert" delay={5000} onClose={() => setError(false)}>
                     <p>{errorMessage}</p>

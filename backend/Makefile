@@ -1,8 +1,9 @@
-# Makefile for building and running the FastAPI app in Docker
-
 # Variables
-APP_NAME := backend
+PROJECT_SLUG := shopit
+APP_NAME := $(PROJECT_SLUG)-backend
 PORT := 4002
+
+YELLOW=$(shell tput -Txterm setaf 3)
 
 # Targets
 build:
@@ -21,3 +22,7 @@ dev:
 format:
 	black .
 	ruff --fix .
+
+backend-test: ## Run backend tests
+	@echo "$(YELLOW)Running backend tests...$(RESET)"
+	POSTGRES_SERVER=null PROJECT_NAME=null FIRST_SUPERUSER_FIRSTNAME=null FIRST_SUPERUSER_LASTNAME=null FIRST_SUPERUSER=email@email.com FIRST_SUPERUSER_PASSWORD=null python -m pytest

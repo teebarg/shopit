@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationTriangleIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import Button from "@/components/core/Button";
+import { Button } from "@nextui-org/react";
 
 type ConfirmProps = {
     onConfirm?: () => void;
@@ -62,10 +62,10 @@ export default function Confirm({ onConfirm, onClose, isLoading, title = "Confir
                                     </div>
                                 </div>
                                 <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse gap-2">
-                                    <Button mode="danger" click={onConfirm} isLoading={isLoading}>
+                                    <Button color="danger" onPress={onConfirm} isLoading={isLoading}>
                                         Delete
                                     </Button>
-                                    <Button mode="white" click={onClose}>
+                                    <Button color="default" onPress={onClose}>
                                         Cancel
                                     </Button>
                                 </div>

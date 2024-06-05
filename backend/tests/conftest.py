@@ -21,7 +21,9 @@ def db() -> Generator:
 @pytest.fixture
 def client(current_user: User) -> Generator:
     with TestClient(app) as c:
-        cast(FastAPI, c.app).dependency_overrides[get_current_user] = lambda: current_user
+        cast(FastAPI, c.app).dependency_overrides[
+            get_current_user
+        ] = lambda: current_user
         yield c
 
 

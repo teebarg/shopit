@@ -1,8 +1,12 @@
+"use client";
+
 import { CheckIcon, QuestionMarkCircleIcon, StarIcon } from "@heroicons/react/20/solid";
 import { ShieldCheckIcon } from "@heroicons/react/24/outline";
 import cn from "classnames";
 import { imgSrc, currency } from "@/lib/utils";
 import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@nextui-org/react";
 
 const product = {
     name: "Everyday Ruck Snack",
@@ -24,25 +28,20 @@ const reviews = { average: 4, totalCount: 1624 };
 
 export default function Product() {
     return (
-        <div className="bg-white">
-            <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
+        <div>
+            <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8 bg-content1 mt-4">
                 {/* Product details */}
                 <div className="lg:max-w-lg lg:self-end">
                     <nav aria-label="Breadcrumb">
-                        <ol role="list" className="flex items-center space-x-2">
+                        <ol className="flex items-center space-x-2">
                             {product.breadcrumbs.map((breadcrumb, breadcrumbIdx) => (
                                 <li key={breadcrumb.id}>
                                     <div className="flex items-center text-sm">
-                                        <a href={breadcrumb.href} className="font-medium text-gray-500 hover:text-gray-900">
+                                        <Link href={breadcrumb.href} className="font-medium">
                                             {breadcrumb.name}
-                                        </a>
+                                        </Link>
                                         {breadcrumbIdx !== product.breadcrumbs.length - 1 ? (
-                                            <svg
-                                                viewBox="0 0 20 20"
-                                                fill="currentColor"
-                                                aria-hidden="true"
-                                                className="ml-2 h-5 w-5 flex-shrink-0 text-gray-300"
-                                            >
+                                            <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className="ml-2 h-5 w-5 flex-shrink-0">
                                                 <path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" />
                                             </svg>
                                         ) : null}
@@ -53,7 +52,7 @@ export default function Product() {
                     </nav>
 
                     <div className="mt-4">
-                        <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{product.name}</h1>
+                        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">{product.name}</h1>
                     </div>
 
                     <section aria-labelledby="information-heading" className="mt-4">
@@ -62,7 +61,7 @@ export default function Product() {
                         </h2>
 
                         <div className="flex items-center">
-                            <p className="text-lg text-gray-900 sm:text-xl">{currency(product.price)}</p>
+                            <p className="text-lg sm:text-xl">{currency(product.price)}</p>
 
                             <div className="ml-4 border-l border-gray-300 pl-4">
                                 <h2 className="sr-only">Reviews</h2>
@@ -82,25 +81,25 @@ export default function Product() {
                                         </div>
                                         <p className="sr-only">{reviews.average} out of 5 stars</p>
                                     </div>
-                                    <p className="ml-2 text-sm text-gray-500">{reviews.totalCount} reviews</p>
+                                    <p className="ml-2 text-sm">{reviews.totalCount} reviews</p>
                                 </div>
                             </div>
                         </div>
 
                         <div className="mt-4 space-y-6">
-                            <p className="text-base text-gray-500">{product.description}</p>
+                            <p className="text-base">{product.description}</p>
                         </div>
 
                         <div className="mt-6 flex items-center">
                             <CheckIcon className="h-5 w-5 flex-shrink-0 text-green-500" aria-hidden="true" />
-                            <p className="ml-2 text-sm text-gray-500">In stock and ready to ship</p>
+                            <p className="ml-2 text-sm">In stock and ready to ship</p>
                         </div>
                     </section>
                 </div>
 
                 {/* Product image */}
                 <div className="mt-10 lg:col-start-2 lg:row-span-2 lg:mt-0 lg:self-center">
-                    <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg relative min-h-[400px]">
+                    <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg relative min-h-[400px] bg-red-500">
                         <Image src={imgSrc(product.imageSrc)} alt={product.imageAlt} fill className="h-full w-full" />
                     </div>
                 </div>
@@ -127,30 +126,27 @@ export default function Product() {
                                 </div>
                             </div>
                             <div className="mt-4">
-                                <a href="#" className="group inline-flex text-sm text-gray-500 hover:text-gray-700">
+                                <Link href="/" className="group inline-flex text-sm">
                                     <span>What size should I buy?</span>
                                     <QuestionMarkCircleIcon
                                         className="ml-2 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                                         aria-hidden="true"
                                     />
-                                </a>
+                                </Link>
                             </div>
                             <div className="mt-10">
-                                <button
-                                    type="submit"
-                                    className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
-                                >
+                                <Button type="submit" color="primary" variant="bordered" className="w-full">
                                     Add to bag
-                                </button>
+                                </Button>
                             </div>
                             <div className="mt-6 text-center">
-                                <a href="#" className="group inline-flex text-base font-medium">
+                                <Link href="/" className="group inline-flex text-base font-medium">
                                     <ShieldCheckIcon
                                         className="mr-2 h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                                         aria-hidden="true"
                                     />
                                     <span className="text-gray-500 hover:text-gray-700">Lifetime Guarantee</span>
-                                </a>
+                                </Link>
                             </div>
                         </form>
                     </section>

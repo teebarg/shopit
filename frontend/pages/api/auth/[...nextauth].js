@@ -9,14 +9,18 @@ import NextAuth from "next-auth";
  */
 async function refreshAccessToken(token) {
     try {
-        const url = `${process.env.NEXT_PUBLIC_AUTH_API_DOMAIN}/refresh-token?refresh_token=${token.refreshToken}`;
+        const url = `${process.env.AUTH_API_DOMAIN}/refresh-token?refresh_token=${token.refreshToken}`;
         const response = await fetch(url, {
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${token.accessToken}`,
+                "X-Auth": token?.accessToken,
             },
             method: "POST",
         });
+
+        if ([401, 403].includes(response.status)) {
+            throw new Error();
+        }
 
         const refreshedTokens = await response.json();
 
@@ -31,12 +35,12 @@ async function refreshAccessToken(token) {
             refreshToken: refreshedTokens.refresh_token ?? token.refreshToken, // Fall back to old refresh token
         };
     } catch (error) {
-        console.log(error);
-        return token;
+        console.error(error);
+        throw error;
     }
 }
 
-const loginUri = `${process.env.NEXT_PUBLIC_AUTH_API_DOMAIN}/login`;
+const loginUri = `${process.env.AUTH_API_DOMAIN}/login`;
 export const authOptions = {
     debug: true,
     providers: [
@@ -45,11 +49,18 @@ export const authOptions = {
             // eslint-disable-next-line no-unused-vars
             async authorize(credentials, req) {
                 try {
+                    const { email, password } = credentials;
                     const res = await fetch(loginUri, {
                         method: "POST",
-                        body: JSON.stringify(credentials),
+                        body: JSON.stringify({ email, password }),
                         headers: { "Content-Type": "application/json" },
                     });
+
+                    if (!res.ok) {
+                        const errorText = await res.text();
+                        throw new Error(`Login request failed: ${res.status} - ${errorText}`);
+                    }
+
                     const user = await res.json();
 
                     if (res.ok && user) {
@@ -64,7 +75,7 @@ export const authOptions = {
                     }
                     return null;
                 } catch (error) {
-                    console.log(error);
+                    console.error(error);
                     return null;
                 }
             },
@@ -93,16 +104,21 @@ export const authOptions = {
             if (Date.now() < token.accessTokenExpires) {
                 return token;
             }
-            return refreshAccessToken(token);
+            try {
+                return await refreshAccessToken(token);
+            } catch (error) {
+                token = null;
+                return token;
+            }
         },
         async session({ session, token }) {
-            session.user.id = token.id;
-            session.user.accessToken = token.accessToken;
+            session.user.id = token?.id;
+            session.user.accessToken = token?.accessToken;
             return session;
         },
         async signIn({ user, account, profile }) {
             if (account.provider === "google") {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_AUTH_API_DOMAIN}/social`, {
+                const res = await fetch(`${process.env.AUTH_API_DOMAIN}/social`, {
                     method: "POST",
                     body: JSON.stringify({
                         firstname: profile.given_name,

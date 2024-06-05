@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from typing import Any
+from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import JSONResponse
@@ -45,9 +45,11 @@ async def login_for_access_token(
         return content
     except Exception as e:
         if "INVALID_LOGIN_CREDENTIALS" in str(e):
-            raise HTTPException(status_code=400, detail="Invalid login credentials")
+            raise HTTPException(
+                status_code=400, detail="Invalid login credentials"
+            ) from e
         else:
-            raise HTTPException(status_code=400, detail="An error occurred")
+            raise HTTPException(status_code=400, detail="An error occurred") from e
 
 
 @router.post("/signup")
@@ -82,14 +84,14 @@ async def sign_up(
         )
     except Exception as e:
         if "EMAIL_EXISTS" in str(e):
-            raise HTTPException(status_code=400, detail="email already exists")
+            raise HTTPException(status_code=400, detail="email already exists") from e
         elif "INVALID_EMAIL" in str(e):
-            raise HTTPException(status_code=400, detail="invalid email")
+            raise HTTPException(status_code=400, detail="invalid email") from e
         else:
-            raise HTTPException(status_code=400, detail="An error occurred")
+            raise HTTPException(status_code=400, detail="An error occurred") from e
 
 
-@router.post("/login/access-token", response_model=schemas.Token)
+@router.post("/login/password", response_model=schemas.Token)
 def login_access_token(
     form_data: OAuth2PasswordRequestForm = Depends(),
     auth: Any = Depends(deps.get_auth),
@@ -98,7 +100,9 @@ def login_access_token(
     OAuth2 compatible token login, get an access token for future requests
     """
     try:
-        user = auth.sign_in_with_email_and_password(form_data.username, form_data.password)
+        user = auth.sign_in_with_email_and_password(
+            form_data.username, form_data.password
+        )
         return JSONResponse(
             status_code=200,
             content={
@@ -110,24 +114,28 @@ def login_access_token(
         )
     except Exception as e:
         if "INVALID_LOGIN_CREDENTIALS" in str(e):
-            raise HTTPException(status_code=400, detail="Incorrect email or password")
+            raise HTTPException(
+                status_code=400, detail="Incorrect email or password"
+            ) from e
         else:
-            raise HTTPException(status_code=400, detail="An error occurred")
+            raise HTTPException(status_code=400, detail="An error occurred") from e
 
 
 @router.post("/logout")
-def logout(current_user: schemas.User = Depends(deps.get_current_user)) -> Any:
+def logout(uid: str = Depends(deps.get_token_uid)) -> Any:
     """
     Log out current user.
     """
     try:
-        firebase_auth.revoke_refresh_tokens(current_user.get("uid"))
+        firebase_auth.revoke_refresh_tokens(uid)
         return JSONResponse(
             status_code=200,
             content={"message": "User signed out successfully"},
         )
-    except Exception:
-        raise HTTPException(status_code=400, detail="Error signing out user")
+    except Exception as e:
+        raise HTTPException(
+            status_code=400, detail=f"Error signing out user. Error: ${e}"
+        ) from e
 
 
 @router.post("/refresh-token")
@@ -196,7 +204,9 @@ def get_timestamp() -> int:
     current_datetime = datetime.now()
 
     # Add 1 hour (3600 seconds) to the current datetime.
-    new_datetime = current_datetime + timedelta(seconds=settings.ACCESS_TOKEN_EXPIRE_SECONDS)
+    new_datetime = current_datetime + timedelta(
+        seconds=settings.ACCESS_TOKEN_EXPIRE_SECONDS
+    )
 
     # Convert the new datetime to a Unix timestamp (milliseconds since epoch).
     return int(new_datetime.timestamp() * 1000)

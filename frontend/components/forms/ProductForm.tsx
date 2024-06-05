@@ -3,20 +3,20 @@
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Alert from "@/components/core/Alert";
-import { CheckBoxField, MutiSelectField, TextField } from "@/components/core/Fields";
+import { CheckBoxField, SelectField, TextField } from "@/components/core/Fields";
 import { action } from "@/app/actions";
 import { Product } from "@/lib/types";
 import { Http } from "@/lib/http";
-import Button from "@/components/core/Button";
 import ImageUpload from "@/components/core/ImageUpload";
 import { useSession } from "next-auth/react";
 import { imgSrc } from "@/lib/utils";
+import { Button } from "@nextui-org/react";
 
 type Inputs = {
     name: string;
     is_active: boolean;
-    tags: { value: string; label: string }[];
-    collections: { value: string; label: string }[];
+    tags: string;
+    collections: string;
     price: number;
 };
 
@@ -28,8 +28,8 @@ export default function ProductForm({
     onClose,
 }: {
     product?: Product;
-    tags?: any[];
-    collections?: any[];
+    tags?: { value: string | number; label: string }[];
+    collections?: { value: string | number; label: string }[];
     mode?: string;
     onClose?: () => void;
 }) {
@@ -44,8 +44,8 @@ export default function ProductForm({
 
     const isCreate = mode === "create";
 
-    const selectedTags = product?.tags?.map((item: any) => ({ value: item.id, label: item.name })) ?? [];
-    const selectedCollections = product?.collections?.map((item: any) => ({ value: item.id, label: item.name })) ?? [];
+    const selectedTags = product?.tags?.map((item: any) => item.id) ?? [];
+    const selectedCollections = product?.collections?.map((item: any) => item.id) ?? [];
 
     const {
         control,
@@ -58,13 +58,20 @@ export default function ProductForm({
             name: product.name,
             is_active: product.is_active,
             price: product.price ?? 0,
-            collections: selectedCollections,
-            tags: selectedTags,
+            collections: selectedCollections.join(","),
+            tags: selectedTags.join(","),
         },
     });
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        const tags = data.tags.map((item: any) => item.value);
-        const collections = data.collections.map((item: any) => item.value);
+        const tags = data.tags
+            ?.split(",")
+            ?.filter((i) => i)
+            .map((item: string) => item);
+        const collections = data.collections
+            ?.split(",")
+            ?.filter((i) => i)
+            .map((item: string) => item);
+
         if (loading) {
             return;
         }
@@ -72,6 +79,7 @@ export default function ProductForm({
         setErrorMessage("");
         setLoading(true);
         const body = JSON.stringify({ ...data, tags, collections });
+
         try {
             let res;
             if (isCreate) {
@@ -100,13 +108,8 @@ export default function ProductForm({
         }
     };
 
-    // const handleFileChange = (file: any) => {
-    //     setFile(file);
-    // };
-
     const handleUpload = async () => {
         setImageLoader(true);
-        console.log(file);
         try {
             const formData = new FormData();
             if (!file) {
@@ -119,7 +122,7 @@ export default function ProductForm({
                 method: "PATCH",
                 headers: {
                     accept: "application/json",
-                    Authorization: `Bearer ${session?.user?.accessToken}`,
+                    "X-Auth": session?.user?.accessToken,
                 },
                 body: formData,
             });
@@ -132,16 +135,16 @@ export default function ProductForm({
     };
 
     return (
-        <form className="contents" onSubmit={handleSubmit(onSubmit)}>
+        <form className="h-full flex flex-col" onSubmit={handleSubmit(onSubmit)}>
             <div className="flex min-h-0 flex-1 flex-col overflow-y-scroll py-6">
                 <div className="relative flex-1 px-4 sm:px-6">
                     <div className="space-y-8 max-w-sm mt-4">
                         {/* Image uploader */}
                         <div>
-                            <label className="block text-sm font-medium text-gray-700">Product Image</label>
+                            <span className="block text-sm font-medium">Product Image</span>
                             {!isCreate && <ImageUpload onData={setFile} defaultImage={product.image ? imgSrc(product.image) : ""} />}
                             {file && (
-                                <Button type="button" click={handleUpload} mode="primary" isLoading={imageLoader} css="mt-1">
+                                <Button type="button" onPress={handleUpload} color="primary" isLoading={imageLoader} className="mt-1">
                                     Update Image
                                 </Button>
                             )}
@@ -155,9 +158,30 @@ export default function ProductForm({
                             error={errors?.name}
                             rules={{ required: true }}
                         />
-                        <CheckBoxField name="is_active" label="Status" register={register} />
-                        <MutiSelectField name="tags" label="Tags" register={register} options={tags} control={control} />
-                        <MutiSelectField name="collections" label="Collections" register={register} options={collections} control={control} />
+                        <CheckBoxField name="is_active" label="Status" register={register} control={control} />
+                        <SelectField
+                            name="tags"
+                            label="Tags"
+                            register={register}
+                            options={tags}
+                            control={control}
+                            error={errors?.name}
+                            rules={{ required: true }}
+                            description="Product tags"
+                            selectionMode="multiple"
+                            placeholder="Select Tags"
+                        />
+                        <SelectField
+                            name="collections"
+                            label="Collections"
+                            register={register}
+                            options={collections}
+                            control={control}
+                            error={errors?.name}
+                            description="Product collections"
+                            selectionMode="multiple"
+                            placeholder="Select Collections"
+                        />
                         <TextField
                             name="price"
                             label="Product Price"
@@ -180,11 +204,11 @@ export default function ProductForm({
                     </div>
                 </div>
             </div>
-            <div className="flex flex-shrink-0 justify-end px-4 py-4 space-x-2 border-t border-gray-200">
-                <Button mode="white" click={onClose}>
+            <div className="flex flex-shrink-0 justify-end p-4 space-x-2 border-t border-default-200">
+                <Button color="danger" onPress={onClose} variant="shadow">
                     Cancel
                 </Button>
-                <Button type="submit" mode="primary" isLoading={loading}>
+                <Button type="submit" color="primary" isLoading={loading} variant="shadow">
                     {isCreate ? "Submit" : "Update"}
                 </Button>
             </div>

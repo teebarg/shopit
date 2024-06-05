@@ -1,8 +1,9 @@
-# Makefile for building and running the FastAPI app in Docker
-
 # Variables
-APP_NAME := frontend
+PROJECT_SLUG := shopit
+APP_NAME := $(PROJECT_SLUG)-frontend
 PORT := 4001
+
+YELLOW=$(shell tput -Txterm setaf 3)
 
 # Targets
 build:
@@ -20,3 +21,8 @@ dev:
 
 lint:
 	npm run lint:fix && npm run format
+
+
+frontend-test: ## Run frontend tests
+	@echo "$(YELLOW)Running frontend tests...$(RESET)"
+	npm run test

@@ -21,7 +21,9 @@ async def get_cart(cart_id: str, db=Depends(deps.get_db)):
 
 
 @router.post("/{cart_id}", response_model=schemas.CartItem)
-async def add_to_cart(cart_id: str, item: schemas.CartItemCreate, db=Depends(deps.get_db)):
+async def add_to_cart(
+    cart_id: str, item: schemas.CartItemCreate, db=Depends(deps.get_db)
+):
     """
     Add an item to the cart.
     """

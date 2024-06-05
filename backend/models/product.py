@@ -1,13 +1,15 @@
 from typing import Any, Optional, Union
 
-from sqlmodel import Field, Relationship, SQLModel
+from sqlmodel import Field, Relationship
 
 from models.base import BaseModel
 
 
 class ProductCollection(BaseModel, table=True):
     __tablename__ = "product_collection"
-    product_id: Optional[int] = Field(default=None, foreign_key="product.id", primary_key=True)
+    product_id: Optional[int] = Field(
+        default=None, foreign_key="product.id", primary_key=True
+    )
     collection_id: Optional[int] = Field(
         default=None, foreign_key="collection.id", primary_key=True
     )
@@ -15,7 +17,9 @@ class ProductCollection(BaseModel, table=True):
 
 class ProductTag(BaseModel, table=True):
     __tablename__ = "product_tag"
-    product_id: Optional[int] = Field(default=None, foreign_key="product.id", primary_key=True)
+    product_id: Optional[int] = Field(
+        default=None, foreign_key="product.id", primary_key=True
+    )
     tag_id: Optional[int] = Field(default=None, foreign_key="tag.id", primary_key=True)
 
 
@@ -50,7 +54,9 @@ class TagBase(BaseModel):
 # Properties to receive via API on creation
 class Tag(TagBase, table=True):
     id: Union[int, None] = Field(default=None, primary_key=True)
-    products: list["Product"] = Relationship(back_populates="tags", link_model=ProductTag)
+    products: list["Product"] = Relationship(
+        back_populates="tags", link_model=ProductTag
+    )
 
 
 class TagOut(TagBase):

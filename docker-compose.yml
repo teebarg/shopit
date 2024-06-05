@@ -1,0 +1,94 @@
+services:
+  traefik:
+    image: traefik:v2.9
+    command:
+      - traefik
+      - --entrypoints.dev.address=:4000
+      - --providers.file.filename=/config.yml
+      - --api.insecure=true
+    ports:
+      - 4000:4000
+      - 4001:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./lb.yml:/config.yml:ro
+    networks:
+      - traefik-public
+      - default
+
+  db:
+    image: postgres:12
+    ports:
+      - 4004:5432
+    networks:
+      - traefik-public
+      - default
+    volumes:
+      - shopit-data:/var/lib/postgresql/data/pgdata
+    env_file:
+      - ./backend/.env
+    environment:
+      - PGDATA=/var/lib/postgresql/data/pgdata
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD?Variable not set}
+      - POSTGRES_USER=${POSTGRES_USER?Variable not set}
+      - POSTGRES_DB=${POSTGRES_DB?Variable not set}
+
+  adminer:
+    image: adminer
+    ports:
+      - 4005:8080
+    networks:
+      - traefik-public
+      - default
+    depends_on:
+      - db
+
+  backend:
+    image: '${DOCKER_IMAGE_BACKEND?Variable not set}:${TAG-latest}'
+    ports:
+      - 4002:8000
+    networks:
+      - traefik-public
+      - default
+    depends_on:
+      - db
+    env_file:
+      - ./backend/.env
+    build:
+      context: ./backend
+      args:
+        INSTALL_DEV: ${INSTALL_DEV-false}
+    platform: linux/amd64 # Patch for M1 Mac
+    volumes:
+      - ./backend/:/app
+
+
+  frontend:
+    image: '${DOCKER_IMAGE_FRONTEND?Variable not set}:${TAG-latest}'
+    ports:
+      - 4003:3000
+    networks:
+      - traefik-public
+      - default
+    depends_on:
+      - backend
+    build:
+      context: ./frontend
+      args:
+        - NODE_ENV=production
+    command: npm run dev
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    env_file:
+      - ./frontend/.env
+
+volumes:
+  shopit-data:
+
+networks:
+  traefik-public:
+    # Allow setting it to false for testing
+    external: false

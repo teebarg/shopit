@@ -1,6 +1,3 @@
-log:
-    level: DEBUG
-
 http:
     routers:
         frontend:
@@ -15,20 +12,26 @@ http:
         backend:
             rule: PathPrefix(`/api`)
             service: backend
-        adm:
-            rule: PathPrefix(`/admin`)
-            service: adm
+        backend-doc:
+            rule: PathPrefix(`/docs`)
+            service: backend
+        backend-redoc:
+            rule: PathPrefix(`/redoc`)
+            service: backend
+        adminer:
+            rule: PathPrefix(`/adminer`)
+            service: adminer
 
     services:
         frontend:
             loadBalancer:
                 servers:
-                    - url: http://frontend:4001
+                    - url: http://localhost:3000
         backend:
             loadBalancer:
                 servers:
-                    - url: http://api:4002
-        adm:
+                    - url: http://localhost:4002
+        adminer:
             loadBalancer:
                 servers:
-                    - url: http://adm:4004
+                    - url: http://localhost:4005

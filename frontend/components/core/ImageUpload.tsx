@@ -23,6 +23,7 @@ export default function ImageUpload({ onData, defaultImage = "" }: { onData: any
         onData(selectedFile);
 
         // Preview the image
+        // eslint-disable-next-line no-undef
         const reader = new FileReader();
         reader.onloadend = () => {
             setPreview(reader?.result);
@@ -67,7 +68,7 @@ export default function ImageUpload({ onData, defaultImage = "" }: { onData: any
 
     return (
         <div>
-            <div className="max-w-md mx-auto bg-white p-6 rounded-md shadow-md relative border-dashed border-2 border-sky-500 min-h-[10rem]">
+            <div className="max-w-md mx-auto bg-content2 p-6 rounded-md shadow-md relative border-dashed border-2 border-sky-500 min-h-[10rem]">
                 {preview && (
                     <button type="button" className="absolute top-3 right-4" onClick={handleCancel}>
                         <XMarkIcon className="h-6 w-6" aria-hidden="true" />
@@ -85,9 +86,9 @@ export default function ImageUpload({ onData, defaultImage = "" }: { onData: any
                             </svg>
                             <p>
                                 Drop your images here or{" "}
-                                <span onClick={handleClick} className="link">
+                                <button onClick={handleClick} className="link">
                                     browse.
-                                </span>
+                                </button>
                             </p>
                             <button type="button" onClick={handleClick} className="btn btn-sm btn-primary">
                                 Upload

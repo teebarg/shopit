@@ -1,4 +1,3 @@
-# Use the official Python image as the base image
 FROM python:3.11-slim-buster as builder
 
 # Set environment variables
@@ -27,8 +26,8 @@ RUN pip install uvicorn
 # Copy the entire project to the container's working directory
 COPY . .
 
-# Expose port 4002 (the port your FastAPI app is listening on)
-EXPOSE 4002
+# Expose port 8000 (the port your FastAPI app is listening on)
+EXPOSE 8000
 
 # Copy your Bash script into the container
 COPY prestart.sh /usr/local/bin/
@@ -37,4 +36,4 @@ COPY prestart.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/prestart.sh
 
 # Run your existing command and then the Bash script
-CMD ["sh", "-c", "/usr/local/bin/prestart.sh && python -m uvicorn main:app --host 0.0.0.0 --port 4002 --reload"]
+CMD ["sh", "-c", "/usr/local/bin/prestart.sh && python -m uvicorn main:app --host 0.0.0.0 --reload"]

@@ -10,6 +10,7 @@ from sqlalchemy.exc import IntegrityError
 import crud
 import deps
 import schemas
+from core.logging import logger
 from models.product import ProductOut
 
 # Create a router for products
@@ -65,7 +66,9 @@ async def store(product: schemas.ProductCreate, db: deps.SessionDep):
     try:
         return crud.product.create(db=db, product=product)
     except IntegrityError as e:
-        raise HTTPException(status_code=422, detail=f"Error creating product, {e.orig.pgerror}")
+        raise HTTPException(
+            status_code=422, detail=f"Error creating product, {e.orig.pgerror}"
+        )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error creating product, {e}")
 
@@ -80,7 +83,9 @@ async def update(id: str, update: schemas.ProductUpdate, db: deps.SessionDep):
             return crud.product.update(db=db, db_obj=product, obj_in=update)
         raise HTTPException(status_code=404, detail="Product not found.")
     except IntegrityError as e:
-        raise HTTPException(status_code=422, detail=f"Error updating product, {e.orig.pgerror}")
+        raise HTTPException(
+            status_code=422, detail=f"Error updating product, {e.orig.pgerror}"
+        )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error updating product, {e}")
 
@@ -154,7 +159,9 @@ async def product_collection(id: str, update: list[int], db: deps.SessionDep):
             detail=f"Error updating product's collections, {e.orig.pgerror}",
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error updating product's collections, {e}")
+        raise HTTPException(
+            status_code=500, detail=f"Error updating product's collections, {e}"
+        )
 
 
 @router.put("/{id}/tags", response_model=ProductOut)
@@ -175,7 +182,9 @@ async def product_tag(id: str, update: list[int], db: deps.SessionDep):
             status_code=422, detail=f"Error updating product's tags, {e.orig.pgerror}"
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error updating product's tags, {e}")
+        raise HTTPException(
+            status_code=500, detail=f"Error updating product's tags, {e}"
+        )
 
 
 # Upload product image
@@ -212,10 +221,14 @@ async def upload_product_image(
         blob.upload_from_file(BytesIO(file_content), content_type=file.content_type)
 
         if product := crud.product.get(db=db, id=id):
-            return crud.product.update(db=db, db_obj=product, obj_in={"image": file_name})
+            return crud.product.update(
+                db=db, db_obj=product, obj_in={"image": file_name}
+            )
         raise HTTPException(status_code=404, detail="Product not found.")
 
         # return {"message": "Product image uploaded successfully."}
     except Exception as e:
-        print(f"An exception occurred while trying to upload image: {e}")
-        raise HTTPException(status_code=500, detail=f"Error while uploading product image. {e}")
+        logger.error(f"An exception occurred while trying to upload image: {e}")
+        raise HTTPException(
+            status_code=500, detail=f"Error while uploading product image. {e}"
+        )

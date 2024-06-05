@@ -66,7 +66,9 @@ async def create(tag: schemas.TagCreate, db: deps.SessionDep):
     try:
         return crud.tag.create(db=db, obj_in=tag)
     except IntegrityError as e:
-        raise HTTPException(status_code=422, detail=f"Error creating tag, {e.orig.pgerror}")
+        raise HTTPException(
+            status_code=422, detail=f"Error creating tag, {e.orig.pgerror}"
+        )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error creating tag, {e}")
 
@@ -81,7 +83,9 @@ async def update(id: int, update: schemas.TagUpdate, db: deps.SessionDep):
             return crud.tag.update(db=db, db_obj=tag, obj_in=update)
         raise HTTPException(status_code=404, detail="Tag not found.")
     except IntegrityError as e:
-        raise HTTPException(status_code=422, detail=f"Error updating tag, {e.orig.pgerror}")
+        raise HTTPException(
+            status_code=422, detail=f"Error updating tag, {e.orig.pgerror}"
+        )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error updating tag, {e}")
 
@@ -96,4 +100,6 @@ async def delete(id: int, db: deps.SessionDep):
             return tag
         raise HTTPException(status_code=404, detail="Tag not found.")
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error deleting tag, invalid tag id, {e}")
+        raise HTTPException(
+            status_code=500, detail=f"Error deleting tag, invalid tag id, {e}"
+        )

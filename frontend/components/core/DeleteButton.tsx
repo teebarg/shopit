@@ -4,7 +4,7 @@ import React, { ReactNode, useTransition, useState } from "react";
 import { Http } from "@/lib/http";
 import { action } from "@/app/actions";
 import Confirm from "@/components/core/Confirm";
-import Button from "@/components/core/Button";
+import { Button } from "@nextui-org/react";
 
 type BtnProps = {
     path?: string;
@@ -26,7 +26,7 @@ export default function DeleteButton({ path = "/", children, id }: BtnProps) {
 
     return (
         <>
-            <Button mode="danger" click={() => setOpen(true)}>
+            <Button color="danger" onPress={() => setOpen(true)}>
                 {children}
             </Button>
             {open && <Confirm title="Delete User" isLoading={isPending} onConfirm={handleDelete} onClose={() => setOpen(false)} />}
