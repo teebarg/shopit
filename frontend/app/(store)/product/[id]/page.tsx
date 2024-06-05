@@ -29,7 +29,7 @@ const reviews = { average: 4, totalCount: 1624 };
 export default function Product() {
     return (
         <div>
-            <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8 bg-content1 mt-4">
+            <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8 bg-content1 mt-6 rounded-md">
                 {/* Product details */}
                 <div className="lg:max-w-lg lg:self-end">
                     <nav aria-label="Breadcrumb">
@@ -99,7 +99,7 @@ export default function Product() {
 
                 {/* Product image */}
                 <div className="mt-10 lg:col-start-2 lg:row-span-2 lg:mt-0 lg:self-center">
-                    <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg relative min-h-[400px] bg-red-500">
+                    <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg relative min-h-[400px]">
                         <Image src={imgSrc(product.imageSrc)} alt={product.imageAlt} fill className="h-full w-full" />
                     </div>
                 </div>

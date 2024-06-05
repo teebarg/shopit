@@ -182,7 +182,7 @@ export default function NextTable({ rows = [], columns = [], callbackFunction, o
                 },
             }}
             classNames={{
-                wrapper: "max-h-[600px]",
+                wrapper: "max-h-[700px]",
             }}
             selectedKeys={selectedKeys}
             selectionMode="multiple"
