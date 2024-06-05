@@ -48,7 +48,6 @@ export default function TableRow({
         { name: "Tags", uid: "tags" },
         { name: "Collections", uid: "collections" },
         // { name: "CREATED_AT", uid: "create" },
-        // { name: "LAST UPDATED", uid: "update" },
         { name: "ACTIONS", uid: "actions" },
     ];
 
@@ -56,7 +55,6 @@ export default function TableRow({
         const fetchData = async (url: string, setDataCallback: any) => {
             try {
                 const { ok, data } = await GET(url);
-                console.log("🚀 ~ fetchData ~ data:", data);
 
                 if (!ok) {
                     setDataCallback([]);
