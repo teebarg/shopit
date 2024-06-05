@@ -6,11 +6,11 @@ type Method = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 const Http = async (url: string, method: Method, body?: any, extra?: Object) => {
     let session: any = null;
-    let domain = process.env.NEXT_PUBLIC_CLIENT_API_DOMAIN;
+    let domain = process.env.NEXT_PUBLIC_API_DOMAIN;
     if (typeof window === "undefined") {
         // @ts-expect-error
         session = await getServerSession(authOptions);
-        domain = process.env.NEXT_PUBLIC_API_DOMAIN;
+        domain = process.env.API_DOMAIN;
     } else {
         session = await getSession();
     }

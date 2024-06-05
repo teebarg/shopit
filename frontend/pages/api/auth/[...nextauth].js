@@ -9,7 +9,7 @@ import NextAuth from "next-auth";
  */
 async function refreshAccessToken(token) {
     try {
-        const url = `${process.env.NEXT_PUBLIC_AUTH_API_DOMAIN}/refresh-token?refresh_token=${token.refreshToken}`;
+        const url = `${process.env.AUTH_API_DOMAIN}/refresh-token?refresh_token=${token.refreshToken}`;
         const response = await fetch(url, {
             headers: {
                 "Content-Type": "application/json",
@@ -40,7 +40,7 @@ async function refreshAccessToken(token) {
     }
 }
 
-const loginUri = `${process.env.NEXT_PUBLIC_AUTH_API_DOMAIN}/login`;
+const loginUri = `${process.env.AUTH_API_DOMAIN}/login`;
 export const authOptions = {
     debug: true,
     providers: [
@@ -118,7 +118,7 @@ export const authOptions = {
         },
         async signIn({ user, account, profile }) {
             if (account.provider === "google") {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_AUTH_API_DOMAIN}/social`, {
+                const res = await fetch(`${process.env.AUTH_API_DOMAIN}/social`, {
                     method: "POST",
                     body: JSON.stringify({
                         firstname: profile.given_name,
