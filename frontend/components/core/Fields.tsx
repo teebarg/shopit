@@ -131,6 +131,7 @@ export function SelectField({
     selectionMode = "single",
     labelPlacement = "inside",
     description = "",
+    placeholder = "",
 }: any) {
     let id = useId();
     const { required } = rules || {};
@@ -142,16 +143,14 @@ export function SelectField({
                 name={name}
                 render={({ field: { onChange, value } }) => (
                     <Select
-                        color="secondary"
                         variant={variant}
                         isRequired={required}
                         label={label}
                         onChange={onChange}
                         selectedKeys={value}
-                        placeholder="Select an animal"
+                        placeholder={placeholder}
                         description={description}
                         selectionMode={selectionMode}
-                        className="max-w-xs"
                         labelPlacement={labelPlacement}
                         size="md"
                         errorMessage={error?.message}

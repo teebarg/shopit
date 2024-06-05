@@ -7,16 +7,16 @@ import Footer from "@/components/Footer";
 
 export default async function Marketplace() {
     return (
-        <div className="bg-white flex flex-col min-h-full">
+        <div className="flex flex-col min-h-full">
             <Navbar />
-            <div className="mx-auto max-w-2xl px-4 py-4 sm:px-6 lg:max-w-7xl lg:px-8 w-full">
-                <h2 className="text-2xl font-bold tracking-tight text-gray-900">Customers also purchased</h2>
+            <div className="mx-auto max-w-2xl px-4 py-4 sm:px-6 lg:max-w-7xl lg:px-8 w-full bg-content1 mt-2">
+                <h2 className="text-2xl font-bold tracking-tight">Customers also purchased</h2>
                 <Suspense fallback={<LatestLoading />}>
                     <Latest />
                 </Suspense>
             </div>
-            <div className="mx-auto max-w-2xl px-4 py-4 sm:px-6 lg:max-w-7xl lg:px-8 w-full">
-                <h2 className="text-2xl font-bold tracking-tight text-gray-900">Trending</h2>
+            <div className="mx-auto max-w-2xl px-4 py-4 sm:px-6 lg:max-w-7xl lg:px-8 w-full bg-content1 mt-4 min-h-12">
+                <h2 className="text-2xl font-bold tracking-tight">Trending</h2>
                 <Suspense fallback={<LatestLoading />}>
                     <Trending />
                 </Suspense>

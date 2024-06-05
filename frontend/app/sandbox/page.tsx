@@ -1,27 +1,18 @@
 import React from "react";
-// import Footer from "@/components/Footer";
 import Navbar from "@/components/home/navbar";
-// import Link from "next/link";
 import Head from "next/head";
 
 export default async function SandBox() {
     return (
-        <main>
-            {/* <Navbar /> */}
-            <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500">
-                <Head>
-                    <title>Sandbox - Explore and Play</title>
-                    <link rel="icon" href="/favicon.ico" />
-                </Head>
-
-                {/* <header className="bg-white shadow">
-                    <div className="container mx-auto px-4 py-6">
-                        <h1 className="text-3xl font-bold text-gray-900">Sandbox</h1>
-                    </div>
-                </header> */}
+        <React.Fragment>
+            <Head>
+                <title>Sandbox - Explore and Play</title>
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
+            <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex flex-col">
                 <Navbar />
 
-                <main className="container mx-auto px-4 py-8">
+                <main className="container mx-auto px-4 py-8 flex-1">
                     <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div className="bg-white rounded-lg shadow-lg p-6">
                             <h2 className="text-2xl font-bold text-gray-900 mb-4">Code Editor</h2>
@@ -55,13 +46,12 @@ export default async function SandBox() {
                     </section>
                 </main>
 
-                <footer className="bg-white shadow mt-8">
+                <footer className="shadow mt-8 bg-content2">
                     <div className="container mx-auto px-4 py-6 text-center">
-                        <p className="text-gray-700">&copy; {new Date().getFullYear()} Sandbox. All rights reserved.</p>
+                        <p>&copy; {new Date().getFullYear()} Sandbox. All rights reserved.</p>
                     </div>
                 </footer>
             </div>
-            {/* <Footer /> */}
-        </main>
+        </React.Fragment>
     );
 }

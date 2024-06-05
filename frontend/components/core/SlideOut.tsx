@@ -33,8 +33,8 @@ export default function SlideOut({ onClose, title = "Confirm", children }: Slide
                                 leaveTo="translate-x-full"
                             >
                                 <Dialog.Panel className="pointer-events-auto w-screen max-w-md">
-                                    <div className="flex h-screen flex-col bg-background shadow-xl">
-                                        <div className="px-4 sm:px-6 py-6 border-b border-gray-200">
+                                    <div className="flex h-screen flex-col bg-content1 shadow-xl">
+                                        <div className="px-4 sm:px-6 py-6 border-b border-default-200">
                                             <div className="flex items-start justify-between">
                                                 <Dialog.Title className="text-lg font-semibold leading-6">{title}</Dialog.Title>
                                                 <div className="ml-3 flex h-7 items-center">

@@ -22,7 +22,6 @@ const navigation = [
     { name: "Tags", path: "/admin/tags", icon: UsersIcon },
     { name: "Products", path: "/admin/products", icon: UsersIcon },
     { name: "Details", path: "/admin/details", icon: CreditCardIcon },
-    { name: "Settings", path: "/admin/settings", icon: CreditCardIcon },
 ];
 
 export default function SideBar({ children }: { children: React.ReactNode }) {
@@ -92,9 +91,7 @@ export default function SideBar({ children }: { children: React.ReactNode }) {
                                                             <Link
                                                                 href={item.path}
                                                                 className={cn(
-                                                                    isActiveRoute(item.path)
-                                                                        ? "bg-primary text-primary-content"
-                                                                        : "text-gray-700 hover:bg-base-300",
+                                                                    isActiveRoute(item.path) ? "bg-primary" : "text-gray-700 hover:bg-base-300",
                                                                     "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
                                                                 )}
                                                             >
@@ -123,7 +120,7 @@ export default function SideBar({ children }: { children: React.ReactNode }) {
             {/* Static sidebar for desktop */}
             <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
                 {/* Sidebar component, swap this element with another sidebar if you like */}
-                <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 px-6 pb-4">
+                <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-default-200 px-6 pb-4">
                     <div className="flex gap-2 h-16 shrink-0 items-center">
                         <Link href={"/"} className="text-3xl font-semibold text-rose-400 flex gap-2 items-baseline">
                             <span>ShpIT</span> <span className="text-xs">Beta</span>
@@ -163,7 +160,7 @@ export default function SideBar({ children }: { children: React.ReactNode }) {
             </div>
 
             <div className="lg:pl-72">
-                <div className="sticky top-0 z-20 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
+                <div className="sticky top-0 z-20 flex h-16 shrink-0 items-center gap-x-4 border-b border-default-300 px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8 bg-background">
                     <button type="button" className="-m-2.5 p-2.5 text-gray-700 lg:hidden" onClick={() => setSidebarOpen(true)}>
                         <Bars3Icon className="h-6 w-6" aria-hidden="true" />
                     </button>

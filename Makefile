@@ -32,15 +32,15 @@ stopTest: ## Stop test development environment
 # Utilities
 lint-backend: ## Format backend code
 	@echo "$(YELLOW)Running linters for backend...$(RESET)"
-	@cd backend && make format
+	@cd backend && $(MAKE) format
 
 lint-frontend: ## Format frontend code
 	@echo "$(YELLOW)Running linters for frontend...$(RESET)"
-	@cd frontend && npm run lint
+	@cd frontend && npm run lint:fix
 
 lint: ## Format project
-	@$(MAKE) -s lint-backend
 	@$(MAKE) -s lint-frontend
+	@$(MAKE) -s lint-backend
 
 test: ## Run project tests
 	@cd backend && $(MAKE) -s backend-test

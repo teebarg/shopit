@@ -33,9 +33,6 @@ export default function UserDropDown() {
                 <DropdownItem key="profile">
                     <NextLink href="/profile">Profile</NextLink>
                 </DropdownItem>
-                <DropdownItem key="settings">
-                    <NextLink href="/admin/settings">Settings</NextLink>
-                </DropdownItem>
                 <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
                 <DropdownItem onClick={() => signOut()} key="logout" color="danger">
                     Log Out

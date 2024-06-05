@@ -80,10 +80,10 @@ export default function LoginForm() {
             )}
             <Divider className="my-4" />
             <Button
-                className="w-full"
-                color="primary"
+                fullWidth
+                color="warning"
                 size="lg"
-                variant="flat"
+                variant="shadow"
                 startContent={<Image src={Google} alt="Google" className="w-6" />}
                 onPress={() => signIn("google")}
             >

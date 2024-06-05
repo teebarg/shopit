@@ -32,10 +32,6 @@ export const siteConfig = {
             href: "/dashboard",
         },
         {
-            label: "Settings",
-            href: "/settings",
-        },
-        {
             label: "Help & Feedback",
             href: "/help-feedback",
         },

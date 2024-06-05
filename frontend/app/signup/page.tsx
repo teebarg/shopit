@@ -11,13 +11,13 @@ export default function SignUp() {
                 <ThemeSwitch />
             </div>
             <div className="flex flex-1 flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24 w-1/2">
-                <div className="">
+                <div className="bg-content1 px-8 py-12 rounded-md">
                     <div>
                         <h2 className="text-3xl font-semibold">ShpIT</h2>
                         <h2 className="mt-6 text-xl font-semibold tracking-tight">Signup for your free trial</h2>
-                        <p className="mt-2 text-sm leading-6 text-gray-500">
+                        <p className="mt-2 text-sm leading-6 text-default-500">
                             Already a member?
-                            <Link href="/login" className="font-semibold text-indigo-600 hover:text-indigo-500 ml-2">
+                            <Link href="/login" className="font-semibold text-primary ml-2">
                                 Login here
                             </Link>
                         </p>

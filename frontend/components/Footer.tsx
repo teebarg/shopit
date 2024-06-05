@@ -4,8 +4,8 @@ import { siteConfig } from "@/config/site";
 
 export default function Footer() {
     return (
-        <footer className="border-t">
-            <div className="py-2 flex justify-between max-w-7xl mx-auto">
+        <footer className="border-t border-default-100">
+            <div className="py-4 flex justify-between max-w-7xl mx-auto">
                 <aside className="items-center grid-flow-col">
                     <p>
                         <span className="font-semibold text-xl">ShpIT</span> <br />

@@ -11,13 +11,13 @@ export default function Login() {
                 <ThemeSwitch />
             </div>
             <div className="flex flex-1 flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
-                <div className="mx-auto w-full max-w-sm lg:w-96">
+                <div className="mx-auto w-full max-w-sm md:min-w-[30rem] bg-content1 px-8 py-12 rounded-md">
                     <div>
                         <h2 className="text-3xl font-semibold">ShpIT</h2>
                         <h2 className="mt-6 text-xl font-semibold tracking-tight">Sign in to your account!</h2>
-                        <p className="mt-2 text-sm leading-6 text-gray-500">
+                        <p className="mt-2 text-sm leading-6 text-default-500">
                             Not a member?
-                            <Link href="/signup" className="ml-2 font-semibold text-indigo-600 hover:text-indigo-500">
+                            <Link href="/signup" className="ml-2 font-semibold text-primary">
                                 Start a 14 day free trial
                             </Link>
                         </p>

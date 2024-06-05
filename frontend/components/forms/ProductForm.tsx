@@ -169,6 +169,7 @@ export default function ProductForm({
                             rules={{ required: true }}
                             description="Product tags"
                             selectionMode="multiple"
+                            placeholder="Select Tags"
                         />
                         <SelectField
                             name="collections"
@@ -179,6 +180,7 @@ export default function ProductForm({
                             error={errors?.name}
                             description="Product collections"
                             selectionMode="multiple"
+                            placeholder="Select Collections"
                         />
                         <TextField
                             name="price"
@@ -202,11 +204,11 @@ export default function ProductForm({
                     </div>
                 </div>
             </div>
-            <div className="flex flex-shrink-0 justify-end p-4 space-x-2 border-t border-gray-200">
-                <Button color="danger" onPress={onClose}>
+            <div className="flex flex-shrink-0 justify-end p-4 space-x-2 border-t border-default-200">
+                <Button color="danger" onPress={onClose} variant="shadow">
                     Cancel
                 </Button>
-                <Button type="submit" color="primary" isLoading={loading}>
+                <Button type="submit" color="primary" isLoading={loading} variant="shadow">
                     {isCreate ? "Submit" : "Update"}
                 </Button>
             </div>

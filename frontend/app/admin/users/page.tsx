@@ -8,7 +8,7 @@ export const metadata = {
     description: "Shopit admin starter template built with Tailwind CSS and Next.js.",
 };
 
-async function getData(page: string = "1", per_page: string = "1", name: string = "") {
+async function getData(page: string = "1", per_page: string = "10", name: string = "") {
     const { ok, status, data } = await GET(`/users/?page=${page}&per_page=${per_page}&name=${name}`, "users");
 
     if ([401].includes(status)) {

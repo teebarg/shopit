@@ -10,7 +10,7 @@ export default function Navbar() {
     const { data: session } = useSession();
 
     return (
-        <div className="flex items-center justify-between px-12 py-2 border-b-1">
+        <div className="flex items-center justify-between px-12 py-4 border-b-1 border-default-300">
             <div className="">
                 <NextLink href={"/"} className="text-xl font-semibold">
                     Nextjs Fastapi
