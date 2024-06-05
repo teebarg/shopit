@@ -2,7 +2,7 @@
 
 import React, { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { Bars3Icon, HomeIcon, XMarkIcon, UsersIcon, CreditCardIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, HomeIcon, XMarkIcon, UsersIcon } from "@heroicons/react/24/outline";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -21,7 +21,6 @@ const navigation = [
     { name: "Collections", path: "/admin/collections", icon: UsersIcon },
     { name: "Tags", path: "/admin/tags", icon: UsersIcon },
     { name: "Products", path: "/admin/products", icon: UsersIcon },
-    { name: "Details", path: "/admin/details", icon: CreditCardIcon },
 ];
 
 export default function SideBar({ children }: { children: React.ReactNode }) {
