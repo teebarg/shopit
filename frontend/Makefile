@@ -3,6 +3,8 @@ PROJECT_SLUG := shopit
 APP_NAME := $(PROJECT_SLUG)-frontend
 PORT := 4001
 
+YELLOW=$(shell tput -Txterm setaf 3)
+
 # Targets
 build:
 	docker build -t $(APP_NAME) .
@@ -19,3 +21,8 @@ dev:
 
 lint:
 	npm run lint:fix && npm run format
+
+
+frontend-test: ## Run frontend tests
+	@echo "$(YELLOW)Running frontend tests...$(RESET)"
+	npm run test
