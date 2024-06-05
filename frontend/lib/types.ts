@@ -1,4 +1,5 @@
 /* eslint-disable */
+import { ReactNode } from "react";
 
 type Collection = {
     id?: number;

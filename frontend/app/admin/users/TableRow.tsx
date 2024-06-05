@@ -10,6 +10,7 @@ import NextModal from "@/components/core/Modal";
 
 interface ChildComponentHandles {
     onOpen: () => void;
+    onClose: () => void;
 }
 
 export default function TableRow({

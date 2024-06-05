@@ -133,7 +133,9 @@ def get_current_active_user(
     current_user: Annotated[User, Depends(get_current_user)]
 ) -> User:
     if not current_user:
-        raise HTTPException(status_code=403, detail="Unauthenticated user")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthenticated user"
+        )
     if not current_user.is_active:
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user

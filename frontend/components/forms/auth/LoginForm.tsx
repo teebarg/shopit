@@ -46,8 +46,8 @@ export default function LoginForm() {
                 setErrorMessage("Invalid credentials");
             }
             setLoading(false);
-        } catch (error) {
-            setErrorMessage("An error occurred, please contact the administrator" + error.message);
+        } catch (error: any) {
+            setErrorMessage("An error occurred, please contact the administrator" + error?.message);
             setLoading(false);
         }
     };

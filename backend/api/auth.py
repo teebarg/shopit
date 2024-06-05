@@ -20,7 +20,7 @@ router = APIRouter()
 async def login_for_access_token(
     credentials: schemas.SignIn,
     auth: Any = Depends(deps.get_auth),
-    db=Depends(deps.get_db)
+    db=Depends(deps.get_db),
 ) -> Any:
     """
     User login to get access token (JWT).

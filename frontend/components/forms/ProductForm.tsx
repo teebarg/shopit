@@ -144,7 +144,7 @@ export default function ProductForm({
                             <span className="block text-sm font-medium">Product Image</span>
                             {!isCreate && <ImageUpload onData={setFile} defaultImage={product.image ? imgSrc(product.image) : ""} />}
                             {file && (
-                                <Button type="button" onPress={handleUpload} color="primary" isLoading={imageLoader} css="mt-1">
+                                <Button type="button" onPress={handleUpload} color="primary" isLoading={imageLoader} className="mt-1">
                                     Update Image
                                 </Button>
                             )}
