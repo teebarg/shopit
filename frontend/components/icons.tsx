@@ -221,6 +221,12 @@ export const ChevronDownIcon = ({ strokeWidth = 1.5, width = "1em", height = "1e
     </svg>
 );
 
+export const ChevronRightIcon = ({ strokeWidth = 1.5, width = "1em", height = "1em", ...otherProps }) => (
+    <svg width={width} height={height} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...otherProps}>
+        <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+);
+
 export const NotificationIcon = ({ size, height, width, ...props }: IconSvgProps) => {
     return (
         <svg fill="none" height={size || height || 24} viewBox="0 0 24 24" width={size || width || 24} xmlns="http://www.w3.org/2000/svg" {...props}>
@@ -234,13 +240,13 @@ export const NotificationIcon = ({ size, height, width, ...props }: IconSvgProps
     );
 };
 
-export const CheckIcon = ({ size, height, width, ...props }: IconSvgProps) => {
+export const CheckIcon = ({ strokeWidth = 1.5, size, height, width, ...props }: IconSvgProps) => {
     return (
         <svg width={size || width || 18} height={size || height || 18} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
             <path
                 d="M7.75 11.9999L10.58 14.8299L16.25 9.16992"
                 stroke="currentColor"
-                strokeWidth={1.5}
+                strokeWidth={strokeWidth}
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
@@ -314,5 +320,94 @@ export const DeleteIcon = ({ height = "1em", width = "1em", ...props }: IconSvgP
         />
         <path d="M8.60834 13.75H11.3833" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} />
         <path d="M7.91669 10.4167H12.0834" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} />
+    </svg>
+);
+
+export const MailIcon = ({ height = "24", width = "24", ...props }: IconSvgProps) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={width} height={height} {...props}>
+        <path d="M12 13.5l-11.2-7.2c-.3-.2-.3-.6-.1-.8.2-.2.6-.2.8 0l11 7.1 11-7.1c.3-.2.6-.2.8 0 .2.2.2.6 0 .8l-11.2 7.2-11.2-7.2z" />
+        <path d="M21 4h-18c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2v-12c0-1.1-.9-2-2-2zm-1 14h-16c-.6 0-1-.4-1-1v-10.5l8.7 5.6c.1.1.3.1.4.1s.3 0 .4-.1l8.7-5.6v10.5c0 .6-.4 1-1 1z" />
+    </svg>
+);
+
+export const LocationIcon = ({ height = "24", width = "24", ...props }: IconSvgProps) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={width} height={height} {...props}>
+        <path d="M12 2C8.1 2 5 5.1 5 9c0 4.9 7 13 7 13s7-8.1 7-13c0-3.9-3.1-7-7-7zm0 17.2c-1.5-1.8-6-7.5-6-11.2 0-3.3 2.7-6 6-6s6 2.7 6 6c0 3.7-4.5 9.4-6 11.2z" />
+        <circle cx="12" cy="9" r="2.5" />
+    </svg>
+);
+
+export const CancelIcon = ({ strokeWidth = 1.5, size = 24, height = "24", width = "24", ...props }: IconSvgProps) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={size || width} height={size || height} {...props}>
+        <path
+            d="M18.3 5.71a1 1 0 0 0-1.41 0L12 10.59 7.11 5.7a1 1 0 1 0-1.41 1.41L10.59 12l-4.89 4.89a1 1 0 1 0 1.41 1.41L12 13.41l4.89 4.89a1 1 0 0 0 1.41-1.41L13.41 12l4.89-4.89a1 1 0 0 0 0-1.41z"
+            strokeWidth={strokeWidth}
+        />
+    </svg>
+);
+
+export const AdminIcon = ({ size = 24, height = "24", width = "24", ...props }: IconSvgProps) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={size || width} height={size || height} {...props}>
+        <path
+            fill="currentColor"
+            d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0-6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zM12 14c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4zm-6 4c.22-.72 3.31-2 6-2s5.78 1.28 6 2H6zm16-12h-2v6h-2v-6h-2V6h6v2z"
+        />
+    </svg>
+);
+
+export const ComponentsIcon = ({ strokeWidth = 2, size = 24, height = "24", width = "24", ...props }: IconSvgProps) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={size || width} height={size || height} {...props}>
+        <rect x="3" y="5" width="18" height="2" fill="currentColor" />
+        <circle cx="6" cy="6" r="3" fill="currentColor" />
+
+        <rect x="3" y="10" width="8" height="4" rx="2" ry="2" fill="currentColor" />
+
+        <rect x="15" y="10" width="6" height="6" rx="1" ry="1" fill="none" stroke="currentColor" strokeWidth={strokeWidth} />
+        <path d="M16 12l2 2 4-4" fill="none" stroke="currentColor" strokeWidth={strokeWidth} />
+
+        <rect x="3" y="17" width="10" height="4" rx="2" ry="2" fill="currentColor" />
+        <path d="M16 18h5v2h-5z" fill="currentColor" />
+    </svg>
+);
+
+export const EcommerceIcon = ({ size = 24, height = "24", width = "24", ...props }: IconSvgProps) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={size || width} height={size || height} {...props} fill="currentColor">
+        <path d="M7 4h-2V2H2v2H1v2h1v12a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6h1V4h-1V2h-3v2h-2V2h-2v2h-6V2H7v2zm0 2h10v12H7V6zm2 2v2h6V8H9z" />
+
+        <path d="M19 8.5c-1.1 0-2-.9-2-2 0-.2.2-.5.4-.7.4-.6.6-1.3.6-2 0-1.7-1.3-3-3-3s-3 1.3-3 3c0 .7.2 1.4.6 2 .2.2.4.5.4.7 0 1.1-.9 2-2 2-.3 0-.6 0-.9.1.2.3.3.6.3.9 0 1.1-.9 2-2 2s-2-.9-2-2c0-.3.1-.6.3-.9-.3-.1-.6-.1-.9-.1-1.1 0-2 .9-2 2 0 1.6 1.3 3 3 3h8c1.7 0 3-1.4 3-3 0-1.1-.9-2-2-2z" />
+    </svg>
+);
+
+export const ProfileIcon = ({ size = 24, height = "24", width = "24", ...props }: IconSvgProps) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={size || width} height={size || height} {...props} fill="currentColor">
+        <circle cx="12" cy="8" r="4" />
+
+        <path d="M12 14c-5 0-8 2.5-8 6v2h16v-2c0-3.5-3-6-8-6z" />
+    </svg>
+);
+
+export const CalendarIcon = ({ strokeWidth = 2, size = 24, height = "24", width = "24", ...props }: IconSvgProps) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={size || width} height={size || height} {...props} fill="currentColor">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" fill="none" stroke="currentColor" strokeWidth={strokeWidth} />
+
+        <line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" strokeWidth={strokeWidth} />
+        <line x1="7" y1="10" x2="7" y2="22" stroke="currentColor" strokeWidth={strokeWidth} />
+        <line x1="11" y1="10" x2="11" y2="22" stroke="currentColor" strokeWidth={strokeWidth} />
+        <line x1="15" y1="10" x2="15" y2="22" stroke="currentColor" strokeWidth={strokeWidth} />
+        <line x1="19" y1="10" x2="19" y2="22" stroke="currentColor" strokeWidth={strokeWidth} />
+
+        <line x1="3" y1="7" x2="21" y2="7" stroke="currentColor" strokeWidth={strokeWidth} />
+
+        <circle cx="7" cy="4" r="1.5" fill="currentColor" />
+        <circle cx="17" cy="4" r="1.5" fill="currentColor" />
+    </svg>
+);
+
+export const DocumentIcon = ({ strokeWidth = 2, size = 24, height = "24", width = "24", ...props }: IconSvgProps) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={size || width} height={size || height} {...props} fill="currentColor">
+        <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zM13 9V3.5L18.5 9H13z" />
+
+        <line x1="8" y1="13" x2="16" y2="13" stroke="currentColor" strokeWidth={strokeWidth} />
+        <line x1="8" y1="17" x2="16" y2="17" stroke="currentColor" strokeWidth={strokeWidth} />
     </svg>
 );

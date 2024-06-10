@@ -48,8 +48,12 @@ async def login_for_access_token(
             raise HTTPException(
                 status_code=400, detail="Invalid login credentials"
             ) from e
+        elif "MISSING_PASSWORD" in str(e):
+            raise HTTPException(
+                status_code=400, detail="Password is required to Login"
+            ) from e
         else:
-            raise HTTPException(status_code=400, detail="An error occurred") from e
+            raise HTTPException(status_code=400, detail=f"An error occurred. {e}") from e
 
 
 @router.post("/signup")
