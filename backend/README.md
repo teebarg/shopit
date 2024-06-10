@@ -1,7 +1,6 @@
-# Altara Python Service
+# Shopit Python Service
 
 [![Python Version](https://img.shields.io/badge/python-3.11-blue.svg)](https://python.org)
-[![FastAPI Version](https://img.shields.io/badge/fastapi-0.68.0-blue.svg)](https://fastapi.tiangolo.com/)
 
 ## Introduction
 
