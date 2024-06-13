@@ -2,7 +2,7 @@ import React, { useId } from "react";
 import { Controller, UseFormRegister } from "react-hook-form";
 import { Input } from "@nextui-org/input";
 import { EyeSlashFilledIcon, EyeFilledIcon } from "@/components/icons";
-import { Checkbox, Switch, Select, SelectItem } from "@nextui-org/react";
+import { Checkbox, Switch, Select, SelectItem, Textarea } from "@nextui-org/react";
 
 const formClasses = "input input-bordered w-full form-fix";
 
@@ -15,7 +15,7 @@ type RulesProps = {
     maxLength?: number;
     required?: boolean;
     email?: boolean;
-    confirmPassword?: {};
+    confirmPassword?: object;
     pattern?: RegExp;
 };
 
@@ -25,6 +25,8 @@ type FieldProps = {
     className?: string;
     type?: Types;
     rules?: RulesProps;
+    disabled?: boolean;
+    labelPlacement?: "outside" | "inside";
     register: UseFormRegister<any>;
     [key: string]: any;
 };
@@ -52,8 +54,19 @@ type Rules = {
     validate?: (value: {}) => boolean | string;
 };
 
-export function TextField({ name, label, type = "text", defaultValue, register, rules, error, ...props }: FieldProps) {
-    let id = useId();
+export function TextField({
+    name,
+    label,
+    labelPlacement = "inside",
+    type = "text",
+    size = "md",
+    defaultValue,
+    register,
+    rules,
+    error,
+    ...props
+}: FieldProps) {
+    const id = useId();
     const formRules: Rules = {};
     const { min, max, minLength, maxLength, email, required, pattern } = rules || {};
 
@@ -110,12 +123,14 @@ export function TextField({ name, label, type = "text", defaultValue, register, 
             id={id}
             type={type}
             label={label}
+            labelPlacement={labelPlacement}
             {...props}
             defaultValue={defaultValue}
             className={formClasses}
             {...register(name, formRules)}
             isInvalid={error}
             errorMessage={error?.message}
+            size={size}
         />
     );
 }
@@ -130,42 +145,44 @@ export function SelectField({
     variant = "flat",
     selectionMode = "single",
     labelPlacement = "inside",
-    description = "",
     placeholder = "",
+    description = "",
+    size = "md",
+    color = "",
 }: any) {
-    let id = useId();
+    const id = useId();
     const { required } = rules || {};
 
     return (
-        <div key={id} className="w-full">
-            <Controller
-                control={control}
-                name={name}
-                render={({ field: { onChange, value } }) => (
-                    <Select
-                        variant={variant}
-                        isRequired={required}
-                        label={label}
-                        onChange={onChange}
-                        selectedKeys={value}
-                        placeholder={placeholder}
-                        description={description}
-                        selectionMode={selectionMode}
-                        labelPlacement={labelPlacement}
-                        size="md"
-                        errorMessage={error?.message}
-                        isInvalid={error}
-                    >
-                        {options?.map((item: { value: string; label: string }) => <SelectItem key={item.value}>{item.label}</SelectItem>)}
-                    </Select>
-                )}
-            />
-        </div>
+        <Controller
+            key={id}
+            control={control}
+            name={name}
+            render={({ field: { onChange, value } }) => (
+                <Select
+                    color={color}
+                    variant={variant}
+                    isRequired={required}
+                    label={label}
+                    onChange={onChange}
+                    selectedKeys={value}
+                    placeholder={placeholder}
+                    description={description}
+                    selectionMode={selectionMode}
+                    labelPlacement={labelPlacement}
+                    size={size}
+                    errorMessage={error?.message}
+                    isInvalid={error}
+                >
+                    {options?.map((item: { value: string; label: string }) => <SelectItem key={item.value}>{item.label}</SelectItem>)}
+                </Select>
+            )}
+        />
     );
 }
 
-export function TextAreaField({ name, register, rules, error, handleClick, loading, ...props }: FieldProps) {
-    let id = useId();
+export function ChatInputField({ name, register, rules, error, handleClick, loading, ...props }: FieldProps) {
+    const id = useId();
     // eslint-disable-next-line no-undef
     const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         e.target.style.height = "auto";
@@ -224,7 +241,7 @@ export function PasswordField({ name, label, register, rules, error, ...props }:
     const [isVisible, setIsVisible] = React.useState(false);
 
     const toggleVisibility = () => setIsVisible(!isVisible);
-    let id = useId();
+    const id = useId();
     const formRules: Rules = {};
     const { minLength, maxLength, confirmPassword, required, pattern } = rules || {};
 
@@ -247,6 +264,7 @@ export function PasswordField({ name, label, register, rules, error, ...props }:
     }
 
     if (confirmPassword) {
+        // eslint-disable-next-line
         formRules["validate"] = (value: {}) => value === confirmPassword || "Passwords do not match";
     }
 
@@ -310,5 +328,44 @@ export function CheckBoxField({ name, label, className, control }: FieldProps) {
                 )}
             />
         </div>
+    );
+}
+
+export function TextAreaField({ name, label, labelPlacement = "inside", register, rules, error, disabled, variant, ...props }: FieldProps) {
+    const id = useId();
+    const formRules: Rules = {};
+    const { minLength, maxLength, required } = rules || {};
+
+    if (required) {
+        formRules["required"] = typeof required === "boolean" ? `${label} is required` : required;
+    }
+
+    if (minLength) {
+        formRules["minLength"] = {
+            value: minLength,
+            message: `${label} must have a minimum of ${minLength} characters`,
+        };
+    }
+
+    if (maxLength) {
+        formRules["maxLength"] = {
+            value: maxLength,
+            message: `${label} must have a minimum of ${maxLength} characters`,
+        };
+    }
+
+    return (
+        <Textarea
+            id={id}
+            isRequired={required}
+            isDisabled={disabled}
+            variant={variant}
+            label={label}
+            labelPlacement={labelPlacement}
+            {...register(name, formRules)}
+            isInvalid={error}
+            errorMessage={error?.message}
+            {...props}
+        />
     );
 }
