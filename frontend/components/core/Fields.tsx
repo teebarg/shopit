@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useId } from "react";
 import { Controller, UseFormRegister } from "react-hook-form";
 import { Input } from "@nextui-org/input";
@@ -51,7 +50,7 @@ type Rules = {
         value: RegExp;
         message: string;
     };
-    // eslint-disable-next-line no-unused-vars, @typescript-eslint/ban-types
+    // eslint-disable-next-line no-unused-vars
     validate?: (value: {}) => boolean | string;
 };
 
@@ -175,9 +174,7 @@ export function SelectField({
                     errorMessage={error?.message}
                     isInvalid={error}
                 >
-                    {options?.map((item: { value: string; label: string }) => (
-                        <SelectItem key={item.value}>{item.label}</SelectItem>
-                    ))}
+                    {options?.map((item: { value: string; label: string }) => <SelectItem key={item.value}>{item.label}</SelectItem>)}
                 </Select>
             )}
         />
@@ -267,7 +264,7 @@ export function PasswordField({ name, label, register, rules, error, ...props }:
     }
 
     if (confirmPassword) {
-        // eslint-disable-next-line @typescript-eslint/ban-types
+        // eslint-disable-next-line
         formRules["validate"] = (value: {}) => value === confirmPassword || "Passwords do not match";
     }
 
